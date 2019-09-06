@@ -30,4 +30,7 @@ end address_decoder;
 
 architecture behave of address_decoder is begin
     -- FUNCTIONALITY HERE
+    ram_cs  <= a11;
+    adc_cs  <= a11 OR NOT a10;
+    oled_cs <= 
 end behave;

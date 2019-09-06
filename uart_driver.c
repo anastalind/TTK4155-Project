@@ -2,10 +2,10 @@
 //#include <avr/io.h>
 
 void UART_init (unsigned int ubrr) {
-    const int BAUD = 0.15*((long)FOSC/((long)(16*ubrr))-1);
+    int bd = 0.15*((long)FOSC/((long)(16*ubrr))-1);
 
-    UBRR0H = (unsigned char) (BAUD>>8);
-    UBRR0L = (unsigned char) BAUD;
+    UBRR0H = (unsigned char) (bd>>8);
+    UBRR0L = (unsigned char) bd;
 
     UCSR0B = (1<<RXEN0) | (1<<TXEN0);
 
@@ -24,8 +24,7 @@ unsigned char UART_recv (void) {
 }
 
 void UART_trans (unsigned char letter) {
-    while (!(UCSR0A & (1 << UDRE0))){
-    }
+    while (!(UCSR0A & (1 << UDRE0))){};
 
     UDR0 = letter;
 }
