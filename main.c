@@ -45,7 +45,7 @@ void main() {
    set_bit(UCSR1A, UPE1);
 
    while (1){};
-   */
+    */
   UART_init(9600);
 
   // Setting the SRE and ALE signals
@@ -63,7 +63,10 @@ void main() {
   clear_bit(PORTD, PORTD7);
 
   printf("I will now perform the SRAM test\n\r");
+  set_bit(SFIOR, XMM2);
   SRAM_test();
+
+  
 
   //while (1){};
 }
