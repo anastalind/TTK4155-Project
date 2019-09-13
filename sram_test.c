@@ -1,6 +1,13 @@
+/** @package sram_test.c
+ *  c-file for testing reading and writing of data.
+ */
 #include "sram_test.h"
 #include <stdlib.h>
 
+
+/** Function for testing writing and reading to and from UART.
+ *  Printing error-message if errors occur.
+ */
 void SRAM_test(void){
     volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
     uint16_t ext_ram_size= 0x800;
@@ -17,7 +24,7 @@ void SRAM_test(void){
         ext_ram[i] = some_value;
         uint8_t retreived_value = ext_ram[i];
         if (retreived_value != some_value) {
-            //printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
+            printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
             write_errors++;
         }
     }
@@ -27,7 +34,7 @@ void SRAM_test(void){
         uint8_t some_value = rand();
         uint8_t retreived_value = ext_ram[i];
         if (retreived_value != some_value) {
-            //printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
+            printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
             retrieval_errors++;
         }
     }

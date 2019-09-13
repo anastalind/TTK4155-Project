@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "uart_driver.h": "c",
+        "sram_test.h": "c"
+    }
+}
