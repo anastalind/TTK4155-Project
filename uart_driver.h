@@ -1,5 +1,6 @@
 /** @package uart_driver.h
  *  Header-file for the UART driver - to initialize, recieve and transfer data. 
+ *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 #ifndef UART_DRIVER_H
 #define UART_DRIVER_H

@@ -1,21 +1,25 @@
 /** @package main.c
- *  main function for running the program.
+ * 
+ *  main function for running the program - Controller.
+ * 
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
-#include <stdlib.h>
-#include <stdio.h>
-#include <avr/io.h>
+
 
 #include "uart_driver.h"
-#include "joystickslider_driver.h"
+#include "joystick.h"
+#include "slider.h"
+#include "adc.h"
 #include "sram_test.h"
 
-#define F_CPU 4915200
-#include <util/delay.h>
 
-#define set_bit( reg, bit ) (reg |= (1 << bit))
-#define clear_bit( reg, bit ) (reg &= ~(1 << bit))
-
-#define ext_adc (volatile char *) 0x1400
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <avr/io.h>
+//#define F_CPU 4915200
+//#include <util/delay.h>
+//#define set_bit( reg, bit ) (reg |= (1 << bit))
+//#define clear_bit( reg, bit ) (reg &= ~(1 << bit))
 
 
 void main() {  
@@ -76,10 +80,9 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
     //volatile char *ext_adc = (char *) 0x1400;
     volatile char *ext_oled = (char *) 0x1000;
 
-
-
     
     //uint8_t some_value = rand();
+    
     while (1){
     // Selecting RAM (pin 19)
     //ext_ram[0] = some_value;
@@ -90,9 +93,24 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
     // Selecting OLED (pin 17)
     //ext_oled[0] = rand();  
 
-        joystick_position();
-        
-        
-    };
+ /*
+//DAY 3: A/D converting and joystick input
+
+        //selected_channel_output(5);
+        _delay_ms(200);
+   
+        struct Joystick position = joystick_position();
+
+        printf("X-value: %i\n\r", position.x);
+        printf("Y-value: %i\n\r", position.y);
+
     
+
+        struct Sliders position = slider_position();
+
+        printf("Left-slider: %i\n\r", position.Left);
+        printf("Right-slider: %i\n\r", position.Right);
+*/
+    }
+  
 }
