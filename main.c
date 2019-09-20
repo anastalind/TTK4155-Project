@@ -93,12 +93,12 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
     // Selecting OLED (pin 17)
     //ext_oled[0] = rand();  
 
- /*
-//DAY 3: A/D converting and joystick input
 
+//DAY 3: A/D converting and joystick input
+    /*
         //selected_channel_output(5);
         _delay_ms(200);
-   
+
         struct Joystick position = joystick_position();
 
         printf("X-value: %i\n\r", position.x);
@@ -110,7 +110,7 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
 
         printf("Left-slider: %i\n\r", position.Left);
         printf("Right-slider: %i\n\r", position.Right);
-*/
+    */
     }
   
 }
