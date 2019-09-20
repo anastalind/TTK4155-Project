@@ -17,7 +17,7 @@
 #include <util/delay.h>
 
 
-/**Struct Sliders representing the left and right sliders respectively
+/** Struct Sliders representing the left and right sliders respectively
  */
 struct Sliders {
     int Left;

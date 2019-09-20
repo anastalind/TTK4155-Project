@@ -17,14 +17,14 @@
 #include <util/delay.h>
 
 
-/**Struct Joystick representing the x- an y-axis respectively
+/** Struct Joystick representing the x- an y-axis respectively
  */
 struct Joystick {
     int x;
     int y; 
 };
 
-/**Enum Direction representing the directions of the joystick.
+/** Enum Direction representing the directions of the joystick.
  */
 enum Direction {LEFT, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN} Direction;
 
