@@ -30,7 +30,9 @@ entity address_decoder is
 end address_decoder;
 
 architecture behave of address_decoder is begin
-    ram_cs  <= a11;
+    ram_cs  <= a11; 
     adc_cs  <= NOT (NOT a11 AND a10);
     oled_cs <= NOT (NOT a11 AND NOT a10);
+    oled_dc <= FYLL INN HER
 end behave;
+

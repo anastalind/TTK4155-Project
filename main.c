@@ -96,7 +96,8 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
 
 //DAY 3: A/D converting and joystick input
     /*
-        //selected_channel_output(5);
+        //Read joystick-posisition: 
+
         _delay_ms(200);
 
         struct Joystick position = joystick_position();
@@ -104,13 +105,18 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
         printf("X-value: %i\n\r", position.x);
         printf("Y-value: %i\n\r", position.y);
 
-    
+        //Read Slider position: 
 
         struct Sliders position = slider_position();
 
         printf("Left-slider: %i\n\r", position.Left);
         printf("Right-slider: %i\n\r", position.Right);
     */
+
+//DAY 4:    
+
+
+
     }
   
 }
