@@ -41,6 +41,7 @@ void UART_trans (unsigned char letter) {
 
 /** Function for testing UART.
  */
+/*
 void UART_test(void) {
     UART_init(9600);
 
@@ -54,3 +55,4 @@ void UART_test(void) {
         _delay_ms(100);
     }
 }
+*/

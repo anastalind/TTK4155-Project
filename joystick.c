@@ -10,12 +10,13 @@
 #include "joystick.h"
 #include "adc.h"
 
-/** Enum ADC_channel with hexadecimal representation of channel wanted from ADC
- */
-enum ADC_channel {Y_axis = 4,
-                  X_axis = 5,
-                  R_slider = 6,
-                  L_slider = 7};
+//ADC_channel with hexadecimal representation of channel wanted from ADC
+#define X_AXIS_CHANNEL 5
+#define Y_AXIS_CHANNEL 4
+
+// Origo of joystick area is approximately at (135,135) with a resolution scale 0-255 (some rightmost displacement, that is)
+#define RESOLUTION_LEFT 130
+#define RESOLUTION_RIGHT 125
 
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
@@ -63,34 +64,30 @@ struct Joystick joystick_position(void) {
 
     struct Joystick position;
 
-    // Origo of joystick area is approximately at (135,135) with a resolution scale 0-255 (some rightmost displacement, that is)
-    int resolution_left = 135;
-    int resolution_right = 120;
-
     // Converting from 0-255 resolution to -100-100 resolution in x-axis
     // Adding slack around origo on x-axis, so that neutral position will yield position (0,0)
-    if ((selected_channel_output(5) >= (resolution_left-3)) && (selected_channel_output(5) <= (resolution_left+1))) {
+    if ((selected_channel_output(X_AXIS_CHANNEL) >= (RESOLUTION_LEFT)) && (selected_channel_output(X_AXIS_CHANNEL) <= (RESOLUTION_LEFT))) {
         position.x = 0;
     }
-    else if (selected_channel_output(5) < resolution_left) {
-        position.x = -(((resolution_left-selected_channel_output(5))*100)/resolution_left);
+    else if (selected_channel_output(X_AXIS_CHANNEL) < RESOLUTION_LEFT) {
+        position.x = -(((RESOLUTION_LEFT-selected_channel_output(X_AXIS_CHANNEL))*100)/RESOLUTION_LEFT);
     } 
     else {
-        position.x = (((selected_channel_output(5)-resolution_left)*100)/resolution_right);
+        position.x = (((selected_channel_output(X_AXIS_CHANNEL)-RESOLUTION_LEFT)*100)/RESOLUTION_RIGHT);
     }
 
     // Converting from 0-255 resolution to -100-100 resolution in y-axis
     // Adding slack around origo on y-axis, so that neutral position will yield position (0,0)
-    if ((selected_channel_output(4) >= (resolution_left-2)) && (selected_channel_output(4) <= (resolution_left+1))) {
+    if ((selected_channel_output(Y_AXIS_CHANNEL) >= (RESOLUTION_LEFT)) && (selected_channel_output(Y_AXIS_CHANNEL) <= (RESOLUTION_LEFT))) {
         position.y = 0;
     }
     
-    else if (selected_channel_output(4) < resolution_left) {
-        position.y = -(((resolution_left-selected_channel_output(4))*100)/resolution_left);
+    else if (selected_channel_output(Y_AXIS_CHANNEL) < RESOLUTION_LEFT) {
+        position.y = -(((RESOLUTION_LEFT-selected_channel_output(Y_AXIS_CHANNEL))*100)/RESOLUTION_LEFT);
     } 
 
     else {
-        position.y = (((selected_channel_output(4)-resolution_left)*100)/resolution_right);
+        position.y = (((selected_channel_output(Y_AXIS_CHANNEL)-RESOLUTION_LEFT)*100)/RESOLUTION_RIGHT);
     }
     
     return position;

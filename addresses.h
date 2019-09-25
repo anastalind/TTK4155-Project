@@ -1,6 +1,5 @@
-
-
-
+#ifndef ADDRESSES_H
+#define ADDRESSES_H
 // ADC
 #define adc_addr ((volatile char*) 0x1400)
 
@@ -18,3 +17,4 @@
 // SRAM
 #define sram_addr ((volatile char*) 0x1800)
 
+#endif

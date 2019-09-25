@@ -32,6 +32,7 @@ void SRAM_test(void){
     srand(seed);// reset the PRNG to the stateit had before the write phase
     for (uint16_t i = 0; i < ext_ram_size; i++) {
         uint8_t some_value = rand();
+
         uint8_t retreived_value = ext_ram[i];
         if (retreived_value != some_value) {
             printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);

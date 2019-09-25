@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdio.h>
 
 #define FOSC 4915200 // Set the clock speed
 
@@ -28,6 +29,6 @@ void UART_trans (unsigned char letter);
 
 /** Function for testing UART.
  */
-void UART_test(void);
+//void UART_test(void);
 
 #endif

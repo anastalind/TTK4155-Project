@@ -23,3 +23,5 @@ uint8_t selected_channel_output(int channel){
     // Returning 8 bit digital signal from ADC, converted from channel specified in input
     return address[0];
 }
+
+
