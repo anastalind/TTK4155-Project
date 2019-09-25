@@ -14,7 +14,7 @@
  */
 uint8_t selected_channel_output(int channel){
     // Write to the channel wanted on the ADC 
-    volatile char *address = ext_adc;
+    volatile char *address = adc_addr;
     address[0] = channel;
 
     // Delaying time t_c, waiting for writetoggle to be registered

@@ -26,4 +26,8 @@ unsigned char UART_recv (void);
  */
 void UART_trans (unsigned char letter);
 
+/** Function for testing UART.
+ */
+void UART_test(void);
+
 #endif

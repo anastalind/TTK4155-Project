@@ -38,3 +38,19 @@ void UART_trans (unsigned char letter) {
 
     UDR0 = letter;
 }
+
+/** Function for testing UART.
+ */
+void UART_test(void) {
+    UART_init(9600);
+
+    while (1) {
+        UART_trans('a');
+
+        char letter = UART_recv();
+        letter -= 32;
+        printf("Character received: %c \n\r", letter);
+
+        _delay_ms(100);
+    }
+}

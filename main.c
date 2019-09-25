@@ -11,6 +11,7 @@
 #include "slider.h"
 #include "adc.h"
 #include "sram_test.h"
+#include "addresses.h"
 
 
 //#include <stdlib.h>
@@ -22,44 +23,17 @@
 //#define clear_bit( reg, bit ) (reg &= ~(1 << bit))
 
 
+
+
 void main() {  
 
-/* 
-DAY 1: INITIAL ASSEMBLY OF MICROCONTROLLER AND RS-232
-    
     UART_init(9600);
 
-    while (1) {
-        UART_trans('a');
 
-        char letter = UART_recv();
-        letter -= 32;
-        printf("Character received: %c \n\r", letter);
+    //set_bit(UCSR1A, UPE1);
 
-        _delay_ms(100);
-    }
-*/
-
-/* 
-DAY 2: ADDRESS DECODING AND EXTERNAL RAM
-*/
-    UART_init(9600);
-    
-    //Checking if we are able to use the D latch by setting pin 0 and clearing pin 1
-    //Remember to set ALE signal (UPE1)
-    /*
-    set_bit(DDRA, DDA0);
-    set_bit(DDRA, DDA1);
-
-    set_bit(PORTA, PORTA0);
-    clear_bit(PORTA, PORTA1);
-
-    set_bit(UCSR1A, UPE1);
-
-    // Setting the SRE and ALE signals
-    */
-    set_bit(MCUCR, SRE);
-    set_bit(SFIOR, XMM2);
+    set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
+    set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
     SRAM_test();
     /*
     set_bit(UCSR1A, UPE1);
@@ -73,14 +47,7 @@ DAY 2: ADDRESS DECODING AND EXTERNAL RAM
     set_bit(DDRD, DDD7);
     clear_bit(PORTD, PORTD7);
     */
-    // Testing the GAL IC
 
-    // Setting addresses for RAM, ADC and OLED
-    volatile char *ext_ram = (char *) 0x1800;
-    //volatile char *ext_adc = (char *) 0x1400;
-    volatile char *ext_oled = (char *) 0x1000;
-
-    
     //uint8_t some_value = rand();
     
     while (1){
