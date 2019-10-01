@@ -9,30 +9,34 @@
 
 #include <avr/pgmspace.h>
 
+static FILE OLED_stream = FDEV_SETUP_STREAM(OLED_write, NULL, _FDEV_SETUP_WRITE); 
+
+typedef enum {HORIZONTAL_ADDR_MODE, VERTICAL_ADDR_MODE, PAGE_ADDR_MODE} memory_addr_mode;
+
 /**Initialization routine, setting up OLED display
  */ 
 void OLED_init(void){
     volatile char* address = cmnd_oled_addr;
 
-    *address = (0xae); //Display off
-    *address = (0xa1); //Segment remap
-    *address = (0xda); //Common pads hardware: Alternative
+    *address = (0xae); // Display off
+    *address = (0xa1); // Segment remap
+    *address = (0xda); // Common pads hardware: Alternative
     *address = (0x12);
-    *address = (0xc8); //Common output scan direction: com63-com0
-    *address = (0xa8); //Multiplex ration mode: 63
+    *address = (0xc8); // Common output scan direction: com63-com0
+    *address = (0xa8); // Multiplex ration mode: 63
     *address = (0x3f); 
-    *address = (0xd5); //Display divide ratio/freq. mode
+    *address = (0xd5); // Display divide ratio/freq. mode
     *address = (0x80); 
-    *address = (0x81); //Contrast control
+    *address = (0x81); // Contrast control
     *address = (0x50);
-    *address = (0xd9); //Set pre-charge period
+    *address = (0xd9); // Set pre-charge period
     *address = (0x21);
-    *address = (0x20); //Set memory addressing mode
+    *address = (0x20); // Set memory addressing mode
     *address = (0x00); // Horizontal mode
 
     *address = (0x21); // Set column address
-    *address = (0x00);  // Set start address
-    *address = (0x7f);  // Set end address
+    *address = (0x00); // Set start address
+    *address = (0x7f); // Set end address
 
     *address = (0x22); // Set page address
     *address = (0x00); // Set start address
@@ -63,8 +67,11 @@ void OLED_write(unsigned char character) {
 
 /** Function for printing data to OLED display.
  */
-void OLED_print(unsigned char character){
-
+void OLED_print(char* data, ...){
+    va_list(args);
+    va_start(args, data);
+    vfprintf(&OLED_stream, data, args);
+    va_end(args);
 } 
 
 
@@ -75,11 +82,13 @@ void OLED_command(uint8_t cmnd) {
     *cmnd_oled_addr = cmnd;
 }
 
+
 /**Function for switching lines (0-7) on OLED.
  * @param uint8_t line - Which line in OLED-matrix to go to.
  */
 void OLED_go_to_line(uint8_t line) {
     OLED_command(oled_page_start_addr + line);
+    current_line = line;
 }
 
 
@@ -88,6 +97,7 @@ void OLED_go_to_line(uint8_t line) {
  */ 
 void OLED_go_to_column(uint8_t column) {
     OLED_command(oled_lower_col_addr + column);
+    current_column = column;
 }
 
 /**Function for switching position (line, column) on OLED.
@@ -100,11 +110,11 @@ void OLED_position(uint8_t line, uint8_t column) {
 /**Function for clearing chosen line (0-7) on OLED.
  * @param int line - Which line to clear.
  */ 
-void OLED_clear_line(int line) {
-    OLED_go_to_line(line);
+void OLED_clear_line(uint8_t line) {
+    OLED_position(line, 0);
 
     for (int col = 0; col < OLED_COLS; col++) {
-        OLED_write(' ');
+        *data_oled_addr = 0b00000000;
     }
 }
 
@@ -114,19 +124,10 @@ void OLED_reset(void) {
     for (int line = 0; line < OLED_LINES; line++) {
         OLED_clear_line(line);
     }
-
 }
 
 /**Function for returning OLED initial position in display matrix.
  */ 
 void OLED_home(void) {
     OLED_position(0,0);
-}
-
-/** Function for menu in OLED.
- */ 
-void OLED_menu(void) {
-
-
-
 }

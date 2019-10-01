@@ -8,10 +8,16 @@
 
 #define OLED_LINES 8
 #define OLED_COLS 128
+
 #define FONT_OFFSET 32
 
-#include <stdint.h>
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdarg.h>
+
+uint8_t current_line;
+uint8_t current_column;
 
 /**Initialization routine, setting up OLED display
  */ 
@@ -23,7 +29,7 @@ void OLED_write(unsigned char character);
 
 /** Function for printing data to OLED display.
  */
-void OLED_print(unsigned char character);
+void OLED_print(char* data, ...);
 
 /**Function for controlling the OLEDs registers.
  */ 
@@ -43,7 +49,7 @@ void OLED_position(uint8_t line, uint8_t column);
 
 /**Function for clearing chosen line (0-7) on OLED.
  */ 
-void OLED_clear_line(int line);
+void OLED_clear_line(uint8_t line);
 
 /**Function for resetting OLED, clearing all lines on OLED (clear display)
  */ 
@@ -52,10 +58,5 @@ void OLED_reset(void);
 /**Function for returning OLED initial position in display matrix.
  */ 
 void OLED_home(void);
-
-/** Function for menu in OLED.
- */ 
-void OLED_menu(void);
-
 
 #endif

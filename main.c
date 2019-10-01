@@ -35,7 +35,7 @@ void main() {
 
     set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
     set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
-    SRAM_test();
+    //SRAM_test();
     _delay_ms(1000);
     /*
     set_bit(UCSR1A, UPE1);
@@ -53,11 +53,15 @@ void main() {
     //uint8_t some_value = rand();
     
     //volatile char* oled_data_channel = (char* ) 0x1200;
-    /*
-    OLED_init();
     
-    OLED_write('R');
-    */
+    OLED_init();
+
+    OLED_print("Welcome");
+
+    OLED_clear_line(5);
+
+    OLED_print("Welcome again");
+
 
 
     while (1){
