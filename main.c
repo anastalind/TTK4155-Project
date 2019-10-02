@@ -74,7 +74,7 @@ void main() {
 
         menu_print_submenu(parent_menu, current_menu);
 
-        _delay_ms(1000);
+        //_delay_ms(500);
 
         dir = joystick_direction();
 

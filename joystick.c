@@ -18,7 +18,7 @@
 #define RESOLUTION_RIGHT 125
 
 // Slack variable for neutral position of joystick
-#define SLACK 7
+#define SLACK 8
 
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
@@ -112,6 +112,9 @@ struct Joystick joystick_position(void) {
 direction joystick_direction(void){
 
     struct Joystick position = joystick_position();
+
+    printf("X-pos: %i\n\r", position.x);
+    printf("Y-pos: %i\n\r", position.y);
 
     int quadrant = get_quadrant(position);
 
