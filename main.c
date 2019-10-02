@@ -13,6 +13,7 @@
 #include "sram_test.h"
 #include "addresses.h"
 #include "oled.h"
+#include "menu.h"
 
 
 //#include <stdlib.h>
@@ -53,18 +54,38 @@ void main() {
     //uint8_t some_value = rand();
     
     //volatile char* oled_data_channel = (char* ) 0x1200;
+
     
     OLED_init();
 
-    OLED_print("Welcome");
+    menu* parent_menu = menu_init();
 
-    OLED_clear_line(5);
+    menu* child_menu = parent_menu->child;
 
-    OLED_print("Welcome again");
+    menu* current_menu = NULL;
+
+    direction dir = joystick_direction();
+
+    int button_press = !(is_not_button_pressed());
 
 
+    while (1) {
+        current_menu = menu_navigate(child_menu, dir);
 
-    while (1){
+        menu_print_submenu(parent_menu, current_menu);
+
+        _delay_ms(1000);
+
+        dir = joystick_direction();
+
+        child_menu = current_menu;
+
+        parent_menu = child_menu->parent;
+
+        printf("LEFT = 0, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN\n\r");
+        printf("Direction: %i\n\r", dir);
+
+    }
         
     // Selecting RAM (pin 19)
     //ext_ram[0] = some_value;
@@ -99,9 +120,5 @@ void main() {
 */
 
 //DAY 4:    
-
-
-
-    }
   
 }

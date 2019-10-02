@@ -10,8 +10,7 @@
 #include <avr/pgmspace.h>
 
 static FILE OLED_stream = FDEV_SETUP_STREAM(OLED_write, NULL, _FDEV_SETUP_WRITE); 
-
-typedef enum {HORIZONTAL_ADDR_MODE, VERTICAL_ADDR_MODE, PAGE_ADDR_MODE} memory_addr_mode;
+static FILE OLED_stream_highlight = FDEV_SETUP_STREAM(OLED_highlight, NULL, _FDEV_SETUP_WRITE); 
 
 /**Initialization routine, setting up OLED display
  */ 
@@ -53,24 +52,43 @@ void OLED_init(void){
 
     OLED_reset();
     OLED_home();
-
 }
 
-/**Function for writing data to OLED-screen.
- * @param unsigned char character - Character to be displayed on OLED-screen. Defined in fonts.h.
+/**Function for writing data to OLED.
+ * @param unsigned char character - Character to be displayed on OLED. Defined in fonts.h.
  */ 
 void OLED_write(unsigned char character) {
-    for (int line = 0; line < OLED_LINES; line++) {
+    for (int line = 0; line < FONT_SIZE; line++) {
         *data_oled_addr = pgm_read_byte(&font8[character-FONT_OFFSET][line]);
     }
 }
 
-/** Function for printing data to OLED display.
+/**Function for writing highlighted data to OLED:
+ * @param unsigned char character - Character to be displayed on OLED. Defined in fonts.h.
+ */
+void OLED_highlight(unsigned char character) {
+    for (int line = 0; line < FONT_SIZE; line++) {
+        *data_oled_addr = ~pgm_read_byte(&font8[character-FONT_OFFSET][line]);
+    }
+}
+
+/**Function for printing data to OLED.
+ * @param char* data - Data to be printed on the display.
  */
 void OLED_print(char* data, ...){
     va_list(args);
     va_start(args, data);
     vfprintf(&OLED_stream, data, args);
+    va_end(args);
+} 
+
+/**Function for printing highlighted data to OLED.
+ * @param char* data - Data to be printed on the display.
+ */
+void OLED_print_highlight(char* data, ...){
+    va_list(args);
+    va_start(args, data);
+    vfprintf(&OLED_stream_highlight, data, args);
     va_end(args);
 } 
 
@@ -87,7 +105,12 @@ void OLED_command(uint8_t cmnd) {
  * @param uint8_t line - Which line in OLED-matrix to go to.
  */
 void OLED_go_to_line(uint8_t line) {
-    OLED_command(oled_page_start_addr + line);
+    OLED_command(oled_set_page_addr); // Set page address
+    OLED_command(oled_page_start_addr + line); // Set start address
+    OLED_command(oled_page_end_addr); // Set end address
+
+    OLED_go_to_column(current_column);
+
     current_line = line;
 }
 
@@ -96,7 +119,10 @@ void OLED_go_to_line(uint8_t line) {
  * @param uint8_t column - Which column in OLED-matrix to go to.
  */ 
 void OLED_go_to_column(uint8_t column) {
-    OLED_command(oled_lower_col_addr + column);
+    OLED_command(oled_set_col_addr); // Set column address
+    OLED_command(oled_col_start_addr + column); // Set start address
+    OLED_command(oled_col_end_addr); // Set end address
+
     current_column = column;
 }
 

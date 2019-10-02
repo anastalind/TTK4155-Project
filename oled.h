@@ -11,6 +11,8 @@
 
 #define FONT_OFFSET 32
 
+#define FONT_SIZE 8
+
 
 #include <stdint.h>
 #include <stdio.h>
@@ -27,9 +29,13 @@ void OLED_init(void);
  */
 void OLED_write(unsigned char character);
 
+void OLED_highlight(unsigned char character);
+
 /** Function for printing data to OLED display.
  */
 void OLED_print(char* data, ...);
+
+void OLED_print_highlight(char* data, ...);
 
 /**Function for controlling the OLEDs registers.
  */ 

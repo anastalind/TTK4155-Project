@@ -16,6 +16,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include "adc.h"
+
 
 /** Struct Joystick representing the x- an y-axis respectively
  */
@@ -26,7 +28,7 @@ struct Joystick {
 
 /** Enum Direction representing the directions of the joystick.
  */
-enum Direction {LEFT, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN} Direction;
+typedef enum {LEFT, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN} direction;
 
 /**ADC channels wanted represented as enum - x-axis, y-axis, right and left slider
  */
@@ -44,6 +46,11 @@ int get_quadrant(struct Joystick position);
  */
 bool is_vertical_direction(struct Joystick position);
 
+/**
+ * 
+ */ 
+bool is_not_button_pressed(void);
+
 /** Function converts digital signal from joysticks x- and y-values with voltage resolution 0-255 to percent-representation -100-100.
  *  @param void
  *  @return struct Joystick position - Struct containing x-and-y-positions of joysticks represented as percentage of displacement -100-100.
@@ -54,6 +61,7 @@ struct Joystick joystick_position(void);
  *  @param void
  *  @return enum Direction - The direction, either UP, DOWN, LEFT or RIGHT
  */
-enum Direction joystick_direction(void);
+direction joystick_direction(void);
+
 
 #endif

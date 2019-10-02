@@ -8,7 +8,6 @@
  */
 
 #include "joystick.h"
-#include "adc.h"
 
 //ADC_channel with hexadecimal representation of channel wanted from ADC
 #define X_AXIS_CHANNEL 5
@@ -18,12 +17,18 @@
 #define RESOLUTION_LEFT 130
 #define RESOLUTION_RIGHT 125
 
+// Slack variable for neutral position of joystick
+#define SLACK 7
+
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return int 1-4 - Quadrant the joystick is in
  */
 int get_quadrant(struct Joystick position) {
-    if (position.x >= 0 && position.y > 0) {
+    if (position.x < SLACK && position.x > -SLACK && position.y < SLACK && position.y > -SLACK) {
+        return 0;
+    }
+    else if (position.x >= 0 && position.y > 0) {
         return 1;
     }
     else if (position.x < 0 && position.y >= 0) {
@@ -55,6 +60,13 @@ bool is_vertical_direction(struct Joystick position) {
         return false;
     }
 }
+
+/**
+ * 
+ */
+bool is_not_button_pressed(void) {
+    return (PINB & (1 << PINB2));
+} 
 
 /** Function converts digital signal from joysticks x- and y-values with voltage resolution 0-255 to percent-representation -100-100.
  *  @param void
@@ -97,7 +109,7 @@ struct Joystick joystick_position(void) {
  *  @param void
  *  @return enum Direction - The direction, either UP, DOWN, LEFT or RIGHT
  */
-enum Direction joystick_direction(void){
+direction joystick_direction(void){
 
     struct Joystick position = joystick_position();
 
@@ -106,6 +118,9 @@ enum Direction joystick_direction(void){
     bool upDown = is_vertical_direction(position);
 
     switch(quadrant){
+        case 0:
+            return NEUTRAL;
+
         case 1:
             if (upDown){
                 return UP;
@@ -139,7 +154,7 @@ enum Direction joystick_direction(void){
             }
 
         default:
-            return NEUTRAL;
+            return UNKNOWN;
 
     }
 

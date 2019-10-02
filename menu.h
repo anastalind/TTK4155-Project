@@ -10,14 +10,34 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <util/delay.h>
+
+#include "joystick.h"
+#include "oled.h"
 
 typedef struct {
     char* title;
 
     struct menu* parent;
     struct menu* child;
-    struct menu* sibling;
+    struct menu* left_sibling;
+    struct menu* right_sibling;
 } menu;
 
+menu* menu_new(char* menu_title, menu* parent_menu, menu* child_menu, menu* left_sibling_menu, menu* right_sibling_menu);
+
+/**Function for printing a submenu
+ * 
+ */
+void menu_print_submenu(menu* parent_menu, menu* current_menu);
+
+
+/**Function for 
+ * 
+ */
+menu* menu_navigate(menu* child_menu, direction dir);
+
+menu* menu_init();
 
 #endif
