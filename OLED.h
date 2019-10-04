@@ -1,4 +1,4 @@
-/** @package oled.h
+/** @package OLED.h
  * 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */

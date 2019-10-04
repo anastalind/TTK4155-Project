@@ -13,18 +13,22 @@
 #define X_AXIS_CHANNEL 5
 #define Y_AXIS_CHANNEL 4
 
-// Origo of joystick area is approximately at (135,135) with a resolution scale 0-255 (some rightmost displacement, that is)
-#define RESOLUTION_LEFT 130
-#define RESOLUTION_RIGHT 125
-
 // Slack variable for neutral position of joystick
-#define SLACK 8
+#define SLACK 2
+
+// Resolution of joustick
+#define RESOLUTION_START 0
+#define RESOLUTION_END 255
+
+// Origo of joystick area is approximately at (135,135) with a resolution scale 0-255 (some rightmost displacement, that is)
+int resolution_left = 128;
+int resolution_right = 128;
 
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return int 1-4 - Quadrant the joystick is in
  */
-int get_quadrant(struct Joystick position) {
+int get_quadrant(joystick position) {
     if (position.x < SLACK && position.x > -SLACK && position.y < SLACK && position.y > -SLACK) {
         return 0;
     }
@@ -49,7 +53,7 @@ int get_quadrant(struct Joystick position) {
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return true or false - up or down (true), right or left(false)
  */
-bool is_vertical_direction(struct Joystick position) {
+bool is_vertical_direction(joystick position) {
     int abs_x = abs(position.x);
     int abs_y = abs(position.y);
 
@@ -68,38 +72,51 @@ bool is_not_button_pressed(void) {
     return (PINB & (1 << PINB2));
 } 
 
+
+/**
+ * 
+ */
+void joystick_calibrate(void) {
+    joystick position; 
+    position.x = selected_channel_output(X_AXIS_CHANNEL);
+    position.y = selected_channel_output(Y_AXIS_CHANNEL);
+
+    resolution_left = position.x;
+    resolution_right = RESOLUTION_END - position.x;
+} 
+
 /** Function converts digital signal from joysticks x- and y-values with voltage resolution 0-255 to percent-representation -100-100.
  *  @param void
- *  @return struct Joystick position - Struct containing x-and-y-positions of joysticks represented as percentage of displacement -100-100.
+ *  @return joystick position - Struct containing x-and-y-positions of joysticks represented as percentage of displacement -100-100.
  */
-struct Joystick joystick_position(void) {
+joystick joystick_position(void) {
 
-    struct Joystick position;
+    joystick position;
 
     // Converting from 0-255 resolution to -100-100 resolution in x-axis
     // Adding slack around origo on x-axis, so that neutral position will yield position (0,0)
-    if ((selected_channel_output(X_AXIS_CHANNEL) >= (RESOLUTION_LEFT)) && (selected_channel_output(X_AXIS_CHANNEL) <= (RESOLUTION_LEFT))) {
+    if ((selected_channel_output(X_AXIS_CHANNEL) >= (resolution_left)) && (selected_channel_output(X_AXIS_CHANNEL) <= (resolution_left))) {
         position.x = 0;
     }
-    else if (selected_channel_output(X_AXIS_CHANNEL) < RESOLUTION_LEFT) {
-        position.x = -(((RESOLUTION_LEFT-selected_channel_output(X_AXIS_CHANNEL))*100)/RESOLUTION_LEFT);
+    else if (selected_channel_output(X_AXIS_CHANNEL) < resolution_left) {
+        position.x = -(((resolution_left-selected_channel_output(X_AXIS_CHANNEL))*100)/resolution_left);
     } 
     else {
-        position.x = (((selected_channel_output(X_AXIS_CHANNEL)-RESOLUTION_LEFT)*100)/RESOLUTION_RIGHT);
+        position.x = (((selected_channel_output(X_AXIS_CHANNEL)-resolution_left)*100)/resolution_right);
     }
 
     // Converting from 0-255 resolution to -100-100 resolution in y-axis
     // Adding slack around origo on y-axis, so that neutral position will yield position (0,0)
-    if ((selected_channel_output(Y_AXIS_CHANNEL) >= (RESOLUTION_LEFT)) && (selected_channel_output(Y_AXIS_CHANNEL) <= (RESOLUTION_LEFT))) {
+    if ((selected_channel_output(Y_AXIS_CHANNEL) >= (resolution_left)) && (selected_channel_output(Y_AXIS_CHANNEL) <= (resolution_left))) {
         position.y = 0;
     }
     
-    else if (selected_channel_output(Y_AXIS_CHANNEL) < RESOLUTION_LEFT) {
-        position.y = -(((RESOLUTION_LEFT-selected_channel_output(Y_AXIS_CHANNEL))*100)/RESOLUTION_LEFT);
+    else if (selected_channel_output(Y_AXIS_CHANNEL) < resolution_left) {
+        position.y = -(((resolution_left-selected_channel_output(Y_AXIS_CHANNEL))*100)/resolution_left);
     } 
 
     else {
-        position.y = (((selected_channel_output(Y_AXIS_CHANNEL)-RESOLUTION_LEFT)*100)/RESOLUTION_RIGHT);
+        position.y = (((selected_channel_output(Y_AXIS_CHANNEL)-resolution_left)*100)/resolution_right);
     }
     
     return position;
@@ -111,7 +128,7 @@ struct Joystick joystick_position(void) {
  */
 direction joystick_direction(void){
 
-    struct Joystick position = joystick_position();
+    joystick position = joystick_position();
 
     printf("X-pos: %i\n\r", position.x);
     printf("Y-pos: %i\n\r", position.y);

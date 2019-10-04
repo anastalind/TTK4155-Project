@@ -1,8 +1,8 @@
-/** @package uart_driver.c
+/** @package UART.c
  *  c-file for the UART driver - to initialize, recieve and transfer data. 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
-#include "uart_driver.h"
+#include "UART.h"
 
 
 /** Function for initializing UART.

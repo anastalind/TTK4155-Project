@@ -1,4 +1,4 @@
-/** @package adc.c
+/** @package ADC.c
  * 
  *  C-file for the Analog to Digital Converter. 
  *  Switches the channels by writing wanted channels to ADC external memory and returning the channels output.
@@ -6,7 +6,7 @@
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
-#include "adc.h"
+#include "ADC.h"
 
 /** Function for returning output of selected channel of the ADC.
  *  @param channel - Hexadecimal representation of binary number corresponding to channels on ADC.

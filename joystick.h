@@ -12,6 +12,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <avr/io.h>
 #include <util/delay.h>
@@ -21,10 +22,10 @@
 
 /** Struct Joystick representing the x- an y-axis respectively
  */
-struct Joystick {
+typedef struct {
     int x;
     int y; 
-};
+} joystick;
 
 /** Enum Direction representing the directions of the joystick.
  */
@@ -38,24 +39,29 @@ enum ADC_channel;
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return int 1-4 - Quadrant the joystick is in
  */
-int get_quadrant(struct Joystick position);
+int get_quadrant(joystick position);
 
 /** Function checks whether the direction is up or down, as opposed to right or left.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return true or false - up or down (true), right or left(false)
  */
-bool is_vertical_direction(struct Joystick position);
+bool is_vertical_direction(joystick position);
 
 /**
  * 
  */ 
 bool is_not_button_pressed(void);
 
+/**Function for calibrating joystick at start.
+ * 
+ */
+void joystick_calibrate(void);
+
 /** Function converts digital signal from joysticks x- and y-values with voltage resolution 0-255 to percent-representation -100-100.
  *  @param void
  *  @return struct Joystick position - Struct containing x-and-y-positions of joysticks represented as percentage of displacement -100-100.
  */
-struct Joystick joystick_position(void);
+joystick joystick_position(void);
 
 /** Function takes the direction and quadrant into consideration to decide in which direction the joystick is pointing (the most) towards. 
  *  @param void

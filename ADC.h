@@ -1,4 +1,4 @@
-/** @package adc.h
+/** @package ADC.h
  * 
  *  Header-file for the Analog to Digital Converter. 
  *  Returning analog voltage output of joystick, slider and buttons from digital signals from USB-multiboard.

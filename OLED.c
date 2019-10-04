@@ -3,7 +3,7 @@
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
-#include "oled.h"
+#include "OLED.h"
 #include "addresses.h"
 #include "fonts.h"
 

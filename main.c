@@ -21,8 +21,6 @@
 //#include <avr/io.h>
 //#define F_CPU 4915200
 //#include <util/delay.h>
-//#define set_bit( reg, bit ) (reg |= (1 << bit))
-//#define clear_bit( reg, bit ) (reg &= ~(1 << bit))
 
 
 
@@ -55,7 +53,6 @@ void main() {
     
     //volatile char* oled_data_channel = (char* ) 0x1200;
 
-    
     OLED_init();
 
     menu* parent_menu = menu_init();
@@ -64,17 +61,18 @@ void main() {
 
     menu* current_menu = NULL;
 
+    joystick_calibrate();
+
     direction dir = joystick_direction();
 
     int button_press = !(is_not_button_pressed());
-
 
     while (1) {
         current_menu = menu_navigate(child_menu, dir);
 
         menu_print_submenu(parent_menu, current_menu);
 
-        //_delay_ms(500);
+        _delay_ms(500);
 
         dir = joystick_direction();
 
@@ -82,10 +80,8 @@ void main() {
 
         parent_menu = child_menu->parent;
 
-        printf("LEFT = 0, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN\n\r");
-        printf("Direction: %i\n\r", dir);
-
     }
+    
         
     // Selecting RAM (pin 19)
     //ext_ram[0] = some_value;
