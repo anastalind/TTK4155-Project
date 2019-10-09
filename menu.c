@@ -141,3 +141,28 @@ menu* menu_init() {
 
     return main_menu;
 }
+
+void menu_test(){
+    OLED_init();
+
+    menu* parent_menu = menu_init();
+    menu* child_menu = parent_menu->child;
+    menu* current_menu = NULL;
+
+    joystick_calibrate();
+    direction dir = joystick_direction();
+
+    while (1) {
+        current_menu = menu_navigate(child_menu, dir);
+
+        menu_print_submenu(parent_menu, current_menu);
+
+        _delay_ms(500);
+
+        dir = joystick_direction();
+
+        child_menu = current_menu;
+        parent_menu = child_menu->parent;
+
+    }
+}

@@ -6,14 +6,16 @@
  */
 
 
-#include "uart_driver.h"
+#include "UART.h"
 #include "joystick.h"
 #include "slider.h"
-#include "adc.h"
+#include "ADC.h"
 #include "sram_test.h"
 #include "addresses.h"
-#include "oled.h"
+#include "OLED.h"
 #include "menu.h"
+#include "SPI.h"
+#include "CAN.h"
 
 
 //#include <stdlib.h>
@@ -36,6 +38,19 @@ void main() {
     set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
     //SRAM_test();
     _delay_ms(1000);
+
+    printf("Entering CAN init\n\r");
+    CAN_init();
+    printf("Exiting CAN init\n\r");
+
+
+
+
+
+
+
+
+
     /*
     set_bit(UCSR1A, UPE1);
     printf("SRE and ALE signals are set\n\r");
@@ -52,36 +67,6 @@ void main() {
     //uint8_t some_value = rand();
     
     //volatile char* oled_data_channel = (char* ) 0x1200;
-
-    OLED_init();
-
-    menu* parent_menu = menu_init();
-
-    menu* child_menu = parent_menu->child;
-
-    menu* current_menu = NULL;
-
-    joystick_calibrate();
-
-    direction dir = joystick_direction();
-
-    int button_press = !(is_not_button_pressed());
-
-    while (1) {
-        current_menu = menu_navigate(child_menu, dir);
-
-        menu_print_submenu(parent_menu, current_menu);
-
-        _delay_ms(500);
-
-        dir = joystick_direction();
-
-        child_menu = current_menu;
-
-        parent_menu = child_menu->parent;
-
-    }
-    
         
     // Selecting RAM (pin 19)
     //ext_ram[0] = some_value;

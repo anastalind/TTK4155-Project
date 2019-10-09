@@ -8,7 +8,7 @@
 
 
 #include "slider.h"
-#include "adc.h"
+#include "ADC.h"
 
 #define LEFT_SLIDER_CHANNEL 6
 #define RIGHT_SLIDER_CHANNEL 7
