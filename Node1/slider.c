@@ -33,3 +33,12 @@ struct Sliders slider_position(void){
     return position;
 }
 
+/** Test function for reading slider position.
+ */    
+void test_slider_position(void){
+        //Read Slider position: 
+        struct Sliders position = slider_position();
+
+        printf("Left-slider: %i\n\r", position.Left);
+        printf("Right-slider: %i\n\r", position.Right);
+}

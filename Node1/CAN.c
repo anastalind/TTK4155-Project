@@ -20,7 +20,7 @@ int CAN_init(void){
     uint8_t value;    
     value = MCP_read(MCP_CANSTAT);
 
-    printf("Value: %i\n\r", value);
+    //printf("Value: %i\n\r", value);
 
     if ((value & MODE_MASK) != MODE_NORMAL) {
         printf("MCP2515 is not in NORMAL mode!\n\r");

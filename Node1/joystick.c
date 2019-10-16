@@ -204,3 +204,18 @@ void joystick_CAN_transmit(joystick position) {
     CAN_send_message(y_position);
     
 }
+
+/** Test function for reading joystick position.
+ */
+void test_read_joystick_position(void){
+    //Read joystick-position: 
+    _delay_ms(500);
+
+    joystick joy_position = joystick_position();
+
+    printf("X-value: %i\n\r", joy_position.x);
+    printf("Y-value: %i\n\r", joy_position.y);
+    printf("X-value: %i\n\r", selected_channel_output(5));
+    printf("Y-value: %i\n\r", selected_channel_output(4));
+}
+

@@ -30,4 +30,7 @@ struct Sliders {
  */
 struct Sliders slider_position();
 
+/** Test function for reading slider position.
+ */    
+void test_slider_position(void);
 #endif 

@@ -69,6 +69,10 @@ joystick joystick_position(void);
  *  @return enum Direction - The direction, either UP, DOWN, LEFT or RIGHT
  */
 direction joystick_direction(void);
+/** Test function for reading joystick position.
+ */ 
+void test_read_joystick_position(void);
+   
 
 
 #endif
