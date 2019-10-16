@@ -7,14 +7,16 @@
 #define SPI_H
 
 #include <stdint.h>
+#include <avr/io.h>
 
 // Local headers
 #include "bit_operations.h"
 
 #define DDR_SPI DDRB
-#define DD_MOSI DDB5
-#define DD_MISO DDB6
-#define DD_SCK DDB7
+#define PIN_SS PB4
+#define PIN_MOSI PB5
+#define PIN_MISO PB6
+#define PIN_SCK PB7
 
 /**Function for initializing communication over SPI. 
  * 
@@ -29,6 +31,8 @@ char SPI_read(void);
 /**Function for configurating SPI as master and transmitting data.
  * 
  */ 
-void SPI_write(char data);
+uint8_t SPI_read_write(uint8_t data); 
+
+void SPI_test(char data);
 
 #endif

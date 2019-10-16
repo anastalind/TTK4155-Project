@@ -10,8 +10,6 @@
  * @return uint8_t 
  */
 uint8_t MCP_init(void){
-    uint8_t value;
-
     //Initialize SPI
     SPI_init();
 
@@ -21,7 +19,9 @@ uint8_t MCP_init(void){
     MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_CONFIG);
 
     //Test self
+    uint8_t value;
     value = MCP_read(MCP_CANSTAT);
+    printf("Value: %i\n\r", value);
 
     if ((value & MODE_MASK)!= MODE_CONFIG) {
         printf("MCP2515 is not in configuration mode after reset!\n\r");
@@ -39,19 +39,19 @@ uint8_t MCP_read(uint8_t address){
     uint8_t result;
 
     // Select CAN-controller with chip select
-    clear_bit(PORTB,CAN_CS);
+    clear_bit(PORTB, CAN_CS);
     
     // Send read instruction
-    SPI_write(MCP_READ);
+    SPI_read_write(MCP_READ);
     
     // Send address to shift data stored at address to SO pin
-    SPI_write(address);
+    SPI_read_write(address);
 
     // Read result
-    result = SPI_write(0x00); 
+    result = SPI_read_write(0x00); 
 
-    // Deselect CAN-controller with chip select
-    set_bit(PORTB,CAN_CS);
+    // Deselect CAN-controller with chip seop_until_bit_is_set(SPSR, SPIF);lect
+    set_bit(PORTB, CAN_CS);
 
     return result;
 }
@@ -62,41 +62,41 @@ uint8_t MCP_read(uint8_t address){
  */
 void MCP_write(uint8_t address, char data){
     // Select CAN-controller with chip select
-    clear_bit(PORTB,CAN_CS);
+    clear_bit(PORTB, CAN_CS);
 
     // Sending write instruction
-    SPI_write(MCP_WRITE);
+    SPI_read_write(MCP_WRITE);
 
     // Sending address
-    SPI_write(address);
+    SPI_read_write(address);
 
     // Sending byte of data
-    SPI_write(data);
+    SPI_read_write(data);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB,CAN_CS);
+    set_bit(PORTB, CAN_CS);
 }
 
 /** Function for initiating message transmission for one or more of the transmit buffers.
  */
 void MCP_request_to_send(uint8_t bit){
     // Select CAN-controller with chip select
-    clear_bit(PORTB,CAN_CS);
+    clear_bit(PORTB, CAN_CS);
 
     // Send RTS command byte. The last 3 bits of it indicate which transmit buffers are enabled to send.
     switch (bit) {
         case 0: 
-            SPI_write(MCP_RTS_TX0);
+            SPI_read_write(MCP_RTS_TX0);
         case 1: 
-            SPI_write(MCP_RTS_TX1);
+            SPI_read_write(MCP_RTS_TX1);
         case 2: 
-            SPI_write(MCP_RTS_TX2);
+            SPI_read_write(MCP_RTS_TX2);
         default: 
-            SPI_write(MCP_RTS_ALL);
+            SPI_read_write(MCP_RTS_ALL);
     }
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB,CAN_CS);
+    set_bit(PORTB, CAN_CS);
 }
 
 /** Function for allowing single instruction access to some of the often used status bits
@@ -110,10 +110,10 @@ uint8_t MCP_read_status(void){
     clear_bit(PORTB, CAN_CS);
 
     // Sending read status command byte
-    SPI_write(MCP_READ_STATUS);
+    SPI_read_write(MCP_READ_STATUS);
 
     // Reading status
-    status = SPI_write(0x00);
+    status = SPI_read_write(0x00);
 
     // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS);   
@@ -128,35 +128,33 @@ uint8_t MCP_read_status(void){
  */
 void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
     // Select CAN-controller with chip select
-    clear_bit(PORTB,CAN_CS);
-    printf("MCP2515 - Entering bit modify function \n\r");
-    // Send modify command
-    SPI_write(MCP_BITMOD);
+    clear_bit(PORTB, CAN_CS);
 
-    printf("MCP2515 - BITMOD is written \n\r");
+    // Send modify command
+    SPI_read_write(MCP_BITMOD);
 
     // Send address of register
-    SPI_write(address);
+    SPI_read_write(address);
 
     // Send mask, which bit in register allowed to change
-    SPI_write(mask);
+    SPI_read_write(mask);
 
     // Send data byte, what value the modified bits will change to.
-    SPI_write(data);
+    SPI_read_write(data);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB,CAN_CS); 
+    set_bit(PORTB, CAN_CS); 
 }
 
 /** Function for resetting the internal registers of MCP2515, and setting configuration mode.
  */
 void MCP_reset(void){
     // Select CAN-controller with chip select
-    clear_bit(PORTB,CAN_CS);
+    clear_bit(PORTB, CAN_CS);
 
     // Send reset instruction
-    SPI_write(MCP_RESET);
+    SPI_read_write(MCP_RESET);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB,CAN_CS);
+    set_bit(PORTB, CAN_CS);
 }

@@ -17,7 +17,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "adc.h"
+#include "ADC.h"
+#include "CAN.h"
 
 
 /** Struct Joystick representing the x- an y-axis respectively
@@ -50,7 +51,7 @@ bool is_vertical_direction(joystick position);
 /**
  * 
  */ 
-bool is_not_button_pressed(void);
+bool button_not_pressed(void);
 
 /**Function for calibrating joystick at start.
  * 

@@ -14,7 +14,7 @@
 #include <util/delay.h>
 
 #include "joystick.h"
-#include "oled.h"
+#include "OLED.h"
 
 typedef struct {
     char* title;

@@ -15,6 +15,15 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 // Define MCP2515 register addresses
 
+#include <stdint.h>
+#include <stdio.h>
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include "SPI.h"
+#include "bit_operations.h"
+
+
 #define MCP_RXF0SIDH	0x00
 #define MCP_RXF0SIDL	0x01
 #define MCP_RXF0EID8	0x02
@@ -58,12 +67,20 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_CANINTF		0x2C
 #define MCP_EFLG		0x2D
 #define MCP_TXB0CTRL	0x30
+#define MCP_TXB0SIDH    0x31
+#define MCP_TXB0SIDL    0x32
+#define MCP_TXB0DLC     0x35
+#define MCP_TXB0D       0x36
 #define MCP_TXB1CTRL	0x40
 #define MCP_TXB2CTRL	0x50
 #define MCP_RXB0CTRL	0x60
+#define MCP_RXB0DLC	    0x65 
+#define MCP_RXB0D	    0x66
 #define MCP_RXB0SIDH	0x61
+#define MCP_RXB0SIDL	0x62
 #define MCP_RXB1CTRL	0x70
 #define MCP_RXB1SIDH	0x71
+
 
 
 #define MCP_TX_INT		0x1C		// Enable all transmit interrupts
@@ -154,6 +171,51 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_WAKIF		0x40
 #define MCP_MERRF		0x80
 
+// Select CAN
+#define CAN_CS PB4
+
+
+
+
+
+/** Function for initializing MCP and checking if it is in configuration mode.
+ * @return uint8_t 
+ */
+uint8_t MCP_init(void);
+
+
+/** Function for reading data stored at spesific address from MCP2515.
+ * @param uint8_t address - Select address you want data from
+ * @return uint8_t character result - The data stored at address selected
+ */
+uint8_t MCP_read(uint8_t address);
+
+/** Function for writing data address of the MCP2515
+ * @param char data
+ * @param uint8_t address
+ */
+void MCP_write(uint8_t address, char data);
+
+/** Function for initiating message transmission for one or more of the transmit buffers.
+ */
+void MCP_request_to_send(uint8_t bit);
+
+/** Function for allowing single instruction access to some of the often used status bits
+ * for message reception and transmission. 
+ * @return uint8_t status - Status for the MCP
+ */
+uint8_t MCP_read_status(void);
+
+/** Function for setting or clearing individual bits in specific status and control registers. 
+ * @param uint8_t address - The address of the register you want to modify
+ * @param uint8_t mask - Mask determines which bit in register will be allowed to change
+ * @param uint8_t data - Data byte determines what value the modified bits in the register will be changed to. 
+ */
+void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
+
+/** Function for resetting the internal registers of MCP2515, and setting configuration mode.
+ */
+void MCP_reset(void);
 
 
 #endif

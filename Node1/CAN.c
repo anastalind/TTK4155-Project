@@ -4,6 +4,7 @@
  */
 
 #include "CAN.h"
+#include <util/delay.h>
 
 
 /** Function for initializing CAN
@@ -12,19 +13,23 @@ int CAN_init(void){
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
 
-    // Set loopback mode
-    MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
+    // Set normal mode
+    MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+
 
     uint8_t value;    
     value = MCP_read(MCP_CANSTAT);
 
-    if ((value & MODE_MASK) != MODE_LOOPBACK) {
-        printf("MCP2515 is not in loop back mode!\n\r");
+    printf("Value: %i\n\r", value);
+
+    if ((value & MODE_MASK) != MODE_NORMAL) {
+        printf("MCP2515 is not in NORMAL mode!\n\r");
     }
 
     else {
-        printf("MCP2515 is in loop back mode!\n\r");
+        printf("MCP2515 is in NORMAL mode!\n\r");
     }
+
     return 0;
     // Initialize interrupt flags?
 }
@@ -39,7 +44,7 @@ void CAN_send_message(message msg){
     MCP_write(MCP_TXB0SIDL, (msg.id << 5));
 
     // Write data length to DLC transmit register
-    MCP_write(msg.length,MCP_TXB0DLC);
+    MCP_write(MCP_TXB0DLC,msg.length);
 
     // 
     uint8_t i; 
@@ -55,17 +60,18 @@ void CAN_send_message(message msg){
  */
 message CAN_data_receive(void){
     message msg;
-
     //Read message id
     msg.id = (MCP_read(MCP_RXB0SIDH) << 3)+ (MCP_read(MCP_RXB0SIDL) >> 5);
     // Read message length
     msg.length = MCP_read(MCP_RXB0DLC);
+
     
     // Read each bit of data 
     uint8_t i; 
     for (i=0; i < msg.length; i++){
         msg.data[i] = MCP_read(MCP_RXB0D+i);
     }
+
     return msg;
 }
 
@@ -87,3 +93,24 @@ void CAN_int_vect(void){
     // si fra om klar til å sende eller motta 
 }
 
+
+/** Function for testing transmit in loop-back mode.
+ */
+ void CAN_transmit_loopback_test(void){
+    CAN_init();
+    message msg;
+    msg.data[0] = 0x00;
+    msg.id =1;
+    msg.length = sizeof(msg.data);
+    int stop = 1;
+    while(stop<10) {
+        CAN_send_message(msg);
+
+        message received = CAN_data_receive();
+        
+        for (int i=0; i < received.length; i++){
+            printf("%u",received.data[i]);
+        }
+        stop++;    
+    }
+}

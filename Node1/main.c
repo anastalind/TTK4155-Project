@@ -1,6 +1,6 @@
 /** @package main.c
  * 
- *  main function for running the program - Controller.
+ *  main function for running the program - Controller. Node 1.
  * 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
@@ -24,7 +24,7 @@
 //#define F_CPU 4915200
 //#include <util/delay.h>
 
-
+#include <avr/interrupt.h>
 
 
 void main() {  
@@ -33,21 +33,14 @@ void main() {
 
 
     //set_bit(UCSR1A, UPE1);
-
     set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
     set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
-    //SRAM_test();
+
     _delay_ms(1000);
 
-    printf("Entering CAN init\n\r");
-    CAN_init();
-    printf("Exiting CAN init\n\r");
-
-
-
-
-
-
+    joystick position = joystick_position();
+    
+    joystick_CAN_transmit(position);
 
 
 

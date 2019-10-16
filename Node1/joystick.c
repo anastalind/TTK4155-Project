@@ -65,16 +65,17 @@ bool is_vertical_direction(joystick position) {
     }
 }
 
-/**
+/** Function for detecting if joystiuck-button is pressed.
+ *  @return 
  * 
  */
-bool is_not_button_pressed(void) {
-    return (PINB & (1 << PINB2));
+bool button_not_pressed(void) {
+    bool joystick_button = (PINB & (1 << PINB2));
+    return joystick_button;
 } 
 
 
-/**
- * 
+/** Function for calibrating the joystick neutral position (neutral = origo)
  */
 void joystick_calibrate(void) {
     joystick position; 
@@ -178,4 +179,28 @@ direction joystick_direction(void){
 
     }
 
+}
+
+/** Function for sending joystick position via CAN to Node 2. 
+ *  @param joystick position - Position of joystick, struct containing x and y-positions (0-100%). 
+ */
+void joystick_CAN_transmit(joystick position) {
+    message x_position;
+    message y_position;
+    // Give message struct position data for x and y respectively
+    x_position.data[0] = position.x;
+    y_position.data[0] = position.y;
+
+    // Defining id for x and y 
+    x_position.id = 1;
+    y_position.id = 2; 
+
+    // Defining length of data
+    x_position.length = sizeof(position.x);
+    y_position.length = sizeof(position.y);
+
+    // Send position data from joystick as message struct via CAN to Node 2
+    CAN_send_message(x_position);
+    CAN_send_message(y_position);
+    
 }
