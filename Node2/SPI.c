@@ -8,6 +8,7 @@
 /**Function for initializing communication over SPI. 
  */
 void SPI_init(void) {
+
     // Set MOSI
     set_bit(DDR_SPI, PIN_MOSI);
 
@@ -15,8 +16,10 @@ void SPI_init(void) {
     set_bit(DDR_SPI, PIN_SCK);
 
     // Set slave select
-    set_bit(DDR_SPI, PIN_SS);
-    
+    set_bit(DDR_SPI, PIN_SS); 
+
+    set_bit(DDR_SPI, PB0); 
+
     // Enable Master
     set_bit(SPCR, MSTR);
 
@@ -25,6 +28,8 @@ void SPI_init(void) {
 
     // Enable SPI
     set_bit(SPCR, SPE);
+    
+    
 }
 
 

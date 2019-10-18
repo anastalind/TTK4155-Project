@@ -40,6 +40,9 @@ void main() {
 
     joystick position = joystick_position();
     
-    joystick_CAN_transmit(position);
+    while(1){
+        joystick_CAN_transmit(position);
+    }
+
   
 }

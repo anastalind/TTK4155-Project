@@ -8,25 +8,28 @@
 /** Function for initializing USART.
  *  @param unsigned int ubrr - UBRR register, User Baud Rate Register
  */
-void USART_init (unsigned int ubrr) {
+void USART_init (unsigned int bd) {
     // Check TXCn flag to check that transmitter has completed all transfers (BEFORE setting baud rate or frame format)
-    loop_until_bit_is_set(UCSR0A, TXC0);
+    //loop_until_bit_is_set(UCSR0A, TXC0);
 
     // Check RXC flag to check that there is no unread data in the receive buffer (BEFORE setting baud rate or frame format)
-    loop_until_bit_is_set(UCSR0A, RXC0);
+    //loop_until_bit_is_set(UCSR0A, RXC0);
 
     // Setting baud rate
-    int bd = 0.15*((long)FOSC/((long)(16*ubrr))-1);
+    int ubrr = 0.15*((long)FOSC/((long)(16*bd))-1);
 
-    UBRR0H = (unsigned char) (bd >> 8);
-    UBRR0L = (unsigned char) (bd);
+    UBRR0H = (unsigned char) (ubrr >> 8);
+    UBRR0L = (unsigned char) (ubrr);
 
     // Setting frame format
-    UCSR0C = (1<<USBS0) || (3<<UCSZ00);
+    //UCSR0C = (1<<USBS0) || (3<<UCSZ00);
 
     // Enabling transmitter/receiver
     set_bit(UCSR0B, RXEN0);
     set_bit(UCSR0B, TXEN0);
+
+    fdevopen(USART_trans, USART_recv);
+
 
     // If interrupt, clear Global Interrupt Flag
 }

@@ -9,14 +9,16 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
+
 #include "bit_operations.h"
 
-#define FOSC 4915200 // Set the clock speed
+
+#define FOSC 16000000 // Set the clock speed
 
 /** Function for initializing USART.
- *  @param unsigned int ubrr - UBRR register, User Baud Rate Register
+ *  @param unsigned int bd - bd register, User Baud Rate Register
  */
-void USART_init (unsigned int ubrr);
+void USART_init (unsigned int bd);
 
 /** Function for recieving data from USART.
  *  @return UDR0 - Empty Handler, if register RXC0 (RX complete) is not set.

@@ -13,10 +13,10 @@
 #include "bit_operations.h"
 
 #define DDR_SPI DDRB
-#define PIN_SS PB0
+#define PIN_SS PB7
+#define PIN_SCK PB1
 #define PIN_MOSI PB2
 #define PIN_MISO PB3
-#define PIN_SCK PB1
 
 /**Function for initializing communication over SPI. 
  * 
