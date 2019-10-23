@@ -18,13 +18,8 @@
 #include "CAN.h"
 
 
-//#include <stdlib.h>
-//#include <stdio.h>
-//#include <avr/io.h>
-//#define F_CPU 4915200
-//#include <util/delay.h>
+#include <util/delay.h>
 
-#include <avr/interrupt.h>
 
 
 void main() {  
@@ -37,10 +32,11 @@ void main() {
     set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
 
     _delay_ms(1000);
-
+    joystick_calibrate();
     joystick position = joystick_position();
     
     while(1){
+        position = joystick_position();
         joystick_CAN_transmit(position);
     }
 

@@ -185,23 +185,14 @@ direction joystick_direction(void){
  *  @param joystick position - Position of joystick, struct containing x and y-positions (0-100%). 
  */
 void joystick_CAN_transmit(joystick position) {
-    message x_position;
-    message y_position;
-    // Give message struct position data for x and y respectively
-    x_position.data[0] = position.x;
-    y_position.data[0] = position.y;
+    message msg;
+    msg.length = 2;
+    msg.id = 0;
 
-    // Defining id for x and y 
-    x_position.id = 1;
-    y_position.id = 2; 
+    msg.data[0] = position.x;
+    msg.data[1] = position.y;
 
-    // Defining length of data
-    x_position.length = sizeof(position.x);
-    y_position.length = sizeof(position.y);
-
-    // Send position data from joystick as message struct via CAN to Node 2
-    CAN_send_message(x_position);
-    CAN_send_message(y_position);
+    CAN_send_message(msg);
     
 }
 

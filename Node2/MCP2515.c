@@ -40,6 +40,7 @@ uint8_t MCP_read(uint8_t address){
 
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
     
     // Send read instruction
     SPI_read_write(MCP_READ);
@@ -52,6 +53,7 @@ uint8_t MCP_read(uint8_t address){
 
     // Deselect CAN-controller with chip seop_until_bit_is_set(SPSR, SPIF);lect
     set_bit(PORTB, CAN_CS);
+    set_bit(PORTB, SS);
 
     return result;
 }
@@ -63,6 +65,7 @@ uint8_t MCP_read(uint8_t address){
 void MCP_write(uint8_t address, char data){
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
 
     // Sending write instruction
     SPI_read_write(MCP_WRITE);
@@ -75,6 +78,7 @@ void MCP_write(uint8_t address, char data){
 
     // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS);
+    set_bit(PORTB, SS);
 }
 
 /** Function for initiating message transmission for one or more of the transmit buffers.
@@ -82,6 +86,7 @@ void MCP_write(uint8_t address, char data){
 void MCP_request_to_send(uint8_t bit){
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
 
     // Send RTS command byte. The last 3 bits of it indicate which transmit buffers are enabled to send.
     switch (bit) {
@@ -97,6 +102,7 @@ void MCP_request_to_send(uint8_t bit){
 
     // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS);
+    set_bit(PORTB, SS);
 }
 
 /** Function for allowing single instruction access to some of the often used status bits
@@ -108,6 +114,7 @@ uint8_t MCP_read_status(void){
 
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
 
     // Sending read status command byte
     SPI_read_write(MCP_READ_STATUS);
@@ -116,7 +123,8 @@ uint8_t MCP_read_status(void){
     status = SPI_read_write(0x00);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB, CAN_CS);   
+    set_bit(PORTB, CAN_CS);
+    set_bit(PORTB, SS);   
 
     return status;
 }
@@ -129,6 +137,7 @@ uint8_t MCP_read_status(void){
 void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
 
     // Send modify command
     SPI_read_write(MCP_BITMOD);
@@ -144,6 +153,7 @@ void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
 
     // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS); 
+    set_bit(PORTB, SS);
 }
 
 /** Function for resetting the internal registers of MCP2515, and setting configuration mode.
@@ -151,10 +161,12 @@ void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
 void MCP_reset(void){
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
+    clear_bit(PORTB, SS);
 
     // Send reset instruction
     SPI_read_write(MCP_RESET);
 
     // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS);
+    set_bit(PORTB, SS);
 }

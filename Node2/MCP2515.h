@@ -172,7 +172,8 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_MERRF		0x80
 
 // Select CAN
-#define CAN_CS PB4
+#define CAN_CS PB7
+#define SS PB0
 
 
 

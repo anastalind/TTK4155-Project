@@ -67,9 +67,21 @@ message CAN_data_receive(void){
     
     // Read each bit of data 
     uint8_t i; 
-    for (i=0; i < msg.length; i++){
-        msg.data[i] = MCP_read(MCP_RXB0D+i);
+    for (i = 0; i < msg.length; i++){
+        if (MCP_read(MCP_RXB0D+i) > 100) {
+            msg.data[i] = MCP_read(MCP_RXB0D+i) - 256;
+        }
+
+        else {
+            msg.data[i] = MCP_read(MCP_RXB0D+i);
+        }
+
+        printf("Sent data %d:", i);
+        printf(" %d\n\r ", msg.data[i]);
+        
     }
+
+    MCP_write(MCP_CANINTF, 0x00);
 
     return msg;
 }
