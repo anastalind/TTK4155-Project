@@ -76,11 +76,11 @@ message CAN_data_receive(void){
             msg.data[i] = MCP_read(MCP_RXB0D+i);
         }
 
-        printf("Sent data %d:", i);
+        printf("Received data %d:", i);
         printf(" %d\n\r ", msg.data[i]);
         
     }
-
+    // Set interrupt flag to clear to send several times
     MCP_write(MCP_CANINTF, 0x00);
 
     return msg;

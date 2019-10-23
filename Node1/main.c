@@ -38,6 +38,7 @@ void main() {
     while(1){
         position = joystick_position();
         joystick_CAN_transmit(position);
+        _delay_ms(100);
     }
 
   

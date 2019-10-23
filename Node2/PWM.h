@@ -1,5 +1,11 @@
 /** @package PWM.h
- *  c-file for the PWM 
+ *  Header file for the PWM 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
+#include <avr/io.h>
+
+#include "CAN.h"
+#include "bit_operations.h"
+
+#define PWM_T 20
