@@ -47,7 +47,7 @@ void CAN_send_message(message msg){
 
     // 
     uint8_t i; 
-    for (i=0; i < msg.length; i++){
+    for (i = 0; i < msg.length; i++){
         MCP_write((MCP_TXB0D + i), msg.data[i]);
     }
     MCP_request_to_send(0);
@@ -55,7 +55,7 @@ void CAN_send_message(message msg){
 
 
 /** Function for receiving a message with a given id and data using MCP2515 for CAN communication.
- *  @return uint8_t message- The message received
+ *  @return message message - The message received
  */
 message CAN_data_receive(void){
     message msg;
