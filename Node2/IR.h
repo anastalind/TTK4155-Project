@@ -14,26 +14,31 @@
 #define ADC0 PF0
 
 #define NUM_MEASUREMENTS 4
+#define GOAL_LIMIT 50
 
-/**
- * 
+extern int BALL_DETECTED_FLAG;
+
+/** Initialize Arduino shield for IR-communication.
  */
 void IR_init(void);
 
-/**
- * 
+/** Function for reading the signal from IR photodiode, detecting a goal.
+ *  @return ADC - Analog turned digital signal from the photodiode.
  */
 uint16_t IR_read_photodiode(void);
 
-/**
- * 
+/** Reading the digital filtered signal from the photodiode. 
+ *  @return (sum/NUM_MEASUREMENTS) - The average value/filtered value of the photodiode signal.
  */ 
 uint16_t IR_read_filtered_photodiode(void);
 
 
-/**
- * 
+/** Function for counting number of goals performed.
  */
-void count_goals(void);
+int counting_goals(void);
+
+/** Test function for counting goals.
+ */
+void test_counting_goals(void);
 
 #endif

@@ -4,7 +4,9 @@
         "sram_test.h": "c",
         "joystick.h": "c",
         "can.h": "c",
-        "bit_operations.h": "c"
+        "bit_operations.h": "c",
+        "ir.h": "c",
+        "stdint.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

@@ -64,7 +64,6 @@ double PWM_joystick_to_duty_cycle(message position){
 
     // Calculating duty cycle
     PWM_D = PWM_PW/PWM_T;
-
     return PWM_D;
 }
 
@@ -83,4 +82,21 @@ void PWM_set_duty_cycle(double duty_cycle) {
     else {
         OCR1A = (uint16_t)(duty_cycle * ((F_CLK/(N * F_PWM)) - 1));
     }
+}
+
+/** Test function for testing that the joystick movement actually moves the servo.
+ * 
+ */
+void test_joystick_to_servo(void){
+    USART_init(9600);
+    PWM_init();
+    CAN_init();
+
+    while(1){
+        message position = CAN_data_receive();
+        double duty_cycle = PWM_joystick_to_duty_cycle(position);
+
+        PWM_set_duty_cycle(duty_cycle);
+        _delay_ms(100);
+    }  
 }

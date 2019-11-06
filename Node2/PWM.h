@@ -31,20 +31,25 @@
 // Setting TOP using equation given in datasheet
 //uint32_t TOP = (F_CLK/(N * F_PWM)) - 1;
 
-/**
- * 
- */ 
+/** Function for initializing PWM on the ATmega2560.
+ */
 void PWM_init(void);
 
-/**
- * 
+/** Function for converting joystick position (-100 to 100) to a pulse width (1.0 - 2.0 ms) and finding the duty cycle (PW/T)
+ *  @param message position - CAN message containing the position of the joystick.
+ *  @return double PWM_D - duty cycle.
  */
 double PWM_joystick_to_duty_cycle(message position);
 
 
-/**
- * 
+/** Function for setting output compare register in the ATmega2560 to wanted duty cycle.
+ *  @param double duty_cycle - the duty cycle to be set.
  */
 void PWM_set_duty_cycle(double duty_cycle);
+
+/** Test function for testing that the joystick movement actually moves the servo.
+ */
+void test_joystick_to_servo(void);
+
 
 #endif
