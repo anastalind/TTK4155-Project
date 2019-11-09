@@ -50,9 +50,6 @@ void CAN_send_message(message msg){
     uint8_t i; 
     for (i = 0; i < msg.length; i++){
         MCP_write((MCP_TXB0D + i), msg.data[i]);
-
-        printf("Sent data %d:", i);
-        printf(" %d\n\r ", msg.data[i]);
     }
     MCP_request_to_send(0);
 }

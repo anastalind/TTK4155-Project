@@ -120,9 +120,9 @@ void test_counting_goals(void){
 
     while(1) {
         // Read filtered signal from photodiode
-        // uint16_t IR_measurement = IR_read_filtered_photodiode();
+        //uint16_t IR_measurement = IR_read_filtered_photodiode();
         counting_goals();
-        // printf("IR_measurement: %u \n\r", IR_measurement);
+        //printf("IR_measurement: %u \n\r", IR_measurement);
         _delay_ms(1);
 
     }

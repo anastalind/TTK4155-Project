@@ -37,6 +37,10 @@ void main() {
     
     while(1){
         position = joystick_position();
+
+        printf("Position x: %i\n\r", position.x);
+        printf("Position y: %i\n\r", position.y);
+
         joystick_CAN_transmit(position);
         _delay_ms(100);
     }

@@ -7,19 +7,36 @@
 #include <util/delay.h>
 
 
-/** Function for initializing CAN
+/** Function for initializing CAN communication.
  */
 int CAN_init(void){
+
+    // Enabling interrupt on ATmega2560
+
+    // Falling edge
+    EICRA &= ~(1 << ISC20);
+    EICRA |= (1 << ISC21);
+
+    // Enable interrupt on PD2 (19 on Arduino shield)
+    EIMSK |= (1 << INT2);
+
+    // Clear interrupt flag on PD2
+    EIFR |= (1 << INTF2);
+
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
 
-    // Set normal mode
+    // Set MCP to normal mode
     MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+
+    // Enable receive interrupts
+    MCP_bit_modify(MCP_CANINTE, MCP_INT_MASK, MCP_RX_INT);
+
+    // Clear interrupt flag
+    MCP_bit_modify(MCP_CANINTF, MCP_INT_MASK, 0);
 
     uint8_t value;    
     value = MCP_read(MCP_CANSTAT);
-
-    //printf("Value: %i\n\r", value);
 
     if ((value & MODE_MASK) != MODE_NORMAL) {
         printf("MCP2515 is not in NORMAL mode!\n\r");
@@ -30,11 +47,10 @@ int CAN_init(void){
     }
 
     return 0;
-    // Initialize interrupt flags?
 }
 
 /** Function for sending a message with a given id and data using MCP2515 for CAN communication.
- *  @param message msg - message is struct including id, data and length of message
+ *  @param message msg - Struct including id, data and length of message
  */
 void CAN_send_message(message msg){
 
@@ -43,43 +59,40 @@ void CAN_send_message(message msg){
     MCP_write(MCP_TXB0SIDL, (msg.id << 5));
 
     // Write data length to DLC transmit register
-    MCP_write(MCP_TXB0DLC,msg.length);
+    MCP_write(MCP_TXB0DLC, msg.length);
 
-    // 
-    uint8_t i; 
-    for (i = 0; i < msg.length; i++){
+    for (uint8_t i = 0; i < msg.length; i++){
         MCP_write((MCP_TXB0D + i), msg.data[i]);
     }
+
     MCP_request_to_send(0);
 }
 
 
 /** Function for receiving a message with a given id and data using MCP2515 for CAN communication.
- *  @return message message - The message received
+ *  @return message message - The message received.
  */
 message CAN_data_receive(void){
+
     message msg;
-    //Read message id
-    msg.id = (MCP_read(MCP_RXB0SIDH) << 3)+ (MCP_read(MCP_RXB0SIDL) >> 5);
+
+    // Read message id
+    msg.id = (MCP_read(MCP_RXB0SIDH) << 3) + (MCP_read(MCP_RXB0SIDL) >> 5);
+
     // Read message length
     msg.length = MCP_read(MCP_RXB0DLC);
 
-    
     // Read each bit of data 
-    uint8_t i; 
-    for (i = 0; i < msg.length; i++){
-        if (MCP_read(MCP_RXB0D+i) > 100) {
-            msg.data[i] = MCP_read(MCP_RXB0D+i) - 256;
+    for (uint8_t i = 0; i < msg.length; i++){
+        if (MCP_read(MCP_RXB0D + i) > 100) {
+            msg.data[i] = MCP_read(MCP_RXB0D + i) - 256;
         }
 
         else {
-            msg.data[i] = MCP_read(MCP_RXB0D+i);
+            msg.data[i] = MCP_read(MCP_RXB0D + i);
         }
-
-        printf("Received data %d:", i);
-        printf(" %d\n\r ", msg.data[i]);
-        
     }
+    
     // Set interrupt flag to clear to send several times
     MCP_write(MCP_CANINTF, 0x00);
 

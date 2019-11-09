@@ -131,9 +131,6 @@ direction joystick_direction(void){
 
     joystick position = joystick_position();
 
-    printf("X-pos: %i\n\r", position.x);
-    printf("Y-pos: %i\n\r", position.y);
-
     int quadrant = get_quadrant(position);
 
     bool upDown = is_vertical_direction(position);
@@ -192,8 +189,7 @@ void joystick_CAN_transmit(joystick position) {
     msg.data[0] = position.x;
     msg.data[1] = position.y;
 
-    CAN_send_message(msg);
-    
+    CAN_send_message(msg);  
 }
 
 /** Test function for reading joystick position.

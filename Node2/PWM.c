@@ -32,10 +32,12 @@ void PWM_init(void) {
     set_bit(TIMSK1, OCIE1A);
 
     // Clearing interrupt flag
-    TIFR1 = 0;
+    set_bit(TIFR1, OCF1A);
 
     // Set output servo pin, PB5 on ATmega2560, pin 11 on Arduino shield
     set_bit(DDRB, PB5);
+
+    printf("PWM initialized. \n\r");
 }
 
 
@@ -46,7 +48,7 @@ void PWM_init(void) {
 double PWM_joystick_to_duty_cycle(message position){
     int x_position = position.data[0];
 
-    double PWM_resolution = 1.000; // From 1 ms to 2 mshe duty cycle for the PWM signal.
+    double PWM_resolution = 1.000; // From 1 ms to 2 ms - duty cycle for the PWM signal.
     double PWM_PW = 0.000;
     double PWM_D = 0.000;
     
@@ -84,14 +86,13 @@ void PWM_set_duty_cycle(double duty_cycle) {
     }
 }
 
-/** Test function for testing that the joystick movement actually moves the servo.
- * 
+/** Function for testing that the joystick movement actually moves the servo.
  */
 void test_joystick_to_servo(void){
     USART_init(9600);
     PWM_init();
     CAN_init();
-
+    
     while(1){
         message position = CAN_data_receive();
         double duty_cycle = PWM_joystick_to_duty_cycle(position);
