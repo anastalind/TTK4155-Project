@@ -64,7 +64,7 @@ void reset_motor_encoder(void){
 /** Function for reading the encoder counter.
  *  Reading motor encoder - Movement increases or decreases an internal 16 bits counter.
  */
-void read_motor_encoder(void){
+uint16_t read_motor_encoder(void){
 
     // !OE pin of MJ1 driven low to allow the counter to appear on MJ2.
     clear_bit(PORTH,PH5);
@@ -92,6 +92,10 @@ void read_motor_encoder(void){
 
     // Set !OE high to disbale output of encoder
     set_bit(PORTH,PH5);
+
+    uint16_t byte = high_byte + low_byte;
+
+    return byte;
 }
 
 
@@ -99,8 +103,7 @@ void read_motor_encoder(void){
  *  @param uint8_t DAC_voltage - The desired voltage for the motor (0-5V)
  */
 void set_motor_speed(uint8_t DAC_voltage){
-
-    uint8_t DAC_voltage_msg_size = 3;
+    
     uint8_t DAC_voltage_msg[3];
 
     // Address
@@ -110,12 +113,7 @@ void set_motor_speed(uint8_t DAC_voltage){
     // Data
     DAC_voltage_msg[2] = DAC_voltage; 
 
-    printf("Msg is written. Trying to send \n\r ");
-    //_delay_us(20);
-
     TWI_Start_Transceiver_With_Data(DAC_voltage_msg, 3);
-
-    printf("Msg sent \n\r ");
 }
 
 
@@ -143,24 +141,23 @@ void control_motor(message position) {
     int y_position = position.data[1];
     uint8_t DAC_voltage = abs(y_position); 
 
-    printf("Initialized DAC voltage: %u \n\r", DAC_voltage);
+    //printf("Initialized DAC voltage: %u \n\r", DAC_voltage);
 
     if (y_position < 0) {
         set_motor_direction(LEFT);
-        printf("Motor direction: left\n\r");
+        //printf("Motor direction: left\n\r");
     }
 
     else if (y_position > 0) {
         set_motor_direction(RIGHT);
-        printf("Motor direction: right\n\r");   
+        //printf("Motor direction: right\n\r");   
     }
 
     else {
         set_motor_direction(NEUTRAL);
-        printf("Motor direction: neutral\n\r");
+        //printf("Motor direction: neutral\n\r");
     }
 
     set_motor_speed(DAC_voltage);
-    printf("Set DAC voltage: %u \n\r", DAC_voltage);
 }
     

@@ -138,3 +138,10 @@ void CAN_int_vect(void){
         stop++;    
     }
 }
+
+ISR(INT2_vect)
+{
+    printf("CAN INTERRUPT\n\r");
+    message position = CAN_data_receive();
+    control_motor(position);
+}

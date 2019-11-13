@@ -17,7 +17,6 @@
 #include "SPI.h"
 #include "CAN.h"
 
-
 #include <util/delay.h>
 
 
@@ -26,6 +25,7 @@ void main() {
 
     UART_init(9600);
     CAN_init();
+    sei();
 
     //set_bit(UCSR1A, UPE1);
     set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
@@ -34,13 +34,15 @@ void main() {
     _delay_ms(1000);
     joystick_calibrate();
     joystick position = joystick_position();
+    //bool button_press = is_button_pressed();
     
     while(1){
         position = joystick_position();
+        //button_press = is_button_pressed();
+        //printf("Is button pressed?? %i\n\r", button_press);
 
-        printf("Position x: %i\n\r", position.x);
-        printf("Position y: %i\n\r", position.y);
-
+        //printf("Position x: %i\n\r", position.x);
+        //printf("Position y: %i\n\r", position.y);
         joystick_CAN_transmit(position);
         _delay_ms(100);
     }

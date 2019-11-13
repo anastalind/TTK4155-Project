@@ -24,6 +24,8 @@
 int resolution_left = 128;
 int resolution_right = 128;
 
+int BUTTON_PRESSED_FLAG = 0;
+
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return int 1-4 - Quadrant the joystick is in
@@ -69,7 +71,7 @@ bool is_vertical_direction(joystick position) {
  *  @return 
  * 
  */
-bool button_not_pressed(void) {
+bool joystick_button_not_pressed(void) {
     bool joystick_button = (PINB & (1 << PINB2));
     return joystick_button;
 } 
@@ -178,16 +180,48 @@ direction joystick_direction(void){
 
 }
 
+bool is_button_pressed() {
+    return ((PINB & (1 << PINB0)) || (PINB & (1 << PINB1)));
+}
+
 /** Function for sending joystick position via CAN to Node 2. 
  *  @param joystick position - Position of joystick, struct containing x and y-positions (0-100%). 
  */
-void joystick_CAN_transmit(joystick position) {
+void game_controller_CAN_transmit(joystick position) {
     message msg;
-    msg.length = 2;
+    msg.length = 3;
     msg.id = 0;
 
     msg.data[0] = position.x;
     msg.data[1] = position.y;
+
+    // The flag is checking whether the button is registered or not
+    if ((BUTTON_PRESSED_FLAG <= 1) && (is_button_pressed())){
+        BUTTON_PRESSED_FLAG += 1;
+    }
+    switch (BUTTON_PRESSED_FLAG){
+        // If button press not detected
+        case 0:
+            msg.data[2] = 0;
+            break;
+        // If button pressed detected
+        case 1:
+            //Send button pressed
+            msg.data[2] = 1;
+            break; 
+            //printf("Send button pressed.\n\r");
+
+
+        // If the button is registered continously, the flag is cleared when the ball is no longer detected.
+        default:
+            if (!is_button_pressed()) {
+                BUTTON_PRESSED_FLAG = 0;
+                msg.data[2] = 0;
+            } else {
+                msg.data[2] = 0;
+            }
+            break;
+    }
 
     CAN_send_message(msg);  
 }

@@ -1,5 +1,5 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES := main.c CAN.c IR.c MCP2515.c motor.c PID.c PWM.c SPI.c TWI_Master.c USART.c
+SOURCE_FILES := main.c CAN.c IR.c MCP2515.c motor.c PID.c PWM.c solenoid.c SPI.c TWI_Master.c USART.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes

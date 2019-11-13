@@ -11,39 +11,43 @@
 #include "CAN.h"
 #include "PWM.h"
 #include "IR.h"
-//#include "TWI_Master.h"
 #include "motor.h"
+#include "solenoid.h"
 
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 
-ISR(__vector_default){
-    printf("DEFAULT ISR\n\r");
-}
-
 void main() {  
-    cli();
-    //test_joystick_to_servo();
-    
-    //test_counting_goals();
 
     USART_init(9600);
     PWM_init();
     CAN_init();
+    
+    solenoid_init();
     motor_initialize();
-    printf("\n\n\n\n\n\n\n\n");
+    printf("\n\n");
     sei();
 
-    //test_joystick_to_servo();
     while (1) {
+        _delay_ms(20);
 
-        message position = CAN_data_receive();
-        control_motor(position);
+        message msg = CAN_data_receive();
+        double duty_cycle = PWM_joystick_to_duty_cycle(msg);
 
-        //_delay_ms(500);
+        control_motor(msg);
+        PWM_set_duty_cycle(duty_cycle);
+
+        if (msg.data[2] == 1) {
+            printf("Received msg about button press \n\r");
+            control_solenoid();
+        }
     }
-
 }
 
 
+ISR(INT2_vect)
+{
+    //printf("CAN INTERRUPT\n\r");
+
+}

@@ -29,10 +29,10 @@ void PWM_init(void) {
     OCR1A = BOTTOM;
 
     // Timer interrupt
-    set_bit(TIMSK1, OCIE1A);
+    //set_bit(TIMSK1, OCIE1A);
 
     // Clearing interrupt flag
-    set_bit(TIFR1, OCF1A);
+    //set_bit(TIFR1, OCF1A);
 
     // Set output servo pin, PB5 on ATmega2560, pin 11 on Arduino shield
     set_bit(DDRB, PB5);

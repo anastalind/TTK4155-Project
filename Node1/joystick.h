@@ -36,6 +36,9 @@ typedef enum {LEFT, RIGHT, UP, DOWN, NEUTRAL, UNKNOWN} direction;
  */
 enum ADC_channel;
 
+// Button flag
+extern int BUTTON_PRESSED_FLAG;
+
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
  *  @return int 1-4 - Quadrant the joystick is in
@@ -51,7 +54,7 @@ bool is_vertical_direction(joystick position);
 /**
  * 
  */ 
-bool button_not_pressed(void);
+bool joystick_button_not_pressed(void);
 
 /**Function for calibrating joystick at start.
  * 
@@ -72,6 +75,10 @@ direction joystick_direction(void);
 /** Test function for reading joystick position.
  */ 
 void test_read_joystick_position(void);
+
+bool is_button_pressed();
+
+void game_controller_CAN_transmit(joystick position);
    
 
 

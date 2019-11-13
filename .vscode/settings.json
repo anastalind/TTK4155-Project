@@ -6,7 +6,9 @@
         "can.h": "c",
         "bit_operations.h": "c",
         "ir.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "solenoid.h": "c"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.dimInactiveRegions": false
 }

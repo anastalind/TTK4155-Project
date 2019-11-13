@@ -12,6 +12,7 @@
 #include "TWI_Master.h"
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <util/delay.h>
@@ -31,7 +32,7 @@ void reset_motor_encoder(void);
 /** Function for reading the encoder counter.
  *  Reading motor encoder - Movement increases or decreases an internal 16 bits counter.
  */
-void read_motor_encoder(void);
+uint16_t read_motor_encoder(void);
 
 
 /** Function for setting the speed of the motor by sending the desired voltage to the motor box via TWI.
