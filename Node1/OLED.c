@@ -1,5 +1,5 @@
-/** @package oled.c
- * 
+/** @file oled.c
+ *  @brief OLED C-file for displaying on OLED-screen of multiboard.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 

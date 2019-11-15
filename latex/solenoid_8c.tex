@@ -1,0 +1,64 @@
+\hypertarget{solenoid_8c}{}\section{Node2/solenoid.c File Reference}
+\label{solenoid_8c}\index{Node2/solenoid.\+c@{Node2/solenoid.\+c}}
+
+
+c-\/file for controlling the solenoid.  
+
+
+{\ttfamily \#include \char`\"{}solenoid.\+h\char`\"{}}\\*
+Include dependency graph for solenoid.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{solenoid_8c_a05736227e6f452fb1ceb65c417ebd8c9}{solenoid\+\_\+init} ()
+\item 
+void \hyperlink{solenoid_8c_a5d520fbd4fcbe809a19328ee816d47cd}{control\+\_\+solenoid} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+c-\/file for controlling the solenoid. 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{solenoid.\+c@{solenoid.\+c}!control\+\_\+solenoid@{control\+\_\+solenoid}}
+\index{control\+\_\+solenoid@{control\+\_\+solenoid}!solenoid.\+c@{solenoid.\+c}}
+\subsubsection[{\texorpdfstring{control\+\_\+solenoid()}{control_solenoid()}}]{\setlength{\rightskip}{0pt plus 5cm}void control\+\_\+solenoid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{solenoid_8c_a5d520fbd4fcbe809a19328ee816d47cd}{}\label{solenoid_8c_a5d520fbd4fcbe809a19328ee816d47cd}
+Function for toggling the solenoid pins and executing a pulse-\/movement. 
+
+Definition at line 17 of file solenoid.\+c.
+
+
+\begin{DoxyCode}
+17                         \{
+18     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, PB4);
+19     \_delay\_ms(300);
+20     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, PB4);   
+21 \}\end{DoxyCode}
+\index{solenoid.\+c@{solenoid.\+c}!solenoid\+\_\+init@{solenoid\+\_\+init}}
+\index{solenoid\+\_\+init@{solenoid\+\_\+init}!solenoid.\+c@{solenoid.\+c}}
+\subsubsection[{\texorpdfstring{solenoid\+\_\+init()}{solenoid_init()}}]{\setlength{\rightskip}{0pt plus 5cm}void solenoid\+\_\+init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{solenoid_8c_a05736227e6f452fb1ceb65c417ebd8c9}{}\label{solenoid_8c_a05736227e6f452fb1ceb65c417ebd8c9}
+Function for initializing the solenoid by enabling pins. 
+
+Definition at line 10 of file solenoid.\+c.
+
+
+\begin{DoxyCode}
+10                      \{
+11     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRB, PB4);
+12     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, PB4);
+13 \}
+\end{DoxyCode}

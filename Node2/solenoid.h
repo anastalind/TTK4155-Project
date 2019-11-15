@@ -1,5 +1,5 @@
-/** @package solenoid.h
- *  Header-file for the SPI communication driver.
+/** @file solenoid.h
+ *  @brief Header-file for controlling the solenoid.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -12,8 +12,14 @@
 #include <avr/io.h>
 #include <stdbool.h>
 
+
+
+/** Function for initializing the solenoid by enabling pins.
+ */
 void solenoid_init();
 
+/** Function for toggling the solenoid pins and executing a pulse-movement.
+ */
 void control_solenoid();
 
 

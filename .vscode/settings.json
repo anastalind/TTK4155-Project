@@ -8,7 +8,9 @@
         "ir.h": "c",
         "stdint.h": "c",
         "solenoid.h": "c",
-        "mcp2515.h": "c"
+        "mcp2515.h": "c",
+        "usart.h": "c",
+        "spi.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.dimInactiveRegions": false

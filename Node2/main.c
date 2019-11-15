@@ -13,6 +13,7 @@
 #include "IR.h"
 #include "motor.h"
 #include "solenoid.h"
+#include "PLAY_GAME.h"
 
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -40,12 +41,26 @@ void main() {
        // motor_speed_controller(msg);
         PWM_set_duty_cycle(duty_cycle);
 
+        // If touch-button pressed, pulse solenoid
         if (msg.data[2] == 1) {
             printf("Received msg about button press \n\r");
             control_solenoid();
         }
-        printf("\n\n");
 
+        // MENU - CONTROL FLAG
+        // If play game is requested, play game
+        if (msg.data[5] == 1) {
+            printf("PLAY game is requested! \n\r");
+            //play_game();
+        } else if (msg.data[5] == 0) {
+            printf("END game is requested! \n\r");
+            //end_game();
+        } else if (msg.data[5] == 2) {
+            printf("HIGH SCORES are requested! \n\r");
+            //show_highscore();
+        }
+
+        printf("\n\n");
 
     }
     

@@ -1,5 +1,5 @@
-/** @package USART.c
- *  c-file for the USART driver - to initialize, recieve and transfer data. 
+/** @file USART.c
+ *  @brief c-file for the USART driver - to initialize, recieve and transfer data. 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 #include "USART.h"
@@ -30,8 +30,6 @@ void USART_init (unsigned int bd) {
 
     fdevopen(USART_trans, USART_recv);
 
-
-    // If interrupt, clear Global Interrupt Flag
 }
 
 /** Function for recieving data from USART.
@@ -50,7 +48,6 @@ unsigned char USART_recv (void) {
 void USART_trans (unsigned char letter) {
     // Wait for empty transmit buffer
     loop_until_bit_is_set(UCSR0A, UDRE0);
-
     UDR0 = letter;
 }
 

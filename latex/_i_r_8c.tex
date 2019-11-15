@@ -1,0 +1,239 @@
+\hypertarget{_i_r_8c}{}\section{Node2/\+IR.c File Reference}
+\label{_i_r_8c}\index{Node2/\+I\+R.\+c@{Node2/\+I\+R.\+c}}
+
+
+c-\/file for the IR  
+
+
+{\ttfamily \#include \char`\"{}I\+R.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+Include dependency graph for I\+R.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_i_r_8c_a359e5e1e15be54e36af3a49d9715f6f5}{I\+R\+\_\+init} (void)
+\item 
+uint16\+\_\+t \hyperlink{_i_r_8c_a715205c2fe3b70568d2f33fae08ec410}{I\+R\+\_\+read\+\_\+photodiode} (void)
+\item 
+uint16\+\_\+t \hyperlink{_i_r_8c_af625322d5b6c6b1c8b57d58c433e59de}{I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode} (void)
+\item 
+int \hyperlink{_i_r_8c_aa47c5d6ab4bdd4c314c3adc30ae738fb}{counting\+\_\+goals} (void)
+\item 
+void \hyperlink{_i_r_8c_ae35e20538b321e47d2b98b3bfe20ce37}{test\+\_\+counting\+\_\+goals} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals}
+\item 
+int \hyperlink{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+c-\/file for the IR 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{I\+R.\+c@{I\+R.\+c}!counting\+\_\+goals@{counting\+\_\+goals}}
+\index{counting\+\_\+goals@{counting\+\_\+goals}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{counting\+\_\+goals(void)}{counting_goals(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int counting\+\_\+goals (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_i_r_8c_aa47c5d6ab4bdd4c314c3adc30ae738fb}{}\label{_i_r_8c_aa47c5d6ab4bdd4c314c3adc30ae738fb}
+Function for counting number of goals performed. \begin{DoxyReturn}{Returns}
+goals -\/ number of goals counted this round 
+\end{DoxyReturn}
+
+
+Definition at line 84 of file I\+R.\+c.
+
+
+\begin{DoxyCode}
+84                          \{
+85     \textcolor{comment}{// The flag is checking whether the ball is registered or not}
+86     \textcolor{keywordflow}{if} ((\hyperlink{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{BALL\_DETECTED\_FLAG} <= 2) && ((
+      \hyperlink{_i_r_8c_af625322d5b6c6b1c8b57d58c433e59de}{IR\_read\_filtered\_photodiode}() < \hyperlink{_i_r_8h_abe11b2897718fa9f635a7f912b16432e}{GOAL\_LIMIT})))\{
+87         \hyperlink{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{BALL\_DETECTED\_FLAG} += 1;
+88     \}
+89 
+90     \textcolor{keywordflow}{switch} (\hyperlink{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{BALL\_DETECTED\_FLAG})\{
+91         \textcolor{comment}{// If ball not yet detected, return goals}
+92         \textcolor{keywordflow}{case} 0:
+93             \textcolor{keywordflow}{return} \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals};
+94         \textcolor{comment}{// If ball detected once, increment goals by 1}
+95         \textcolor{keywordflow}{case} 1:
+96             \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals} +=1;
+97             printf(\textcolor{stringliteral}{"GOAL! Score: %d \(\backslash\)n\(\backslash\)r"},\hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals});
+98             \textcolor{keywordflow}{return} \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals};
+99         \textcolor{comment}{// If ball is already detected and goal is incremented, return same goal count}
+100         \textcolor{keywordflow}{case} 2:
+101             \textcolor{keywordflow}{return} \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals};
+102         \textcolor{comment}{// If the ball is registered continously in the goal-area, the flag is cleared when the ball is no
+       longer detected.}
+103         \textcolor{keywordflow}{default}:
+104             \textcolor{keywordflow}{if} ((\hyperlink{_i_r_8c_af625322d5b6c6b1c8b57d58c433e59de}{IR\_read\_filtered\_photodiode}() > 
+      \hyperlink{_i_r_8h_abe11b2897718fa9f635a7f912b16432e}{GOAL\_LIMIT})) \{
+105                 \hyperlink{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{BALL\_DETECTED\_FLAG} = 0;
+106                 \textcolor{keywordflow}{return} \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals};
+107             \}
+108             \textcolor{keywordflow}{else} \{
+109                 \textcolor{keywordflow}{return} \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals};
+110             \}
+111     \}
+112 \}
+\end{DoxyCode}
+\index{I\+R.\+c@{I\+R.\+c}!I\+R\+\_\+init@{I\+R\+\_\+init}}
+\index{I\+R\+\_\+init@{I\+R\+\_\+init}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{I\+R\+\_\+init(void)}{IR_init(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void I\+R\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_i_r_8c_a359e5e1e15be54e36af3a49d9715f6f5}{}\label{_i_r_8c_a359e5e1e15be54e36af3a49d9715f6f5}
+Initialize Arduino shield for I\+R-\/communication. 
+
+Definition at line 15 of file I\+R.\+c.
+
+
+\begin{DoxyCode}
+15                    \{
+16 
+17     \textcolor{comment}{// Enable ADC}
+18     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADEN);
+19 
+20     \textcolor{comment}{// Set reference to AVCC}
+21     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADMUX, REFS0);
+22 
+23     \textcolor{comment}{// Setting prescaler bits to 111 - division factor 128}
+24     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADPS0);
+25     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADPS1);
+26     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADPS2);
+27 
+28     \textcolor{comment}{// Select ADC0 as analog channel}
+29     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADMUX, MUX0);
+30     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADMUX, MUX1);
+31     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADMUX, MUX2);
+32     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADMUX, MUX3);
+33     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADMUX, MUX4);
+34     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADCSRB, MUX5);
+35 
+36  
+37     \textcolor{comment}{// Set ADC0 bit to configure as input pin}
+38     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRF, \hyperlink{_i_r_8h_a0d2ea0f4a8dd17bf08e69d05deacbcb5}{ADC0});
+39 
+40     \textcolor{comment}{// Enable interrupt}
+41     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADIE);
+42 
+43     \textcolor{comment}{// Clear interrupt flag}
+44     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(ADCSRA, ADIF);
+45 
+46     \textcolor{comment}{// Resetting goals}
+47     \hyperlink{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{goals} = 0;
+48 
+49 \}
+\end{DoxyCode}
+\index{I\+R.\+c@{I\+R.\+c}!I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode@{I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode}}
+\index{I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode@{I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode(void)}{IR_read_filtered_photodiode(void)}}]{\setlength{\rightskip}{0pt plus 5cm}uint16\+\_\+t I\+R\+\_\+read\+\_\+filtered\+\_\+photodiode (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_i_r_8c_af625322d5b6c6b1c8b57d58c433e59de}{}\label{_i_r_8c_af625322d5b6c6b1c8b57d58c433e59de}
+Reading the digital filtered signal from the photodiode. N\+U\+M\+\_\+\+M\+E\+A\+S\+U\+R\+E\+M\+E\+N\+TS = 4 \begin{DoxyReturn}{Returns}
+(sum/\+N\+U\+M\+\_\+\+M\+E\+A\+S\+U\+R\+E\+M\+E\+N\+TS) -\/ The average value/filtered value of the photodiode signal. 
+\end{DoxyReturn}
+
+
+Definition at line 68 of file I\+R.\+c.
+
+
+\begin{DoxyCode}
+68                                            \{
+69     \textcolor{comment}{// Initialize the sum = 0 each time photodiode is read}
+70     uint16\_t sum = 0;
+71 
+72     \textcolor{comment}{// Sum 4 photodiode measurements}
+73     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < \hyperlink{_i_r_8h_a7f7d2e47a92b8cec3c9f9e8527fd35f8}{NUM\_MEASUREMENTS}; i++) \{
+74         sum += \hyperlink{_i_r_8c_a715205c2fe3b70568d2f33fae08ec410}{IR\_read\_photodiode}();
+75     \}
+76     \textcolor{comment}{// Return the average/filtered value}
+77     \textcolor{keywordflow}{return} (sum/NUM\_MEASUREMENTS);
+78 \}
+\end{DoxyCode}
+\index{I\+R.\+c@{I\+R.\+c}!I\+R\+\_\+read\+\_\+photodiode@{I\+R\+\_\+read\+\_\+photodiode}}
+\index{I\+R\+\_\+read\+\_\+photodiode@{I\+R\+\_\+read\+\_\+photodiode}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{I\+R\+\_\+read\+\_\+photodiode(void)}{IR_read_photodiode(void)}}]{\setlength{\rightskip}{0pt plus 5cm}uint16\+\_\+t I\+R\+\_\+read\+\_\+photodiode (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_i_r_8c_a715205c2fe3b70568d2f33fae08ec410}{}\label{_i_r_8c_a715205c2fe3b70568d2f33fae08ec410}
+Function for reading the signal from IR photodiode, detecting a goal. \begin{DoxyReturn}{Returns}
+A\+DC -\/ Analog turned digital signal from the photodiode. 
+\end{DoxyReturn}
+
+
+Definition at line 54 of file I\+R.\+c.
+
+
+\begin{DoxyCode}
+54                                   \{
+55     \textcolor{comment}{// Start conversion by writing one to ADSC bit}
+56     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(ADCSRA, ADSC);
+57 
+58     \textcolor{comment}{// After the conversion is complete - ADIF is high - the conversion result can be foung in ADCL ADCH}
+59     \hyperlink{_node1_2bit__operations_8h_adb35c737e10e9b80fe812de60da481a9}{loop\_until\_bit\_is\_set}(ADCSRA, ADIF);
+60 
+61     \textcolor{keywordflow}{return} ADC;
+62 \}
+\end{DoxyCode}
+\index{I\+R.\+c@{I\+R.\+c}!test\+\_\+counting\+\_\+goals@{test\+\_\+counting\+\_\+goals}}
+\index{test\+\_\+counting\+\_\+goals@{test\+\_\+counting\+\_\+goals}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{test\+\_\+counting\+\_\+goals(void)}{test_counting_goals(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void test\+\_\+counting\+\_\+goals (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_i_r_8c_ae35e20538b321e47d2b98b3bfe20ce37}{}\label{_i_r_8c_ae35e20538b321e47d2b98b3bfe20ce37}
+Test function for counting goals. 
+
+Definition at line 116 of file I\+R.\+c.
+
+
+\begin{DoxyCode}
+116                               \{
+117     \textcolor{comment}{// So that printf can be used}
+118     \hyperlink{_u_s_a_r_t_8c_a81d8695f4ff61065923f6618db3fd4f0}{USART\_init}(9600);
+119     \hyperlink{_i_r_8c_a359e5e1e15be54e36af3a49d9715f6f5}{IR\_init}();
+120 
+121     \textcolor{keywordflow}{while}(1) \{
+122         \textcolor{comment}{// Read filtered signal from photodiode}
+123         \textcolor{comment}{//uint16\_t IR\_measurement = IR\_read\_filtered\_photodiode();}
+124         \hyperlink{_i_r_8c_aa47c5d6ab4bdd4c314c3adc30ae738fb}{counting\_goals}();
+125         \textcolor{comment}{//printf("IR\_measurement: %u \(\backslash\)n\(\backslash\)r", IR\_measurement);}
+126         \_delay\_ms(1);
+127 
+128     \}
+129 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\index{I\+R.\+c@{I\+R.\+c}!B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG@{B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG}}
+\index{B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG@{B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG}{BALL_DETECTED_FLAG}}]{\setlength{\rightskip}{0pt plus 5cm}int B\+A\+L\+L\+\_\+\+D\+E\+T\+E\+C\+T\+E\+D\+\_\+\+F\+L\+AG = 0}\hypertarget{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}{}\label{_i_r_8c_aaffb42c6c3572cfa15647ecb77fd8a52}
+
+
+Definition at line 11 of file I\+R.\+c.
+
+\index{I\+R.\+c@{I\+R.\+c}!goals@{goals}}
+\index{goals@{goals}!I\+R.\+c@{I\+R.\+c}}
+\subsubsection[{\texorpdfstring{goals}{goals}}]{\setlength{\rightskip}{0pt plus 5cm}int goals}\hypertarget{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}{}\label{_i_r_8c_ae4e54cd1fe49769f7b54b5427cda6460}
+
+
+Definition at line 10 of file I\+R.\+c.
+

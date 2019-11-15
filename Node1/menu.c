@@ -1,9 +1,12 @@
-/** @package menu.c
- * 
+/** @file menu.c
+ *  @brief C-file for the menu on the OLED - to move around in the menu.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
 #include "menu.h"
+
+
+int PLAY_GAME_FLAG = 0;
 
 /**Function for creating new submenu and initialising it.
  * @param char* menu_title - Title of the menu being created
@@ -29,7 +32,6 @@ menu* menu_new(char* menu_title, menu* parent_menu, menu* child_menu, menu* left
  *  @param menu* parent_menu - pointer to struct that is current menus' parent
  *  @param menu* current_menu - pointer to curren menu struct
  */
-
 void menu_print_submenu(menu* parent_menu, menu* current_menu){
     OLED_reset();
     OLED_home();
@@ -61,7 +63,42 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
  */
 menu* menu_navigate(menu* child_menu, direction dir){
     menu* current_menu = child_menu;
+    /*
+    switch(dir) {
+        case NEUTRAL: {
+            current_menu = child_menu;
+            break;
+        }
+        case UP: {
+            if (current_menu->left_sibling != NULL) {
+                current_menu = current_menu->left_sibling;
+            }
+            break;
+        }
+        case DOWN: {
+            if (current_menu->right_sibling != NULL) {
+                current_menu = current_menu->right_sibling; 
+            }
+            break;
+        }
+        case LEFT: {
+            if (current_menu->parent != NULL) {
+                current_menu = current_menu->parent;
+            }
+            break;
+        }
+        case RIGHT: {
+            if (current_menu->child != NULL) {
+                current_menu = current_menu->child;
+            }
+            break;
+        }
+        case default: {
+            return current_menu;
+        } 
 
+    }
+    */
     if (dir == NEUTRAL) {
         current_menu = child_menu;
     }
@@ -92,9 +129,21 @@ menu* menu_navigate(menu* child_menu, direction dir){
     else {
         return current_menu;
     }
-
-    if (!(button_not_pressed())) {
-        if (current_menu->child != NULL) {
+ 
+    if (!(joystick_button_not_pressed())) {
+        if (current_menu->title == "PLAY GAME"){
+            //current_menu = current_menu->child;
+            PLAY_GAME_FLAG = 1;
+            printf("PLAY GAME\n\r");
+        } else if (current_menu->title == "END GAME"){
+            //current_menu = current_menu->child;
+            PLAY_GAME_FLAG = 0;
+            printf("END GAME\n\r");
+        } else if (current_menu->title == "HIGH SCORE"){
+            //current_menu = current_menu->child;
+            PLAY_GAME_FLAG = 2;
+            printf("HIGH SCORE\n\r");
+        } else if (current_menu->child != NULL){
             current_menu = current_menu->child;
         }
     }
@@ -123,6 +172,7 @@ menu* menu_init() {
     // Submenus of players
     menu* single_player = menu_new("SINGLE PLAYER", players, NULL, NULL, NULL);
     menu* multi_player = menu_new("MULTIPLAYER", players, NULL, single_player, NULL);
+
 
     /* SETTING THE CHILD VARIABLES*/
     // Setting child of main menu
@@ -164,9 +214,8 @@ void menu_test(){
 
     while (1) {
         current_menu = menu_navigate(child_menu, dir);
-
+        
         menu_print_submenu(parent_menu, current_menu);
-
         _delay_ms(500);
 
         dir = joystick_direction();

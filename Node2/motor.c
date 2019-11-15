@@ -1,5 +1,5 @@
-/** @package motor.c
- *  c-file for controlling the speed of the motor
+/** @file motor.c
+ *  @brief c-file for controlling the speed of the motor
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -15,6 +15,7 @@ uint8_t d_factor;
 
 int LEFT_ENCODER_VALUE = 9000;
 int RIGHT_ENCODER_VALUE = 0;
+
 #define RESOLUTION 255
 
 
@@ -32,7 +33,6 @@ void motor_initialize(void){
 
     // Enable direction as output
     set_bit(DDRH,PH1);  // DIR of MJ1
-    // provide an analog voltage 0-5v on DA1 of MJEX to control the output voltage to the motor
 
     // Enable encoder as output
     set_bit(DDRH,PH5); // !OE of MJ1
@@ -52,8 +52,7 @@ void motor_initialize(void){
     clear_bit(DDRK,6);
     clear_bit(DDRK,7);
 
-
-    // Calibrate the motor to make sure we know the position of it before starting.
+    // Calibrate the motor to make sure we know the position and position-limits before starting.
     motor_calibrate();
 }
 
@@ -69,6 +68,7 @@ void reset_motor_encoder(void){
 
 /** Function for reading the encoder counter.
  *  Reading motor encoder - Movement increases or decreases an internal 16 bits counter.
+ *  @return (int16_t) ((high_byte << 8) | low_byte) - Motor encoder output.
  */
 int16_t read_motor_encoder(void){
 
@@ -92,9 +92,6 @@ int16_t read_motor_encoder(void){
 
     // Read LSB of ADC input
     uint8_t low_byte = PINK;
-
-    // Reset encoder
-    //reset_motor_encoder();
 
     // Set !OE high to disbale output of encoder
     set_bit(PORTH,PH5);
@@ -144,7 +141,6 @@ void set_motor_direction(motor_direction direction){
  */
 void motor_speed_controller(int8_t speed) {
     //printf("Initialized DAC voltage: %u \n\r", DAC_voltage);
-
     uint8_t DAC_voltage = abs(speed);
 
     if (speed < 0) {
@@ -167,7 +163,6 @@ void motor_speed_controller(int8_t speed) {
 
 
 /** Function for calibrating motor and reading min and max encoder values
- * 
  */ 
 void motor_calibrate(void) {
 
@@ -181,32 +176,35 @@ void motor_calibrate(void) {
     _delay_ms(10000);
     LEFT_ENCODER_VALUE = read_motor_encoder();
 }
-/**
- * current_position is a value between (0, 255)
+
+/** Function for reading the position-limits of the board and returning the current position of the motor.
+ *  @return current_position - a value between (0, 255) representing the motors position.
  */ 
 uint8_t get_motor_position(void){
     int16_t read_encoder_value = read_motor_encoder();
 
     float ratio = (float)LEFT_ENCODER_VALUE/(float)RESOLUTION;
 
-    uint8_t current_position = (uint8_t)((read_encoder_value - RIGHT_ENCODER_VALUE)/ratio);
+    uint8_t current_position = 255-(uint8_t)((read_encoder_value - RIGHT_ENCODER_VALUE)/ratio);
 
     return current_position;
 }
 
-/** Function for 
- *  @param 
+/** Function for testing the slider-control og the motor. 
+ *  @param message msg - position message.
  */
 void slider_controller_test(message msg) {
 
     uint8_t ref_pos = msg.data[3];
-    printf("Received slider data %u\n\n\r", ref_pos);
+    //printf("Received slider data %u\n\n\r", ref_pos);
+
     uint8_t curr_pos = get_motor_position();
-    printf("Current position %u\n\n\r", curr_pos);   
+    //printf("Current position %u\n\n\r", curr_pos);   
 
     int8_t diff = (int8_t)(ref_pos - curr_pos);
 
-    printf("Difference between ref pos and curr pos %i\n\n\r", diff);   
+
+    //printf("Difference between ref pos and curr pos %i\n\n\r", diff);   
 
     if (diff > 0) {
         set_motor_direction(LEFT);
@@ -225,6 +223,4 @@ void slider_controller_test(message msg) {
         set_motor_speed(100);
         //printf("Motor direction: neutral\n\r");
     }
-
-    
 }

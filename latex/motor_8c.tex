@@ -1,0 +1,436 @@
+\hypertarget{motor_8c}{}\section{Node2/motor.c File Reference}
+\label{motor_8c}\index{Node2/motor.\+c@{Node2/motor.\+c}}
+
+
+c-\/file for controlling the speed of the motor  
+
+
+{\ttfamily \#include \char`\"{}motor.\+h\char`\"{}}\\*
+Include dependency graph for motor.\+c\+:
+% FIG 0
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{motor_8c_a95d55ebfa2f2f1bd14867ad6a6cc9bfb}{R\+E\+S\+O\+L\+U\+T\+I\+ON}~255
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{motor_8c_a30b74f973804ddb7caa3deb41c2e4195}{motor\+\_\+initialize} (void)
+\item 
+void \hyperlink{motor_8c_abe3f4d05e5d35990f3dd018f6ffa02f5}{reset\+\_\+motor\+\_\+encoder} (void)
+\item 
+int16\+\_\+t \hyperlink{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}{read\+\_\+motor\+\_\+encoder} (void)
+\item 
+void \hyperlink{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{set\+\_\+motor\+\_\+speed} (uint8\+\_\+t D\+A\+C\+\_\+voltage)
+\item 
+void \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\+\_\+motor\+\_\+direction} (\hyperlink{motor_8h_a2cd9a3bc9704bd057232711cd8a3ed19}{motor\+\_\+direction} \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098}{direction})
+\item 
+void \hyperlink{motor_8c_ab785ac435902235b39fedc7b50803b65}{motor\+\_\+speed\+\_\+controller} (int8\+\_\+t speed)
+\item 
+void \hyperlink{motor_8c_a496e55be03461ae66c00869a3205f62c}{motor\+\_\+calibrate} (void)
+\item 
+uint8\+\_\+t \hyperlink{motor_8c_a8e9d1346911786c2b9fae25202cd5a1f}{get\+\_\+motor\+\_\+position} (void)
+\item 
+void \hyperlink{motor_8c_a4d43d7684cac1acbcbbe38c9cc89a03b}{slider\+\_\+controller\+\_\+test} (\hyperlink{structmessage}{message} msg)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_p_i_d}{P\+ID} $\ast$ \hyperlink{motor_8c_a37d6214932b4496fc7b944d599cc14f4}{pid}
+\item 
+uint8\+\_\+t \hyperlink{motor_8c_ad50b0e6fb042c3ee20a10e794d064469}{p\+\_\+factor}
+\item 
+uint8\+\_\+t \hyperlink{motor_8c_a2a385c4cdfce8c93d2e0f31d8a47e099}{i\+\_\+factor}
+\item 
+uint8\+\_\+t \hyperlink{motor_8c_a943b7dea2a63290bf977976cd7df3984}{d\+\_\+factor}
+\item 
+int \hyperlink{motor_8c_a9efeb07235435a470d3d36022763330a}{L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE} = 9000
+\item 
+int \hyperlink{motor_8c_ad46191e177e5c2755171d534a0af9b10}{R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+c-\/file for controlling the speed of the motor 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{motor.\+c@{motor.\+c}!R\+E\+S\+O\+L\+U\+T\+I\+ON@{R\+E\+S\+O\+L\+U\+T\+I\+ON}}
+\index{R\+E\+S\+O\+L\+U\+T\+I\+ON@{R\+E\+S\+O\+L\+U\+T\+I\+ON}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{R\+E\+S\+O\+L\+U\+T\+I\+ON}{RESOLUTION}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+S\+O\+L\+U\+T\+I\+ON~255}\hypertarget{motor_8c_a95d55ebfa2f2f1bd14867ad6a6cc9bfb}{}\label{motor_8c_a95d55ebfa2f2f1bd14867ad6a6cc9bfb}
+
+
+Definition at line 19 of file motor.\+c.
+
+
+
+\subsection{Function Documentation}
+\index{motor.\+c@{motor.\+c}!get\+\_\+motor\+\_\+position@{get\+\_\+motor\+\_\+position}}
+\index{get\+\_\+motor\+\_\+position@{get\+\_\+motor\+\_\+position}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{get\+\_\+motor\+\_\+position(void)}{get_motor_position(void)}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t get\+\_\+motor\+\_\+position (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_a8e9d1346911786c2b9fae25202cd5a1f}{}\label{motor_8c_a8e9d1346911786c2b9fae25202cd5a1f}
+Function for reading the position-\/limits of the board and returning the current position of the motor. \begin{DoxyReturn}{Returns}
+current\+\_\+position -\/ a value between (0, 255) representing the motors position. 
+\end{DoxyReturn}
+
+
+Definition at line 183 of file motor.\+c.
+
+
+\begin{DoxyCode}
+183                                 \{
+184     int16\_t read\_encoder\_value = \hyperlink{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}{read\_motor\_encoder}();
+185 
+186     \textcolor{keywordtype}{float} ratio = (float)\hyperlink{motor_8c_a9efeb07235435a470d3d36022763330a}{LEFT\_ENCODER\_VALUE}/(\textcolor{keywordtype}{float})\hyperlink{motor_8c_a95d55ebfa2f2f1bd14867ad6a6cc9bfb}{RESOLUTION};
+187 
+188     uint8\_t current\_position = (uint8\_t)((read\_encoder\_value - 
+      \hyperlink{motor_8c_ad46191e177e5c2755171d534a0af9b10}{RIGHT\_ENCODER\_VALUE})/ratio);
+189 
+190     \textcolor{keywordflow}{return} current\_position;
+191 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!motor\+\_\+calibrate@{motor\+\_\+calibrate}}
+\index{motor\+\_\+calibrate@{motor\+\_\+calibrate}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{motor\+\_\+calibrate(void)}{motor_calibrate(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void motor\+\_\+calibrate (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_a496e55be03461ae66c00869a3205f62c}{}\label{motor_8c_a496e55be03461ae66c00869a3205f62c}
+Function for calibrating motor and reading min and max encoder values 
+
+Definition at line 167 of file motor.\+c.
+
+
+\begin{DoxyCode}
+167                            \{
+168 
+169     \textcolor{comment}{// Finding rightmost encoder value}
+170     \hyperlink{motor_8c_ab785ac435902235b39fedc7b50803b65}{motor\_speed\_controller}(100);
+171     \_delay\_ms(10000);
+172     \hyperlink{motor_8c_ad46191e177e5c2755171d534a0af9b10}{RIGHT\_ENCODER\_VALUE} = \hyperlink{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}{read\_motor\_encoder}();
+173 
+174     \textcolor{comment}{// Finding leftmost encoder value}
+175     \hyperlink{motor_8c_ab785ac435902235b39fedc7b50803b65}{motor\_speed\_controller}(-100);
+176     \_delay\_ms(10000);
+177     \hyperlink{motor_8c_a9efeb07235435a470d3d36022763330a}{LEFT\_ENCODER\_VALUE} = \hyperlink{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}{read\_motor\_encoder}();
+178 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!motor\+\_\+initialize@{motor\+\_\+initialize}}
+\index{motor\+\_\+initialize@{motor\+\_\+initialize}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{motor\+\_\+initialize(void)}{motor_initialize(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void motor\+\_\+initialize (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_a30b74f973804ddb7caa3deb41c2e4195}{}\label{motor_8c_a30b74f973804ddb7caa3deb41c2e4195}
+Function for initializing motor by initializing T\+WI and enabling outputs and inputs from A\+T\+Mega2560 (M\+J1 and M\+J2). 
+
+Definition at line 24 of file motor.\+c.
+
+
+\begin{DoxyCode}
+24                            \{
+25 
+26     \textcolor{comment}{// Initialize TWI/I2C-bus }
+27     \hyperlink{_t_w_i___master_8c_a535674ea2377f41d84c3ac28f9e1ff60}{TWI\_Master\_Initialise}();
+28 
+29     \textcolor{comment}{// Enable motor}
+30     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRH,PH4); \textcolor{comment}{// EN of MJ1}
+31     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTH,PH4); \textcolor{comment}{// Set EN pin high to enable motor}
+32 
+33 
+34     \textcolor{comment}{// Enable direction as output}
+35     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRH,PH1);  \textcolor{comment}{// DIR of MJ1}
+36 
+37     \textcolor{comment}{// Enable encoder as output}
+38     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRH,PH5); \textcolor{comment}{// !OE of MJ1}
+39     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRH,PH3); \textcolor{comment}{// SEL of MJ1}
+40     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(DDRH,PH6); \textcolor{comment}{// !RST of MJ1}
+41 
+42     \textcolor{comment}{// Reset encoder}
+43     \hyperlink{motor_8c_abe3f4d05e5d35990f3dd018f6ffa02f5}{reset\_motor\_encoder}();
+44 
+45     \textcolor{comment}{// Enable the 8-bits from the ADC as inputs}
+46     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,0);
+47     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,1);
+48     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,2);
+49     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,3);
+50     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,4);
+51     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,5);
+52     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,6);
+53     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(DDRK,7);
+54 
+55     \textcolor{comment}{// Calibrate the motor to make sure we know the position and position-limits before starting.}
+56     \hyperlink{motor_8c_a496e55be03461ae66c00869a3205f62c}{motor\_calibrate}();
+57 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!motor\+\_\+speed\+\_\+controller@{motor\+\_\+speed\+\_\+controller}}
+\index{motor\+\_\+speed\+\_\+controller@{motor\+\_\+speed\+\_\+controller}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{motor\+\_\+speed\+\_\+controller(int8\+\_\+t speed)}{motor_speed_controller(int8_t speed)}}]{\setlength{\rightskip}{0pt plus 5cm}void motor\+\_\+speed\+\_\+controller (
+\begin{DoxyParamCaption}
+\item[{int8\+\_\+t}]{speed}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_ab785ac435902235b39fedc7b50803b65}{}\label{motor_8c_ab785ac435902235b39fedc7b50803b65}
+Function for controlling the motor speed by passing in desired voltage value (negative values sets direction to left, positive to right) 
+\begin{DoxyParams}{Parameters}
+{\em int8\+\_\+t} & D\+A\+C\+\_\+voltage -\/ desired voltage. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 142 of file motor.\+c.
+
+
+\begin{DoxyCode}
+142                                           \{
+143     \textcolor{comment}{//printf("Initialized DAC voltage: %u \(\backslash\)n\(\backslash\)r", DAC\_voltage);}
+144     uint8\_t DAC\_voltage = abs(speed);
+145 
+146     \textcolor{keywordflow}{if} (speed < 0) \{
+147         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098adb45120aafd37a973140edee24708065}{LEFT});
+148         \textcolor{comment}{//printf("Motor direction: left\(\backslash\)n\(\backslash\)r");}
+149     \}
+150 
+151     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (speed > 0) \{
+152         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098aec8379af7490bb9eaaf579cf17876f38}{RIGHT});
+153         \textcolor{comment}{//printf("Motor direction: right\(\backslash\)n\(\backslash\)r");   }
+154     \}
+155 
+156     \textcolor{keywordflow}{else} \{
+157         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098af46d14eb9d5d71afc9f6e747689fcb56}{NEUTRAL});
+158         \textcolor{comment}{//printf("Motor direction: neutral\(\backslash\)n\(\backslash\)r");}
+159     \}
+160 
+161     \hyperlink{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{set\_motor\_speed}(DAC\_voltage);
+162 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!read\+\_\+motor\+\_\+encoder@{read\+\_\+motor\+\_\+encoder}}
+\index{read\+\_\+motor\+\_\+encoder@{read\+\_\+motor\+\_\+encoder}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{read\+\_\+motor\+\_\+encoder(void)}{read_motor_encoder(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int16\+\_\+t read\+\_\+motor\+\_\+encoder (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}{}\label{motor_8c_abbdbd136c783fe6b9517a1dc6cda1302}
+Function for reading the encoder counter. Reading motor encoder -\/ Movement increases or decreases an internal 16 bits counter. \begin{DoxyReturn}{Returns}
+(int16\+\_\+t) ((high\+\_\+byte $<$$<$ 8) $\vert$ low\+\_\+byte) -\/ Motor encoder output. 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file motor.\+c.
+
+
+\begin{DoxyCode}
+73                                 \{
+74 
+75     \textcolor{comment}{// !OE pin of MJ1 driven low to allow the counter to appear on MJ2.}
+76     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTH,PH5);
+77 
+78     \textcolor{comment}{// SEL of MJ1 selects either high byte (0) or low byte (1) on the pins. Select low to get high (MSB)}
+79     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTH,PH3);
+80 
+81     \textcolor{comment}{// Wait in 20 micro seconds}
+82     \_delay\_us(200);
+83 
+84     \textcolor{comment}{// Read MSB of ADC input}
+85     uint8\_t high\_byte = PINK;
+86 
+87     \textcolor{comment}{// SEL of MJ1 selects either high byte (0) or low byte (1) on the pins. Select high to get low (LSB).}
+88     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTH,PH3);
+89 
+90     \textcolor{comment}{// Wait in 20 micro seconds}
+91     \_delay\_us(200);
+92 
+93     \textcolor{comment}{// Read LSB of ADC input}
+94     uint8\_t low\_byte = PINK;
+95 
+96     \textcolor{comment}{// Set !OE high to disbale output of encoder}
+97     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTH,PH5);
+98 
+99     \textcolor{keywordflow}{return} (int16\_t) ((high\_byte << 8) | low\_byte);
+100 
+101 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!reset\+\_\+motor\+\_\+encoder@{reset\+\_\+motor\+\_\+encoder}}
+\index{reset\+\_\+motor\+\_\+encoder@{reset\+\_\+motor\+\_\+encoder}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{reset\+\_\+motor\+\_\+encoder(void)}{reset_motor_encoder(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void reset\+\_\+motor\+\_\+encoder (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_abe3f4d05e5d35990f3dd018f6ffa02f5}{}\label{motor_8c_abe3f4d05e5d35990f3dd018f6ffa02f5}
+Function for resetting the motor encoder by toggling R\+ST from M\+J1. 
+
+Definition at line 61 of file motor.\+c.
+
+
+\begin{DoxyCode}
+61                               \{
+62     \textcolor{comment}{// !RST resets the counter.}
+63     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTH, PH6);
+64     \_delay\_us(200);
+65     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTH, PH6);
+66 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!set\+\_\+motor\+\_\+direction@{set\+\_\+motor\+\_\+direction}}
+\index{set\+\_\+motor\+\_\+direction@{set\+\_\+motor\+\_\+direction}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{set\+\_\+motor\+\_\+direction(motor\+\_\+direction direction)}{set_motor_direction(motor_direction direction)}}]{\setlength{\rightskip}{0pt plus 5cm}void set\+\_\+motor\+\_\+direction (
+\begin{DoxyParamCaption}
+\item[{{\bf motor\+\_\+direction}}]{direction}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_a30fcfd6536c941be6affec7d270abc12}{}\label{motor_8c_a30fcfd6536c941be6affec7d270abc12}
+Function for setting the direction of the motor by setting or clearing the D\+IR pin in M\+J1 on motor box. 
+\begin{DoxyParams}{Parameters}
+{\em motor\+\_\+direction} & direction -\/ Enum value that is either L\+E\+FT, R\+I\+G\+HT or N\+E\+U\+T\+R\+AL. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 125 of file motor.\+c.
+
+
+\begin{DoxyCode}
+125                                                    \{
+126     \textcolor{keywordflow}{switch}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098}{direction}) \{
+127         \textcolor{keywordflow}{case} \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098adb45120aafd37a973140edee24708065}{LEFT}:
+128             \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTH, PH1);
+129             \textcolor{keywordflow}{break};
+130         \textcolor{keywordflow}{case} \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098aec8379af7490bb9eaaf579cf17876f38}{RIGHT}:
+131             \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTH, PH1);
+132             \textcolor{keywordflow}{break};
+133         \textcolor{keywordflow}{case} \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098af46d14eb9d5d71afc9f6e747689fcb56}{NEUTRAL}:
+134             \textcolor{keywordflow}{break};
+135     \}
+136 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!set\+\_\+motor\+\_\+speed@{set\+\_\+motor\+\_\+speed}}
+\index{set\+\_\+motor\+\_\+speed@{set\+\_\+motor\+\_\+speed}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{set\+\_\+motor\+\_\+speed(uint8\+\_\+t D\+A\+C\+\_\+voltage)}{set_motor_speed(uint8_t DAC_voltage)}}]{\setlength{\rightskip}{0pt plus 5cm}void set\+\_\+motor\+\_\+speed (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{D\+A\+C\+\_\+voltage}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{}\label{motor_8c_ad716cf9f11516d12e00a6dba81504c09}
+Function for setting the speed of the motor by sending the desired voltage to the motor box via T\+WI. 
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & D\+A\+C\+\_\+voltage -\/ The desired voltage for the motor (0-\/5V) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 107 of file motor.\+c.
+
+
+\begin{DoxyCode}
+107                                          \{
+108     
+109     uint8\_t DAC\_voltage\_msg[3];
+110 
+111     \textcolor{comment}{// Address}
+112     DAC\_voltage\_msg[0] = 0b01010000;
+113     \textcolor{comment}{// Command}
+114     DAC\_voltage\_msg[1] = 0b00000000;
+115     \textcolor{comment}{// Data}
+116     DAC\_voltage\_msg[2] = DAC\_voltage; 
+117 
+118     \hyperlink{_t_w_i___master_8c_a66af1f7289ae573818896f07e9efab70}{TWI\_Start\_Transceiver\_With\_Data}(DAC\_voltage\_msg, 3);
+119 \}
+\end{DoxyCode}
+\index{motor.\+c@{motor.\+c}!slider\+\_\+controller\+\_\+test@{slider\+\_\+controller\+\_\+test}}
+\index{slider\+\_\+controller\+\_\+test@{slider\+\_\+controller\+\_\+test}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{slider\+\_\+controller\+\_\+test(message msg)}{slider_controller_test(message msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void slider\+\_\+controller\+\_\+test (
+\begin{DoxyParamCaption}
+\item[{{\bf message}}]{msg}
+\end{DoxyParamCaption}
+)}\hypertarget{motor_8c_a4d43d7684cac1acbcbbe38c9cc89a03b}{}\label{motor_8c_a4d43d7684cac1acbcbbe38c9cc89a03b}
+Function for testing the slider-\/control og the motor. 
+\begin{DoxyParams}{Parameters}
+{\em message} & msg -\/ position message. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 196 of file motor.\+c.
+
+
+\begin{DoxyCode}
+196                                          \{
+197 
+198     uint8\_t ref\_pos = msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[3];
+199     printf(\textcolor{stringliteral}{"Received slider data %u\(\backslash\)n\(\backslash\)n\(\backslash\)r"}, ref\_pos);
+200     uint8\_t curr\_pos = \hyperlink{motor_8c_a8e9d1346911786c2b9fae25202cd5a1f}{get\_motor\_position}();
+201     printf(\textcolor{stringliteral}{"Current position %u\(\backslash\)n\(\backslash\)n\(\backslash\)r"}, curr\_pos);   
+202 
+203     int8\_t diff = (int8\_t)(ref\_pos - curr\_pos);
+204 
+205     printf(\textcolor{stringliteral}{"Difference between ref pos and curr pos %i\(\backslash\)n\(\backslash\)n\(\backslash\)r"}, diff);   
+206 
+207     \textcolor{keywordflow}{if} (diff > 0) \{
+208         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098adb45120aafd37a973140edee24708065}{LEFT});
+209         \hyperlink{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{set\_motor\_speed}(100);
+210         \textcolor{comment}{//printf("Motor direction: left\(\backslash\)n\(\backslash\)r");}
+211     \}
+212 
+213     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (diff < 0) \{
+214         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098aec8379af7490bb9eaaf579cf17876f38}{RIGHT});
+215         \hyperlink{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{set\_motor\_speed}(100);
+216         \textcolor{comment}{//printf("Motor direction: right\(\backslash\)n\(\backslash\)r");   }
+217     \}
+218 
+219     \textcolor{keywordflow}{else} \{
+220         \hyperlink{motor_8c_a30fcfd6536c941be6affec7d270abc12}{set\_motor\_direction}(\hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098af46d14eb9d5d71afc9f6e747689fcb56}{NEUTRAL});
+221         \hyperlink{motor_8c_ad716cf9f11516d12e00a6dba81504c09}{set\_motor\_speed}(100);
+222         \textcolor{comment}{//printf("Motor direction: neutral\(\backslash\)n\(\backslash\)r");}
+223     \}
+224 
+225     
+226 \}\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\index{motor.\+c@{motor.\+c}!d\+\_\+factor@{d\+\_\+factor}}
+\index{d\+\_\+factor@{d\+\_\+factor}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{d\+\_\+factor}{d_factor}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t d\+\_\+factor}\hypertarget{motor_8c_a943b7dea2a63290bf977976cd7df3984}{}\label{motor_8c_a943b7dea2a63290bf977976cd7df3984}
+
+
+Definition at line 13 of file motor.\+c.
+
+\index{motor.\+c@{motor.\+c}!i\+\_\+factor@{i\+\_\+factor}}
+\index{i\+\_\+factor@{i\+\_\+factor}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{i\+\_\+factor}{i_factor}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t i\+\_\+factor}\hypertarget{motor_8c_a2a385c4cdfce8c93d2e0f31d8a47e099}{}\label{motor_8c_a2a385c4cdfce8c93d2e0f31d8a47e099}
+
+
+Definition at line 12 of file motor.\+c.
+
+\index{motor.\+c@{motor.\+c}!L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE@{L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}}
+\index{L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE@{L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}{LEFT_ENCODER_VALUE}}]{\setlength{\rightskip}{0pt plus 5cm}int L\+E\+F\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE = 9000}\hypertarget{motor_8c_a9efeb07235435a470d3d36022763330a}{}\label{motor_8c_a9efeb07235435a470d3d36022763330a}
+
+
+Definition at line 16 of file motor.\+c.
+
+\index{motor.\+c@{motor.\+c}!p\+\_\+factor@{p\+\_\+factor}}
+\index{p\+\_\+factor@{p\+\_\+factor}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{p\+\_\+factor}{p_factor}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t p\+\_\+factor}\hypertarget{motor_8c_ad50b0e6fb042c3ee20a10e794d064469}{}\label{motor_8c_ad50b0e6fb042c3ee20a10e794d064469}
+
+
+Definition at line 11 of file motor.\+c.
+
+\index{motor.\+c@{motor.\+c}!pid@{pid}}
+\index{pid@{pid}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{pid}{pid}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf P\+ID}$\ast$ pid}\hypertarget{motor_8c_a37d6214932b4496fc7b944d599cc14f4}{}\label{motor_8c_a37d6214932b4496fc7b944d599cc14f4}
+
+
+Definition at line 9 of file motor.\+c.
+
+\index{motor.\+c@{motor.\+c}!R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE@{R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}}
+\index{R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE@{R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}!motor.\+c@{motor.\+c}}
+\subsubsection[{\texorpdfstring{R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE}{RIGHT_ENCODER_VALUE}}]{\setlength{\rightskip}{0pt plus 5cm}int R\+I\+G\+H\+T\+\_\+\+E\+N\+C\+O\+D\+E\+R\+\_\+\+V\+A\+L\+UE = 0}\hypertarget{motor_8c_ad46191e177e5c2755171d534a0af9b10}{}\label{motor_8c_ad46191e177e5c2755171d534a0af9b10}
+
+
+Definition at line 17 of file motor.\+c.
+

@@ -1,4 +1,4 @@
-/** @package SPI.h
+/** @file SPI.h
  *  Header-file for the SPI communication driver.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */

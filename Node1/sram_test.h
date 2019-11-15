@@ -1,5 +1,5 @@
-/** @package sram_test.h
- *  Header-file for testing reading and writing of data.
+/** @file sram_test.h
+ *  @brief Header-file for testing reading and writing of data.
  */
 #include <stdlib.h>
 #include <stdint.h>

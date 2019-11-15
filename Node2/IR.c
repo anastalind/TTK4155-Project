@@ -1,5 +1,5 @@
-/** @package IR.c
- *  c-file for the IR
+/** @file IR.c
+ *  @brief c-file for the IR
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 

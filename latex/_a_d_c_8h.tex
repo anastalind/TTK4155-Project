@@ -1,0 +1,109 @@
+\hypertarget{_a_d_c_8h}{}\section{Node1/\+A\+DC.h File Reference}
+\label{_a_d_c_8h}\index{Node1/\+A\+D\+C.\+h@{Node1/\+A\+D\+C.\+h}}
+
+
+Header-\/file for the Analog to Digital Converter. Returning analog voltage output of joystick, slider and buttons from digital signals from U\+S\+B-\/multiboard.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$avr/io.\+h$>$}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}addresses.\+h\char`\"{}}\\*
+Include dependency graph for A\+D\+C.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_a_d_c_8h_a43bafb28b29491ec7f871319b5a3b2f8}{F\+\_\+\+C\+PU}~4915200
+\item 
+\#define \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\+\_\+bit}(reg,  bit)~(reg $\vert$= (1 $<$$<$ bit))
+\item 
+\#define \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\+\_\+bit}(reg,  bit)~(reg \&= $\sim$(1 $<$$<$ bit))
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \hyperlink{_a_d_c_8h_a6ea1e122e4b99ea1d173921f487f1579}{selected\+\_\+channel\+\_\+output} (int channel)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Header-\/file for the Analog to Digital Converter. Returning analog voltage output of joystick, slider and buttons from digital signals from U\+S\+B-\/multiboard. 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{A\+D\+C.\+h@{A\+D\+C.\+h}!clear\+\_\+bit@{clear\+\_\+bit}}
+\index{clear\+\_\+bit@{clear\+\_\+bit}!A\+D\+C.\+h@{A\+D\+C.\+h}}
+\subsubsection[{\texorpdfstring{clear\+\_\+bit}{clear_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define clear\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg \&= $\sim$(1 $<$$<$ bit))}\hypertarget{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{}\label{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}
+
+
+Definition at line 23 of file A\+D\+C.\+h.
+
+\index{A\+D\+C.\+h@{A\+D\+C.\+h}!F\+\_\+\+C\+PU@{F\+\_\+\+C\+PU}}
+\index{F\+\_\+\+C\+PU@{F\+\_\+\+C\+PU}!A\+D\+C.\+h@{A\+D\+C.\+h}}
+\subsubsection[{\texorpdfstring{F\+\_\+\+C\+PU}{F_CPU}}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\+\_\+\+C\+PU~4915200}\hypertarget{_a_d_c_8h_a43bafb28b29491ec7f871319b5a3b2f8}{}\label{_a_d_c_8h_a43bafb28b29491ec7f871319b5a3b2f8}
+
+
+Definition at line 19 of file A\+D\+C.\+h.
+
+\index{A\+D\+C.\+h@{A\+D\+C.\+h}!set\+\_\+bit@{set\+\_\+bit}}
+\index{set\+\_\+bit@{set\+\_\+bit}!A\+D\+C.\+h@{A\+D\+C.\+h}}
+\subsubsection[{\texorpdfstring{set\+\_\+bit}{set_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define set\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg $\vert$= (1 $<$$<$ bit))}\hypertarget{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{}\label{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}
+
+
+Definition at line 22 of file A\+D\+C.\+h.
+
+
+
+\subsection{Function Documentation}
+\index{A\+D\+C.\+h@{A\+D\+C.\+h}!selected\+\_\+channel\+\_\+output@{selected\+\_\+channel\+\_\+output}}
+\index{selected\+\_\+channel\+\_\+output@{selected\+\_\+channel\+\_\+output}!A\+D\+C.\+h@{A\+D\+C.\+h}}
+\subsubsection[{\texorpdfstring{selected\+\_\+channel\+\_\+output(int channel)}{selected_channel_output(int channel)}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t selected\+\_\+channel\+\_\+output (
+\begin{DoxyParamCaption}
+\item[{int}]{channel}
+\end{DoxyParamCaption}
+)}\hypertarget{_a_d_c_8h_a6ea1e122e4b99ea1d173921f487f1579}{}\label{_a_d_c_8h_a6ea1e122e4b99ea1d173921f487f1579}
+Function for returning output of selected channel of the A\+DC. 
+\begin{DoxyParams}{Parameters}
+{\em channel} & -\/ Hexadecimal representation of binary number corresponding to channels on A\+DC. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+address\mbox{[}0\mbox{]} -\/ Voltage output of selected A\+D\+C-\/channel 
+\end{DoxyReturn}
+
+
+Definition at line 15 of file A\+D\+C.\+c.
+
+
+\begin{DoxyCode}
+15                                             \{
+16     \textcolor{comment}{// Write to the channel wanted on the ADC }
+17     \textcolor{keyword}{volatile} \textcolor{keywordtype}{char} *address = \hyperlink{addresses_8h_a87674247450a1a61c2c9bbe53109b925}{adc\_addr};
+18     address[0] = channel;
+19 
+20     \textcolor{comment}{// Delaying time t\_c, waiting for writetoggle to be registered}
+21     \_delay\_us(500);
+22 
+23     \textcolor{comment}{// Returning 8 bit digital signal from ADC, converted from channel specified in input}
+24     \textcolor{keywordflow}{return} address[0];
+25 \}
+\end{DoxyCode}

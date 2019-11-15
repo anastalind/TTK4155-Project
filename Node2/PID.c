@@ -1,11 +1,15 @@
+/** @file PID.c
+ *  @brief C-file for creating and using a PID-controller on the motor movement.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
+ */
+
 #include "PID.h"
 
 int PID_FLAG = 0;
 
-/**
+/** Function for initializing the PID-regulator.
  */
-void PID_init(PID *pid)
-{
+void PID_init(PID *pid) {
 
 	pid->sum_error = 0;
 	pid->last_process_value = 0;
@@ -27,8 +31,11 @@ void PID_init(PID *pid)
 	_delay_ms(500);
 }
 
-/**
- * 
+/** Introducing the PID-controller with each computation for P, I and D-terms.
+ * 	@param reference_value - The reference value from the current position
+ * 	@param process_value - The value of the process position
+ *  @param PID *pid - PID object pointer, setting the terms og P, I and D. 
+ *  @return control_variable - Calculated control-variable.
  */
 int16_t PID_controller(uint8_t reference_value, uint8_t process_value, PID *pid)
 {
@@ -41,16 +48,21 @@ int16_t PID_controller(uint8_t reference_value, uint8_t process_value, PID *pid)
 
 	p_term = pid->K_p * error;
 	i_term = pid->K_i * pid->sum_error;
-	d_term = pid->K_d * (error - pid->last_error);
+	d_term = pid->K_d * (error - pid->last_process_value);
 
-	pid->last_error = error;
+	pid->last_process_value = error;
 
 	control_variable = (p_term + i_term + d_term);
 
 	return ((int16_t)control_variable);
 }
 
-ISR(TIMER3_OVF_vect) {
+
+/** Interrupt vector function.
+ *  @param TIMER3_OVF_vect
+ */
+ISR(TIMER3_OVF_vect) 
+{
 
 	PID_FLAG = 1;
 

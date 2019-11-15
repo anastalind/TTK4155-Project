@@ -1,5 +1,5 @@
-/** @package SPI.c
- *  c-file for the SPI communication driver.
+/** @file SPI.c
+ *  @brief c-file for the SPI communication driver.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 

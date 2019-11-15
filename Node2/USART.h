@@ -1,5 +1,5 @@
-/** @package USART.h
- *  Header-file for the USART driver - to initialize, recieve and transfer data. 
+/** @file USART.h
+ *  @brief Header-file for the USART driver - to initialize, recieve and transfer data. 
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 #ifndef USART_H

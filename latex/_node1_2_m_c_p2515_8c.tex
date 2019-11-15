@@ -1,0 +1,276 @@
+\hypertarget{_node1_2_m_c_p2515_8c}{}\section{Node1/\+M\+C\+P2515.c File Reference}
+\label{_node1_2_m_c_p2515_8c}\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+{\ttfamily \#include \char`\"{}M\+C\+P2515.\+h\char`\"{}}\\*
+Include dependency graph for M\+C\+P2515.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \hyperlink{_node1_2_m_c_p2515_8c_a02d25f34e42b1ae73a0a3f691810636a}{M\+C\+P\+\_\+init} (void)
+\item 
+uint8\+\_\+t \hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{M\+C\+P\+\_\+read} (uint8\+\_\+t address)
+\item 
+void \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{M\+C\+P\+\_\+write} (uint8\+\_\+t address, char data)
+\item 
+void \hyperlink{_node1_2_m_c_p2515_8c_ac0df668851ce70c796b20865af0bb7a7}{M\+C\+P\+\_\+request\+\_\+to\+\_\+send} (uint8\+\_\+t bit)
+\item 
+uint8\+\_\+t \hyperlink{_node1_2_m_c_p2515_8c_a0bcc6e705607f129117aaf5bdb10adea}{M\+C\+P\+\_\+read\+\_\+status} (void)
+\item 
+void \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{M\+C\+P\+\_\+bit\+\_\+modify} (uint8\+\_\+t address, uint8\+\_\+t mask, uint8\+\_\+t data)
+\item 
+void \hyperlink{_node1_2_m_c_p2515_8c_a2dc32ea9c68caed77b6a1e8369d96cc8}{M\+C\+P\+\_\+reset} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+bit\+\_\+modify@{M\+C\+P\+\_\+bit\+\_\+modify}}
+\index{M\+C\+P\+\_\+bit\+\_\+modify@{M\+C\+P\+\_\+bit\+\_\+modify}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+bit\+\_\+modify(uint8\+\_\+t address, uint8\+\_\+t mask, uint8\+\_\+t data)}{MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data)}}]{\setlength{\rightskip}{0pt plus 5cm}void M\+C\+P\+\_\+bit\+\_\+modify (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{address, }
+\item[{uint8\+\_\+t}]{mask, }
+\item[{uint8\+\_\+t}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{}\label{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}
+Function for setting or clearing individual bits in specific status and control registers. 
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & address -\/ The address of the register you want to modify \\
+\hline
+{\em uint8\+\_\+t} & mask -\/ Mask determines which bit in register will be allowed to change \\
+\hline
+{\em uint8\+\_\+t} & data -\/ Data byte determines what value the modified bits in the register will be changed to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 127 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+127                                                                 \{
+128     \textcolor{comment}{// Select CAN-controller with chip select}
+129     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+130 
+131     \textcolor{comment}{// Send modify command}
+132     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a973305a49ffc6eed476689b0a8dd69e6}{MCP\_BITMOD});
+133 
+134     \textcolor{comment}{// Send address of register}
+135     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(address);
+136 
+137     \textcolor{comment}{// Send mask, which bit in register allowed to change}
+138     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(mask);
+139 
+140     \textcolor{comment}{// Send data byte, what value the modified bits will change to.}
+141     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(data);
+142 
+143     \textcolor{comment}{// Deselect CAN-controller with chip select}
+144     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS}); 
+145 \}
+\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+init@{M\+C\+P\+\_\+init}}
+\index{M\+C\+P\+\_\+init@{M\+C\+P\+\_\+init}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+init(void)}{MCP_init(void)}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t M\+C\+P\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_a02d25f34e42b1ae73a0a3f691810636a}{}\label{_node1_2_m_c_p2515_8c_a02d25f34e42b1ae73a0a3f691810636a}
+Function for initializing M\+CP and checking if it is in configuration mode. \begin{DoxyReturn}{Returns}
+uint8\+\_\+t 
+\end{DoxyReturn}
+
+
+Definition at line 11 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+11                       \{
+12     \textcolor{comment}{//Initialize SPI}
+13     \hyperlink{_node1_2_s_p_i_8c_afd9b09f58917f0e2d14c61b956eba214}{SPI\_init}();
+14 
+15     \textcolor{comment}{//Send reset-command}
+16     \hyperlink{_node1_2_m_c_p2515_8c_a2dc32ea9c68caed77b6a1e8369d96cc8}{MCP\_reset}();
+17 
+18     \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{MCP\_bit\_modify}(\hyperlink{_node1_2_m_c_p2515_8h_a25864642b445cbfbd85f2a1a22947558}{MCP\_CANCTRL}, \hyperlink{_node1_2_m_c_p2515_8h_aba2b187200eec47c5fc32655e296783d}{MODE\_MASK}, 
+      \hyperlink{_node1_2_m_c_p2515_8h_a5552a5de9b59914458ab99d568bf2763}{MODE\_CONFIG});
+19 
+20     \textcolor{comment}{//Test self}
+21     uint8\_t value;
+22     value = \hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(\hyperlink{_node1_2_m_c_p2515_8h_a1a470d80ae3644bf02f2cd4a7bb6aa39}{MCP\_CANSTAT});
+23 
+24     \textcolor{keywordflow}{if} ((value & \hyperlink{_node1_2_m_c_p2515_8h_aba2b187200eec47c5fc32655e296783d}{MODE\_MASK})!= \hyperlink{_node1_2_m_c_p2515_8h_a5552a5de9b59914458ab99d568bf2763}{MODE\_CONFIG}) \{
+25         printf(\textcolor{stringliteral}{"MCP2515 is not in configuration mode after reset!\(\backslash\)n\(\backslash\)r"});
+26         \textcolor{keywordflow}{return} 1;
+27     \}
+28     \textcolor{keywordflow}{return} 0;  
+29 \}
+\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+read@{M\+C\+P\+\_\+read}}
+\index{M\+C\+P\+\_\+read@{M\+C\+P\+\_\+read}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+read(uint8\+\_\+t address)}{MCP_read(uint8_t address)}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t M\+C\+P\+\_\+read (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{address}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{}\label{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}
+Function for reading data stored at spesific address from M\+C\+P2515. 
+\begin{DoxyParams}{Parameters}
+{\em uint8\+\_\+t} & address -\/ Select address you want data from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t character result -\/ The data stored at address selected 
+\end{DoxyReturn}
+
+
+Definition at line 36 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+36                                  \{
+37     uint8\_t result;
+38 
+39     \textcolor{comment}{// Select CAN-controller with chip select}
+40     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+41     
+42     \textcolor{comment}{// Send read instruction}
+43     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a1d9ce2ac1c72654e113298fc1307102a}{MCP\_READ});
+44     
+45     \textcolor{comment}{// Send address to shift data stored at address to SO pin}
+46     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(address);
+47 
+48     \textcolor{comment}{// Read result}
+49     result = \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(0x00); 
+50 
+51     \textcolor{comment}{// Deselect CAN-controller with chip seop\_until\_bit\_is\_set(SPSR, SPIF);lect}
+52     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+53 
+54     \textcolor{keywordflow}{return} result;
+55 \}
+\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+read\+\_\+status@{M\+C\+P\+\_\+read\+\_\+status}}
+\index{M\+C\+P\+\_\+read\+\_\+status@{M\+C\+P\+\_\+read\+\_\+status}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+read\+\_\+status(void)}{MCP_read_status(void)}}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t M\+C\+P\+\_\+read\+\_\+status (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_a0bcc6e705607f129117aaf5bdb10adea}{}\label{_node1_2_m_c_p2515_8c_a0bcc6e705607f129117aaf5bdb10adea}
+Function for allowing single instruction access to some of the often used status bits for message reception and transmission. \begin{DoxyReturn}{Returns}
+uint8\+\_\+t status -\/ Status for the M\+CP 
+\end{DoxyReturn}
+
+
+Definition at line 104 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+104                              \{
+105     uint8\_t status;
+106 
+107     \textcolor{comment}{// Select CAN-controller with chip select}
+108     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+109 
+110     \textcolor{comment}{// Sending read status command byte}
+111     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a399014e8231cd5d4acd4bad7a8553bb7}{MCP\_READ\_STATUS});
+112 
+113     \textcolor{comment}{// Reading status}
+114     status = \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(0x00);
+115 
+116     \textcolor{comment}{// Deselect CAN-controller with chip select}
+117     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});   
+118 
+119     \textcolor{keywordflow}{return} status;
+120 \}
+\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+request\+\_\+to\+\_\+send@{M\+C\+P\+\_\+request\+\_\+to\+\_\+send}}
+\index{M\+C\+P\+\_\+request\+\_\+to\+\_\+send@{M\+C\+P\+\_\+request\+\_\+to\+\_\+send}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+request\+\_\+to\+\_\+send(uint8\+\_\+t bit)}{MCP_request_to_send(uint8_t bit)}}]{\setlength{\rightskip}{0pt plus 5cm}void M\+C\+P\+\_\+request\+\_\+to\+\_\+send (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{bit}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_ac0df668851ce70c796b20865af0bb7a7}{}\label{_node1_2_m_c_p2515_8c_ac0df668851ce70c796b20865af0bb7a7}
+Function for initiating message transmission for one or more of the transmit buffers. 
+
+Definition at line 80 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+80                                      \{
+81     \textcolor{comment}{// Select CAN-controller with chip select}
+82     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+83 
+84     \textcolor{comment}{// Send RTS command byte. The last 3 bits of it indicate which transmit buffers are enabled to send.}
+85     \textcolor{keywordflow}{switch} (bit) \{
+86         \textcolor{keywordflow}{case} 0: 
+87             \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_ad81495d052d65e3a97a4c2688119ac0e}{MCP\_RTS\_TX0});
+88         \textcolor{keywordflow}{case} 1: 
+89             \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a6cc3f921cb8d7cd9323909466ad4307e}{MCP\_RTS\_TX1});
+90         \textcolor{keywordflow}{case} 2: 
+91             \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a0fa9efa8755c0ab500fc2e2da56126d0}{MCP\_RTS\_TX2});
+92         \textcolor{keywordflow}{default}: 
+93             \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_ade85afe7da126728c581e32c1fb9fb5b}{MCP\_RTS\_ALL});
+94     \}
+95 
+96     \textcolor{comment}{// Deselect CAN-controller with chip select}
+97     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+98 \}
+\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+reset@{M\+C\+P\+\_\+reset}}
+\index{M\+C\+P\+\_\+reset@{M\+C\+P\+\_\+reset}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+reset(void)}{MCP_reset(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void M\+C\+P\+\_\+reset (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_a2dc32ea9c68caed77b6a1e8369d96cc8}{}\label{_node1_2_m_c_p2515_8c_a2dc32ea9c68caed77b6a1e8369d96cc8}
+Function for resetting the internal registers of M\+C\+P2515, and setting configuration mode. 
+
+Definition at line 149 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+149                     \{
+150     \textcolor{comment}{// Select CAN-controller with chip select}
+151     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+152 
+153     \textcolor{comment}{// Send reset instruction}
+154     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a8538419d98eecb32d7b8a6e07e8a256f}{MCP\_RESET});
+155 
+156     \textcolor{comment}{// Deselect CAN-controller with chip select}
+157     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+158 \}\end{DoxyCode}
+\index{Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}!M\+C\+P\+\_\+write@{M\+C\+P\+\_\+write}}
+\index{M\+C\+P\+\_\+write@{M\+C\+P\+\_\+write}!Node1/\+M\+C\+P2515.\+c@{Node1/\+M\+C\+P2515.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+write(uint8\+\_\+t address, char data)}{MCP_write(uint8_t address, char data)}}]{\setlength{\rightskip}{0pt plus 5cm}void M\+C\+P\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{address, }
+\item[{char}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{}\label{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}
+Function for writing data address of the M\+C\+P2515 
+\begin{DoxyParams}{Parameters}
+{\em char} & data \\
+\hline
+{\em uint8\+\_\+t} & address \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 61 of file M\+C\+P2515.\+c.
+
+
+\begin{DoxyCode}
+61                                           \{
+62     \textcolor{comment}{// Select CAN-controller with chip select}
+63     \hyperlink{_a_d_c_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+64 
+65     \textcolor{comment}{// Sending write instruction}
+66     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(\hyperlink{_node1_2_m_c_p2515_8h_aa144564452e7a678d00d9727ce35f82f}{MCP\_WRITE});
+67 
+68     \textcolor{comment}{// Sending address}
+69     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(address);
+70 
+71     \textcolor{comment}{// Sending byte of data}
+72     \hyperlink{_node1_2_s_p_i_8c_abf767bd2a01130b1d7b907b9e8f4cd81}{SPI\_read\_write}(data);
+73 
+74     \textcolor{comment}{// Deselect CAN-controller with chip select}
+75     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(PORTB, \hyperlink{_node1_2_m_c_p2515_8h_ab8cc8ec9bfd0e83fbc693b57f91545b1}{CAN\_CS});
+76 \}
+\end{DoxyCode}

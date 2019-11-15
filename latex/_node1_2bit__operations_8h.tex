@@ -1,0 +1,97 @@
+\hypertarget{_node1_2bit__operations_8h}{}\section{Node1/bit\+\_\+operations.h File Reference}
+\label{_node1_2bit__operations_8h}\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+{\ttfamily \#include $<$avr/io.\+h$>$}\\*
+Include dependency graph for bit\+\_\+operations.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_aee5ffa3d123086ed1df972387522e4eb}{set\+\_\+bit}(reg,  bit)~(reg $\vert$= (1 $<$$<$ bit))
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_a5be84c4cec47051599ffcfeaf4589864}{clear\+\_\+bit}(reg,  bit)~(reg \&= $\sim$(1 $<$$<$ bit))
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_a0817a980abafd2745068cc1634801d0e}{test\+\_\+bit}(reg,  bit)~(reg \& (1 $<$$<$ bit))
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_a341e5e779d87705d3d4b08d6eeba0011}{toggle\+\_\+bit}(reg,  bit)~(reg $^\wedge$= ( 1 $<$$<$ bit))
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_adb35c737e10e9b80fe812de60da481a9}{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set}(reg,  bit)~while( !\hyperlink{_node2_2bit__operations_8h_a0817a980abafd2745068cc1634801d0e}{test\+\_\+bit}( reg, bit ) )
+\item 
+\#define \hyperlink{_node1_2bit__operations_8h_af55a514ec0149d7d22d3bc8f153f7d68}{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear}(reg,  bit)~while( \hyperlink{_node2_2bit__operations_8h_a0817a980abafd2745068cc1634801d0e}{test\+\_\+bit}( reg, bit ) )
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!clear\+\_\+bit@{clear\+\_\+bit}}
+\index{clear\+\_\+bit@{clear\+\_\+bit}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{clear\+\_\+bit}{clear_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define clear\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg \&= $\sim$(1 $<$$<$ bit))}\hypertarget{_node1_2bit__operations_8h_a5be84c4cec47051599ffcfeaf4589864}{}\label{_node1_2bit__operations_8h_a5be84c4cec47051599ffcfeaf4589864}
+
+
+Definition at line 12 of file bit\+\_\+operations.\+h.
+
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear@{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear}}
+\index{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear@{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear}{loop_until_bit_is_clear}}]{\setlength{\rightskip}{0pt plus 5cm}\#define loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+clear(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~while( {\bf test\+\_\+bit}( reg, bit ) )}\hypertarget{_node1_2bit__operations_8h_af55a514ec0149d7d22d3bc8f153f7d68}{}\label{_node1_2bit__operations_8h_af55a514ec0149d7d22d3bc8f153f7d68}
+
+
+Definition at line 16 of file bit\+\_\+operations.\+h.
+
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set@{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set}}
+\index{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set@{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set}{loop_until_bit_is_set}}]{\setlength{\rightskip}{0pt plus 5cm}\#define loop\+\_\+until\+\_\+bit\+\_\+is\+\_\+set(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~while( !{\bf test\+\_\+bit}( reg, bit ) )}\hypertarget{_node1_2bit__operations_8h_adb35c737e10e9b80fe812de60da481a9}{}\label{_node1_2bit__operations_8h_adb35c737e10e9b80fe812de60da481a9}
+
+
+Definition at line 15 of file bit\+\_\+operations.\+h.
+
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!set\+\_\+bit@{set\+\_\+bit}}
+\index{set\+\_\+bit@{set\+\_\+bit}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{set\+\_\+bit}{set_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define set\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg $\vert$= (1 $<$$<$ bit))}\hypertarget{_node1_2bit__operations_8h_aee5ffa3d123086ed1df972387522e4eb}{}\label{_node1_2bit__operations_8h_aee5ffa3d123086ed1df972387522e4eb}
+
+
+Definition at line 11 of file bit\+\_\+operations.\+h.
+
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!test\+\_\+bit@{test\+\_\+bit}}
+\index{test\+\_\+bit@{test\+\_\+bit}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{test\+\_\+bit}{test_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define test\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg \& (1 $<$$<$ bit))}\hypertarget{_node1_2bit__operations_8h_a0817a980abafd2745068cc1634801d0e}{}\label{_node1_2bit__operations_8h_a0817a980abafd2745068cc1634801d0e}
+
+
+Definition at line 13 of file bit\+\_\+operations.\+h.
+
+\index{Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}!toggle\+\_\+bit@{toggle\+\_\+bit}}
+\index{toggle\+\_\+bit@{toggle\+\_\+bit}!Node1/bit\+\_\+operations.\+h@{Node1/bit\+\_\+operations.\+h}}
+\subsubsection[{\texorpdfstring{toggle\+\_\+bit}{toggle_bit}}]{\setlength{\rightskip}{0pt plus 5cm}\#define toggle\+\_\+bit(
+\begin{DoxyParamCaption}
+\item[{}]{reg, }
+\item[{}]{bit}
+\end{DoxyParamCaption}
+)~(reg $^\wedge$= ( 1 $<$$<$ bit))}\hypertarget{_node1_2bit__operations_8h_a341e5e779d87705d3d4b08d6eeba0011}{}\label{_node1_2bit__operations_8h_a341e5e779d87705d3d4b08d6eeba0011}
+
+
+Definition at line 14 of file bit\+\_\+operations.\+h.
+

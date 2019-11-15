@@ -1,5 +1,5 @@
-/** @package CAN.h
- *  Header-file for the CAN driver. High level driver sending and receiving CAN messages.
+/** @file CAN.h
+ *  @brief Header-file for the CAN driver. High level driver sending and receiving CAN messages.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -23,7 +23,7 @@ typedef struct {
 } message;
 
 
-/** Function for initializing CAN
+/** Function for initializing CAN.
  */
 int CAN_init(void);
 
@@ -48,5 +48,6 @@ void CAN_transmit_complete(void);
 /** 
  */
 void CAN_int_vect(void);
+
 
 #endif

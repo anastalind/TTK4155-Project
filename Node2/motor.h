@@ -1,5 +1,5 @@
-/** @package motor.h
- *  Header-file for controlling the speed of the motor
+/** @file motor.h
+ *  @brief Header-file for controlling the speed of the motor
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -16,8 +16,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <util/delay.h>
-
-
 
 typedef enum {LEFT, RIGHT, NEUTRAL} motor_direction;
 
@@ -51,13 +49,19 @@ void motor_calibrate(void);
  */
 void set_motor_direction(motor_direction direction);
 
+/** Function for reading the position-limits of the board and returning the current position of the motor.
+ *  @return current_position - a value between (0, 255) representing the motors position.
+ */ 
+uint8_t get_motor_position(void); 
 
 /** Function for controlling the motor speed by passing in desired voltage value (negative values sets direction to left, positive to right)
  *  @param uint8_t DAC_voltage - desired voltage.
  */
 void motor_speed_controller(int8_t speed);
 
-
+/** Function for testing the slider-control og the motor. 
+ *  @param message msg - position message.
+ */
 void slider_controller_test(message msg);
     
 #endif

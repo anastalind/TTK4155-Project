@@ -1,7 +1,6 @@
-/** @package slider.h
+/** @file slider.h
  *  
- *  Header-file considering the sliders on the USB-multiboards behaviour. 
- *  Converting the voltage resolution of 0-255 on the sliders to a percent-representation 0-100.
+ *  @brief Header-file considering the sliders on the USB-multiboards behaviour. Converting the voltage resolution of 0-255 on the sliders to a percent-representation 0-100.
  *  
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */

@@ -1,0 +1,98 @@
+\hypertarget{slider_8h}{}\section{Node1/slider.h File Reference}
+\label{slider_8h}\index{Node1/slider.\+h@{Node1/slider.\+h}}
+
+
+Header-\/file considering the sliders on the U\+S\+B-\/multiboards behaviour. Converting the voltage resolution of 0-\/255 on the sliders to a percent-\/representation 0-\/100.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$avr/io.\+h$>$}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+Include dependency graph for slider.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_sliders}{Sliders}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_sliders}{Sliders} \hyperlink{slider_8h_a2331c701e5ef52a247d8d0dfdca7ec9e}{slider\+\_\+position} ()
+\item 
+void \hyperlink{slider_8h_abaab9f682a623ce721464fd81470f547}{test\+\_\+slider\+\_\+position} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Header-\/file considering the sliders on the U\+S\+B-\/multiboards behaviour. Converting the voltage resolution of 0-\/255 on the sliders to a percent-\/representation 0-\/100. 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{slider.\+h@{slider.\+h}!slider\+\_\+position@{slider\+\_\+position}}
+\index{slider\+\_\+position@{slider\+\_\+position}!slider.\+h@{slider.\+h}}
+\subsubsection[{\texorpdfstring{slider\+\_\+position()}{slider_position()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sliders} slider\+\_\+position (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{slider_8h_a2331c701e5ef52a247d8d0dfdca7ec9e}{}\label{slider_8h_a2331c701e5ef52a247d8d0dfdca7ec9e}
+Function retrieving position of right and left sliders as a percent-\/value 0-\/100 
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+struct \hyperlink{struct_sliders}{Sliders} position -\/ the position of the left and right slider. 
+\end{DoxyReturn}
+
+
+Definition at line 20 of file slider.\+c.
+
+
+\begin{DoxyCode}
+20                              \{
+21     
+22     \hyperlink{struct_sliders}{Sliders} position;
+23 
+24     \textcolor{comment}{// Selecting which channel of the ADC to get output from. Hexadecimal representation of channel wanted
+       from ADC.}
+25     \textcolor{keywordtype}{int} left\_slider = \hyperlink{_a_d_c_8c_a6ea1e122e4b99ea1d173921f487f1579}{selected\_channel\_output}(
+      \hyperlink{slider_8c_adc37ba66d0c4c89c0374e0233301e495}{LEFT\_SLIDER\_CHANNEL});
+26     \textcolor{keywordtype}{int} right\_slider = \hyperlink{_a_d_c_8c_a6ea1e122e4b99ea1d173921f487f1579}{selected\_channel\_output}(
+      \hyperlink{slider_8c_aaf926ecb7f91fb944e9e4e42d2fb31f8}{RIGHT\_SLIDER\_CHANNEL});
+27 
+28     \textcolor{comment}{// Output with resolution 0-255}
+29     position.\hyperlink{struct_sliders_a7ba3b9ca46f73ff8e8d942ee9e4147b4}{Left} = left\_slider;
+30     position.\hyperlink{struct_sliders_a2d43e10690bee0fefff9e526c3c9bee9}{Right} = right\_slider;
+31 
+32     \textcolor{keywordflow}{return} position;
+33 \}
+\end{DoxyCode}
+\index{slider.\+h@{slider.\+h}!test\+\_\+slider\+\_\+position@{test\+\_\+slider\+\_\+position}}
+\index{test\+\_\+slider\+\_\+position@{test\+\_\+slider\+\_\+position}!slider.\+h@{slider.\+h}}
+\subsubsection[{\texorpdfstring{test\+\_\+slider\+\_\+position(void)}{test_slider_position(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void test\+\_\+slider\+\_\+position (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{slider_8h_abaab9f682a623ce721464fd81470f547}{}\label{slider_8h_abaab9f682a623ce721464fd81470f547}
+Test function for reading slider position. 
+
+Definition at line 37 of file slider.\+c.
+
+
+\begin{DoxyCode}
+37                                \{
+38         \textcolor{comment}{//Read Slider position: }
+39         \hyperlink{struct_sliders}{Sliders} position = \hyperlink{slider_8c_ac1b05e9c35a401bc962f57375abcf8c3}{slider\_position}();
+40 
+41         printf(\textcolor{stringliteral}{"Left-slider: %i\(\backslash\)n\(\backslash\)r"}, position.\hyperlink{struct_sliders_a7ba3b9ca46f73ff8e8d942ee9e4147b4}{Left});
+42         printf(\textcolor{stringliteral}{"Right-slider: %i\(\backslash\)n\(\backslash\)r"}, position.\hyperlink{struct_sliders_a2d43e10690bee0fefff9e526c3c9bee9}{Right});
+43 \}\end{DoxyCode}

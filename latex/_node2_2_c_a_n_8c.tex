@@ -1,0 +1,281 @@
+\hypertarget{_node2_2_c_a_n_8c}{}\section{Node2/\+C\+AN.c File Reference}
+\label{_node2_2_c_a_n_8c}\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+{\ttfamily \#include \char`\"{}C\+A\+N.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+Include dependency graph for C\+A\+N.\+c\+:
+% FIG 0
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_node2_2_c_a_n_8c_abd9ebaaada57737ee9c15fe1df7595de}{M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS}~0b01100000
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_node2_2_c_a_n_8c_ace0989fbbb295b64e524e1fc242d20d9}{C\+A\+N\+\_\+init} (void)
+\item 
+void \hyperlink{_node2_2_c_a_n_8c_a2cf12e9981661fc4680d341e8ab8d341}{C\+A\+N\+\_\+send\+\_\+message} (\hyperlink{structmessage}{message} msg)
+\item 
+\hyperlink{structmessage}{message} \hyperlink{_node2_2_c_a_n_8c_a1d65f65afba0318c19be6c2ca3c46ad9}{C\+A\+N\+\_\+data\+\_\+receive} (void)
+\item 
+void \hyperlink{_node2_2_c_a_n_8c_afd83ef52c27e2d5c3ff0357daf2544d6}{C\+A\+N\+\_\+error} (void)
+\item 
+void \hyperlink{_node2_2_c_a_n_8c_ac81803124d6306f55a1721004884b982}{C\+A\+N\+\_\+transmit\+\_\+complete} (void)
+\item 
+void \hyperlink{_node2_2_c_a_n_8c_a96052ddcb70502c4ff8726c417ecb929}{C\+A\+N\+\_\+int\+\_\+vect} (void)
+\item 
+void \hyperlink{_node2_2_c_a_n_8c_a63fa87b2b6901cde36550ff20564a6e8}{C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test} (void)
+\item 
+\hyperlink{_node2_2_c_a_n_8c_a30a0ad88a89a84c0161cf09eace108e8}{I\+SR} (I\+N\+T2\+\_\+vect)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS@{M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS}}
+\index{M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS@{M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS}{MCP_RX_BUFF_OP_MODE_BITS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\+C\+P\+\_\+\+R\+X\+\_\+\+B\+U\+F\+F\+\_\+\+O\+P\+\_\+\+M\+O\+D\+E\+\_\+\+B\+I\+TS~0b01100000}\hypertarget{_node2_2_c_a_n_8c_abd9ebaaada57737ee9c15fe1df7595de}{}\label{_node2_2_c_a_n_8c_abd9ebaaada57737ee9c15fe1df7595de}
+
+
+Definition at line 8 of file C\+A\+N.\+c.
+
+
+
+\subsection{Function Documentation}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+data\+\_\+receive@{C\+A\+N\+\_\+data\+\_\+receive}}
+\index{C\+A\+N\+\_\+data\+\_\+receive@{C\+A\+N\+\_\+data\+\_\+receive}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+data\+\_\+receive(void)}{CAN_data_receive(void)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf message} C\+A\+N\+\_\+data\+\_\+receive (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_a1d65f65afba0318c19be6c2ca3c46ad9}{}\label{_node2_2_c_a_n_8c_a1d65f65afba0318c19be6c2ca3c46ad9}
+Function for receiving a message with a given id and data using M\+C\+P2515 for C\+AN communication. \begin{DoxyReturn}{Returns}
+message message -\/ The message received. 
+\end{DoxyReturn}
+
+
+Definition at line 78 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+78                               \{
+79 
+80     \hyperlink{structmessage}{message} msg;
+81 
+82     \textcolor{comment}{// Read message id}
+83     msg.\hyperlink{structmessage_ab45746bda3c3c16b71d13dc15b86dff1}{id} = (\hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(\hyperlink{_node1_2_m_c_p2515_8h_ad6151dfa9b6fee9b65db5bb70f41d4a1}{MCP\_RXB0SIDH}) << 3) | (\hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(
+      \hyperlink{_node1_2_m_c_p2515_8h_a9b6a29d1afcd03966741bf4f14fc629d}{MCP\_RXB0SIDL}) >> 5);
+84 
+85     \textcolor{comment}{// Read message length}
+86     msg.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length} = \hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(\hyperlink{_node1_2_m_c_p2515_8h_a4b3a44ce092d08f8bd7b1d76c2000eb3}{MCP\_RXB0DLC});\textcolor{comment}{// & 0b00001111;}
+87 
+88     \textcolor{comment}{// Read each bit of data }
+89     \textcolor{keywordflow}{for} (uint8\_t i = 0; i < msg.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length}; i++)\{
+90         msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[i] = \hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(\hyperlink{_node1_2_m_c_p2515_8h_abe4aa1ddeb70a4ea9bf0b6866edb5233}{MCP\_RXB0D} + i);   
+91     \}
+92     \textcolor{comment}{// Set interrupt flag to clear to send several times}
+93     \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{MCP\_write}(\hyperlink{_node1_2_m_c_p2515_8h_ae82ca28239a27c2f8c4871e654480ee3}{MCP\_CANINTF}, 0x00);
+94 
+95     \textcolor{keywordflow}{return} msg;
+96 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+error@{C\+A\+N\+\_\+error}}
+\index{C\+A\+N\+\_\+error@{C\+A\+N\+\_\+error}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+error(void)}{CAN_error(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void C\+A\+N\+\_\+error (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_afd83ef52c27e2d5c3ff0357daf2544d6}{}\label{_node2_2_c_a_n_8c_afd83ef52c27e2d5c3ff0357daf2544d6}
+
+
+Definition at line 100 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+100                     \{
+101 
+102 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+init@{C\+A\+N\+\_\+init}}
+\index{C\+A\+N\+\_\+init@{C\+A\+N\+\_\+init}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+init(void)}{CAN_init(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int C\+A\+N\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_ace0989fbbb295b64e524e1fc242d20d9}{}\label{_node2_2_c_a_n_8c_ace0989fbbb295b64e524e1fc242d20d9}
+Function for initializing C\+AN communication. 
+
+Definition at line 12 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+12                   \{
+13 
+14     \textcolor{comment}{// Enabling interrupt on ATmega2560}
+15     \textcolor{comment}{/*}
+16 \textcolor{comment}{    // Falling edge}
+17 \textcolor{comment}{    EICRA &= ~(1 << ISC20);}
+18 \textcolor{comment}{    EICRA |= (1 << ISC21);}
+19 \textcolor{comment}{}
+20 \textcolor{comment}{    // Enable interrupt on PD2 (19 on Arduino shield)}
+21 \textcolor{comment}{    EIMSK |= (1 << INT2);}
+22 \textcolor{comment}{}
+23 \textcolor{comment}{    // Clear interrupt flag on PD2}
+24 \textcolor{comment}{    EIFR |= (1 << INTF2);}
+25 \textcolor{comment}{    */}
+26 
+27     \textcolor{comment}{// Reset MCP2515 to configuration mode and test self}
+28     \hyperlink{_node1_2_m_c_p2515_8c_a02d25f34e42b1ae73a0a3f691810636a}{MCP\_init}();
+29 
+30     \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{MCP\_bit\_modify}(\hyperlink{_node1_2_m_c_p2515_8h_a61b3cd8d6c29ea6abe1db7c566f1d3d0}{MCP\_RXB0CTRL}, 
+      \hyperlink{_node2_2_c_a_n_8c_abd9ebaaada57737ee9c15fe1df7595de}{MCP\_RX\_BUFF\_OP\_MODE\_BITS}, 0xFF);
+31 
+32     \textcolor{comment}{// Set MCP to normal mode}
+33     \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{MCP\_bit\_modify}(\hyperlink{_node1_2_m_c_p2515_8h_a25864642b445cbfbd85f2a1a22947558}{MCP\_CANCTRL}, \hyperlink{_node1_2_m_c_p2515_8h_aba2b187200eec47c5fc32655e296783d}{MODE\_MASK}, 
+      \hyperlink{_node1_2_m_c_p2515_8h_a199e55c829920c767a3f1f42a6a7c1d8}{MODE\_NORMAL});
+34 
+35     \textcolor{comment}{// Enable receive interrupts}
+36     \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{MCP\_bit\_modify}(\hyperlink{_node1_2_m_c_p2515_8h_a778de33d21ab2eb875533a31a2e8ec69}{MCP\_CANINTE}, \hyperlink{_node2_2_m_c_p2515_8h_aa7ca76709838b5000519fc6e75d85b34}{MCP\_INT\_MASK}, 
+      \hyperlink{_node1_2_m_c_p2515_8h_a7b3120302282594f99b9d8b3ff4bd675}{MCP\_RX\_INT});
+37 
+38     \textcolor{comment}{// Clear interrupt flag}
+39     \hyperlink{_node1_2_m_c_p2515_8c_aaacbe9f56b5aaa09951b12e8150259a5}{MCP\_bit\_modify}(\hyperlink{_node1_2_m_c_p2515_8h_ae82ca28239a27c2f8c4871e654480ee3}{MCP\_CANINTF}, \hyperlink{_node2_2_m_c_p2515_8h_aa7ca76709838b5000519fc6e75d85b34}{MCP\_INT\_MASK}, 0);
+40 
+41     uint8\_t value;    
+42     value = \hyperlink{_node1_2_m_c_p2515_8c_aa7fda669e065ed6a03aec37d03c87a93}{MCP\_read}(\hyperlink{_node1_2_m_c_p2515_8h_a1a470d80ae3644bf02f2cd4a7bb6aa39}{MCP\_CANSTAT});
+43 
+44     \textcolor{keywordflow}{if} ((value & \hyperlink{_node1_2_m_c_p2515_8h_aba2b187200eec47c5fc32655e296783d}{MODE\_MASK}) != \hyperlink{_node1_2_m_c_p2515_8h_a199e55c829920c767a3f1f42a6a7c1d8}{MODE\_NORMAL}) \{
+45         printf(\textcolor{stringliteral}{"MCP2515 is not in NORMAL mode!\(\backslash\)n\(\backslash\)r"});
+46     \}
+47 
+48     \textcolor{keywordflow}{else} \{
+49         printf(\textcolor{stringliteral}{"MCP2515 is in NORMAL mode!\(\backslash\)n\(\backslash\)r"});
+50     \}
+51     \textcolor{comment}{//MCP\_write(MCP\_CANINTF, 0x00);}
+52     \textcolor{keywordflow}{return} 0;
+53 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+int\+\_\+vect@{C\+A\+N\+\_\+int\+\_\+vect}}
+\index{C\+A\+N\+\_\+int\+\_\+vect@{C\+A\+N\+\_\+int\+\_\+vect}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+int\+\_\+vect(void)}{CAN_int_vect(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void C\+A\+N\+\_\+int\+\_\+vect (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_a96052ddcb70502c4ff8726c417ecb929}{}\label{_node2_2_c_a_n_8c_a96052ddcb70502c4ff8726c417ecb929}
+
+
+Definition at line 112 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+112                        \{
+113     \textcolor{comment}{// si fra om klar til å sende eller motta }
+114 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+send\+\_\+message@{C\+A\+N\+\_\+send\+\_\+message}}
+\index{C\+A\+N\+\_\+send\+\_\+message@{C\+A\+N\+\_\+send\+\_\+message}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+send\+\_\+message(message msg)}{CAN_send_message(message msg)}}]{\setlength{\rightskip}{0pt plus 5cm}void C\+A\+N\+\_\+send\+\_\+message (
+\begin{DoxyParamCaption}
+\item[{{\bf message}}]{msg}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_a2cf12e9981661fc4680d341e8ab8d341}{}\label{_node2_2_c_a_n_8c_a2cf12e9981661fc4680d341e8ab8d341}
+Function for sending a message with a given id and data using M\+C\+P2515 for C\+AN communication. 
+\begin{DoxyParams}{Parameters}
+{\em message} & msg -\/ Struct including id, data and length of message \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 58 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+58                                   \{
+59 
+60     \textcolor{comment}{// Write id for transmit buffers enabled to send to SIDH and SIDL registers}
+61     \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{MCP\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a30d9219d01d77604bb8cccdb6bbb8a89}{MCP\_TXB0SIDH}, (msg.\hyperlink{structmessage_ab45746bda3c3c16b71d13dc15b86dff1}{id} >> 3));
+62     \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{MCP\_write}(\hyperlink{_node1_2_m_c_p2515_8h_a64751f2c34434ba5c7cec9cb89bb3817}{MCP\_TXB0SIDL}, (msg.\hyperlink{structmessage_ab45746bda3c3c16b71d13dc15b86dff1}{id} << 5));
+63 
+64     \textcolor{comment}{// Write data length to DLC transmit register}
+65     \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{MCP\_write}(\hyperlink{_node1_2_m_c_p2515_8h_af079eda36bde82cfee6ef43681813ec7}{MCP\_TXB0DLC}, msg.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length});
+66 
+67     \textcolor{keywordflow}{for} (uint8\_t i = 0; i < msg.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length}; i++)\{
+68         \hyperlink{_node1_2_m_c_p2515_8c_a885beff24479a19794cffcd9f2ac938b}{MCP\_write}((\hyperlink{_node1_2_m_c_p2515_8h_a302877dc9371e7e89724f2dc2ed860a4}{MCP\_TXB0D} + i), msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[i]);
+69     \}
+70 
+71     \hyperlink{_node1_2_m_c_p2515_8c_ac0df668851ce70c796b20865af0bb7a7}{MCP\_request\_to\_send}(0);
+72 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+transmit\+\_\+complete@{C\+A\+N\+\_\+transmit\+\_\+complete}}
+\index{C\+A\+N\+\_\+transmit\+\_\+complete@{C\+A\+N\+\_\+transmit\+\_\+complete}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+transmit\+\_\+complete(void)}{CAN_transmit_complete(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void C\+A\+N\+\_\+transmit\+\_\+complete (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_ac81803124d6306f55a1721004884b982}{}\label{_node2_2_c_a_n_8c_ac81803124d6306f55a1721004884b982}
+
+
+Definition at line 106 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+106                                 \{
+107 
+108 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test@{C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test}}
+\index{C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test@{C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test(void)}{CAN_transmit_loopback_test(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void C\+A\+N\+\_\+transmit\+\_\+loopback\+\_\+test (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_a63fa87b2b6901cde36550ff20564a6e8}{}\label{_node2_2_c_a_n_8c_a63fa87b2b6901cde36550ff20564a6e8}
+Function for testing transmit in loop-\/back mode. 
+
+Definition at line 119 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+119                                       \{
+120     \hyperlink{_node1_2_c_a_n_8c_ace0989fbbb295b64e524e1fc242d20d9}{CAN\_init}();
+121     \hyperlink{structmessage}{message} msg;
+122 
+123     msg.\hyperlink{structmessage_ab45746bda3c3c16b71d13dc15b86dff1}{id} =1;
+124     msg.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length} = \textcolor{keyword}{sizeof}(msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data});
+125     \textcolor{keywordtype}{int} stop = 1;
+126     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} j = 0; j < 8; j++)\{
+127         msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[j] = j*2;
+128     \}
+129     \textcolor{keywordflow}{while}(stop<10) \{
+130         \hyperlink{_node1_2_c_a_n_8c_a2cf12e9981661fc4680d341e8ab8d341}{CAN\_send\_message}(msg);
+131 
+132         \hyperlink{structmessage}{message} received = \hyperlink{_node1_2_c_a_n_8c_a1d65f65afba0318c19be6c2ca3c46ad9}{CAN\_data\_receive}();
+133         printf(\textcolor{stringliteral}{"ID: %d\(\backslash\)n\(\backslash\)r"},received.\hyperlink{structmessage_ab45746bda3c3c16b71d13dc15b86dff1}{id});
+134         printf(\textcolor{stringliteral}{"Length : %d\(\backslash\)n\(\backslash\)r"}, received.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length});
+135         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i=0; i < received.\hyperlink{structmessage_a4990637e6cbd0a7afc3e57c1d6a74eeb}{length}; i++)\{
+136             printf(\textcolor{stringliteral}{"%d "},received.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[i]);
+137         \}
+138         stop++;    
+139     \}
+140 \}
+\end{DoxyCode}
+\index{Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}!I\+SR@{I\+SR}}
+\index{I\+SR@{I\+SR}!Node2/\+C\+A\+N.\+c@{Node2/\+C\+A\+N.\+c}}
+\subsubsection[{\texorpdfstring{I\+S\+R(\+I\+N\+T2\+\_\+vect)}{ISR(INT2_vect)}}]{\setlength{\rightskip}{0pt plus 5cm}I\+SR (
+\begin{DoxyParamCaption}
+\item[{I\+N\+T2\+\_\+vect}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2_c_a_n_8c_a30a0ad88a89a84c0161cf09eace108e8}{}\label{_node2_2_c_a_n_8c_a30a0ad88a89a84c0161cf09eace108e8}
+Interrupt vector function for C\+AN. 
+\begin{DoxyParams}{Parameters}
+{\em I\+N\+T2\+\_\+vect} & -\/ interrupt vector for C\+AN. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 147 of file C\+A\+N.\+c.
+
+
+\begin{DoxyCode}
+147               \{
+148     printf(\textcolor{stringliteral}{"CAN INTERRUPT\(\backslash\)n\(\backslash\)r"});
+149 \}\end{DoxyCode}

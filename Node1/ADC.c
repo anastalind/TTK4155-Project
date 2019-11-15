@@ -1,6 +1,6 @@
-/** @package ADC.c
+/** @file ADC.c
  * 
- *  C-file for the Analog to Digital Converter. 
+ *  @brief C-file for the Analog to Digital Converter.
  *  Switches the channels by writing wanted channels to ADC external memory and returning the channels output.
  * 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt

@@ -1,3 +1,8 @@
+/** @file bitoperations.h
+ *  @brief File containing useful bit-operations used throughout the project.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
+ */
+
 #ifndef BIT_OPERATIONS_H
 #define BIT_OPERATIONS_H
 

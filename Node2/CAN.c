@@ -1,5 +1,5 @@
-/** @package CAN.c
- *  c-file for the CAN driver. High level driver sending and receiving CAN messages.
+/** @file CAN.c
+ *  @brief c-file for the CAN driver. High level driver sending and receiving CAN messages.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -10,20 +10,7 @@
 /** Function for initializing CAN communication.
  */
 int CAN_init(void){
-
-    // Enabling interrupt on ATmega2560
-    /*
-    // Falling edge
-    EICRA &= ~(1 << ISC20);
-    EICRA |= (1 << ISC21);
-
-    // Enable interrupt on PD2 (19 on Arduino shield)
-    EIMSK |= (1 << INT2);
-
-    // Clear interrupt flag on PD2
-    EIFR |= (1 << INTF2);
-    */
-
+    
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
 
@@ -139,9 +126,11 @@ void CAN_int_vect(void){
     }
 }
 
-ISR(INT2_vect)
-{
+
+
+/** Interrupt vector function for CAN.
+ *  @param INT2_vect - interrupt vector for CAN. 
+ */
+ISR(INT2_vect){
     printf("CAN INTERRUPT\n\r");
-    //message position = CAN_data_receive();
-    //control_motor(position);
 }

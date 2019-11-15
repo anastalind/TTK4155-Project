@@ -1,0 +1,106 @@
+\hypertarget{_node2_2main_8c}{}\section{Node2/main.c File Reference}
+\label{_node2_2main_8c}\index{Node2/main.\+c@{Node2/main.\+c}}
+{\ttfamily \#include \char`\"{}U\+S\+A\+R\+T.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}S\+P\+I.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}C\+A\+N.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}P\+W\+M.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}I\+R.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}motor.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}solenoid.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+{\ttfamily \#include $<$avr/interrupt.\+h$>$}\\*
+Include dependency graph for main.\+c\+:
+% FIG 0
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacemain_1_1c}{main\+::c}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_node2_2main_8c_a43bafb28b29491ec7f871319b5a3b2f8}{F\+\_\+\+C\+PU}~16000000
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_node2_2main_8c_acdef7a1fd863a6d3770c1268cb06add3}{main} ()
+\item 
+\hyperlink{_node2_2main_8c_a0c4271458583c66d6662599d7489194f}{I\+SR} (\+\_\+\+\_\+vector\+\_\+default)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{Node2/main.\+c@{Node2/main.\+c}!F\+\_\+\+C\+PU@{F\+\_\+\+C\+PU}}
+\index{F\+\_\+\+C\+PU@{F\+\_\+\+C\+PU}!Node2/main.\+c@{Node2/main.\+c}}
+\subsubsection[{\texorpdfstring{F\+\_\+\+C\+PU}{F_CPU}}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\+\_\+\+C\+PU~16000000}\hypertarget{_node2_2main_8c_a43bafb28b29491ec7f871319b5a3b2f8}{}\label{_node2_2main_8c_a43bafb28b29491ec7f871319b5a3b2f8}
+
+
+Definition at line 8 of file main.\+c.
+
+
+
+\subsection{Function Documentation}
+\index{Node2/main.\+c@{Node2/main.\+c}!I\+SR@{I\+SR}}
+\index{I\+SR@{I\+SR}!Node2/main.\+c@{Node2/main.\+c}}
+\subsubsection[{\texorpdfstring{I\+S\+R(\+\_\+\+\_\+vector\+\_\+default)}{ISR(__vector_default)}}]{\setlength{\rightskip}{0pt plus 5cm}I\+SR (
+\begin{DoxyParamCaption}
+\item[{\+\_\+\+\_\+vector\+\_\+default}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2main_8c_a0c4271458583c66d6662599d7489194f}{}\label{_node2_2main_8c_a0c4271458583c66d6662599d7489194f}
+
+
+Definition at line 55 of file main.\+c.
+
+
+\begin{DoxyCode}
+56 \{
+57     \textcolor{comment}{//printf("Interrupt\(\backslash\)n\(\backslash\)r");}
+58 
+59 \}\end{DoxyCode}
+\index{Node2/main.\+c@{Node2/main.\+c}!main@{main}}
+\index{main@{main}!Node2/main.\+c@{Node2/main.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}void main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{_node2_2main_8c_acdef7a1fd863a6d3770c1268cb06add3}{}\label{_node2_2main_8c_acdef7a1fd863a6d3770c1268cb06add3}
+
+
+Definition at line 21 of file main.\+c.
+
+
+\begin{DoxyCode}
+21             \{  
+22 
+23     sei();
+24     \hyperlink{_u_s_a_r_t_8c_a81d8695f4ff61065923f6618db3fd4f0}{USART\_init}(9600);
+25     \hyperlink{_p_w_m_8c_aadae3fe77e36cbf9643a22eeb99fb01e}{PWM\_init}();
+26     \hyperlink{_node1_2_c_a_n_8c_ace0989fbbb295b64e524e1fc242d20d9}{CAN\_init}();
+27     
+28     \hyperlink{solenoid_8c_a05736227e6f452fb1ceb65c417ebd8c9}{solenoid\_init}();
+29     \hyperlink{motor_8c_a30b74f973804ddb7caa3deb41c2e4195}{motor\_initialize}();
+30 
+31     \textcolor{keywordflow}{while} (1) \{
+32         \textcolor{comment}{//printf("Value read from motor encoder: %i\(\backslash\)n\(\backslash\)r", read\_motor\_encoder());}
+33         \hyperlink{structmessage}{message} msg = \hyperlink{_node1_2_c_a_n_8c_a1d65f65afba0318c19be6c2ca3c46ad9}{CAN\_data\_receive}();
+34 
+35         \hyperlink{motor_8c_a4d43d7684cac1acbcbbe38c9cc89a03b}{slider\_controller\_test}(msg);
+36         \textcolor{comment}{//get\_motor\_position();}
+37 
+38         \textcolor{keywordtype}{double} duty\_cycle = \hyperlink{_p_w_m_8c_aead28b66c3621dfbb45e475505ac989f}{PWM\_joystick\_to\_duty\_cycle}(msg);
+39 
+40        \textcolor{comment}{// motor\_speed\_controller(msg);}
+41         \hyperlink{_p_w_m_8c_a1a0a6439d30a3a3cb65c523f0418ed93}{PWM\_set\_duty\_cycle}(duty\_cycle);
+42 
+43         \textcolor{keywordflow}{if} (msg.\hyperlink{structmessage_aef003837686b3fdd72c7a6fa54b0e483}{data}[2] == 1) \{
+44             printf(\textcolor{stringliteral}{"Received msg about button press \(\backslash\)n\(\backslash\)r"});
+45             \hyperlink{solenoid_8c_a5d520fbd4fcbe809a19328ee816d47cd}{control\_solenoid}();
+46         \}
+47         printf(\textcolor{stringliteral}{"\(\backslash\)n\(\backslash\)n"});
+48 
+49 
+50     \}
+51     
+52 \}
+\end{DoxyCode}

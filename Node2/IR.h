@@ -1,5 +1,5 @@
-/** @package IR.h
- *  Header file for the IR
+/** @file IR.h
+ *  @brief Header file for the IR
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -16,6 +16,7 @@
 #define NUM_MEASUREMENTS 4
 #define GOAL_LIMIT 50
 
+// Global flag interrupt for detecting goal
 extern int BALL_DETECTED_FLAG;
 
 /** Initialize Arduino shield for IR-communication.

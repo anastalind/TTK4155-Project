@@ -1,5 +1,5 @@
-/** @package SPI.h
- *  Header-file for the SPI communication driver.
+/** @file SPI.h
+ *  @brief Header-file for the SPI communication driver.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -8,8 +8,6 @@
 
 #include <stdint.h>
 #include <avr/io.h>
-
-// Local headers
 #include "bit_operations.h"
 
 #define DDR_SPI DDRB

@@ -1,3 +1,8 @@
+/** @file addresses.h
+ *  @brief File containing useful addresses for the ADC, OLED and SRAM.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
+ */
+
 #ifndef ADDRESSES_H
 #define ADDRESSES_H
 // ADC

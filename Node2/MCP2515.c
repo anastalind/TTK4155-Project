@@ -1,6 +1,5 @@
-/** @package MCP2515.c
- *  c-file for driver of MCP2515, makes it possible to read and write using SPI, as well
- *  as modifying bits, reading MCP status and requesting to send. 
+/** @file MCP2515.c
+ *  @brief c-file for driver of MCP2515, makes it possible to read and write using SPI, as well as modifying bits, reading MCP status and requesting to send. 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 

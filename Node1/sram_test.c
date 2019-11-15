@@ -1,5 +1,5 @@
-/** @package sram_test.c
- *  c-file for testing reading and writing of data.
+/** @file sram_test.c
+ *  @brief c-file for testing reading and writing of data.
  */
 #include "sram_test.h"
 #include <stdlib.h>

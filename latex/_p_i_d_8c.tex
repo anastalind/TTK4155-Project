@@ -1,0 +1,149 @@
+\hypertarget{_p_i_d_8c}{}\section{Node2/\+P\+ID.c File Reference}
+\label{_p_i_d_8c}\index{Node2/\+P\+I\+D.\+c@{Node2/\+P\+I\+D.\+c}}
+
+
+C-\/file for creating and using a P\+I\+D-\/controller on the motor movement.  
+
+
+{\ttfamily \#include \char`\"{}P\+I\+D.\+h\char`\"{}}\\*
+Include dependency graph for P\+I\+D.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_p_i_d_8c_a4c931df0d53148d414068e139d766d57}{P\+I\+D\+\_\+init} (\hyperlink{struct_p_i_d}{P\+ID} $\ast$\hyperlink{_p_i_d_8h_a3137acc38b75e053ef737a5f37d422af}{pid})
+\item 
+int16\+\_\+t \hyperlink{_p_i_d_8c_abf0f7c0a8b7a8a1ec84c00be421275b9}{P\+I\+D\+\_\+controller} (uint8\+\_\+t reference\+\_\+value, uint8\+\_\+t \hyperlink{_p_i_d_8h_a344be9107f38cb3fbf4c1478f3dc400d}{process\+\_\+value}, \hyperlink{struct_p_i_d}{P\+ID} $\ast$\hyperlink{_p_i_d_8h_a3137acc38b75e053ef737a5f37d422af}{pid})
+\item 
+\hyperlink{_p_i_d_8c_a3657e3972e59185a247b24ac0153d99c}{I\+SR} (T\+I\+M\+E\+R3\+\_\+\+O\+V\+F\+\_\+vect)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_p_i_d_8c_a674220ff1b1c24bc2f82c13eab237c97}{P\+I\+D\+\_\+\+F\+L\+AG} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+C-\/file for creating and using a P\+I\+D-\/controller on the motor movement. 
+
+\begin{DoxyAuthor}{Authors}
+\+: Anastasia Lindbäck and Marie Skatvedt 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{P\+I\+D.\+c@{P\+I\+D.\+c}!I\+SR@{I\+SR}}
+\index{I\+SR@{I\+SR}!P\+I\+D.\+c@{P\+I\+D.\+c}}
+\subsubsection[{\texorpdfstring{I\+S\+R(\+T\+I\+M\+E\+R3\+\_\+\+O\+V\+F\+\_\+vect)}{ISR(TIMER3_OVF_vect)}}]{\setlength{\rightskip}{0pt plus 5cm}I\+SR (
+\begin{DoxyParamCaption}
+\item[{T\+I\+M\+E\+R3\+\_\+\+O\+V\+F\+\_\+vect}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{_p_i_d_8c_a3657e3972e59185a247b24ac0153d99c}{}\label{_p_i_d_8c_a3657e3972e59185a247b24ac0153d99c}
+Interrupt vector function. 
+\begin{DoxyParams}{Parameters}
+{\em T\+I\+M\+E\+R3\+\_\+\+O\+V\+F\+\_\+vect} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 65 of file P\+I\+D.\+c.
+
+
+\begin{DoxyCode}
+65                      \{
+66 
+67     \hyperlink{_p_i_d_8c_a674220ff1b1c24bc2f82c13eab237c97}{PID\_FLAG} = 1;
+68 
+69 \}\end{DoxyCode}
+\index{P\+I\+D.\+c@{P\+I\+D.\+c}!P\+I\+D\+\_\+controller@{P\+I\+D\+\_\+controller}}
+\index{P\+I\+D\+\_\+controller@{P\+I\+D\+\_\+controller}!P\+I\+D.\+c@{P\+I\+D.\+c}}
+\subsubsection[{\texorpdfstring{P\+I\+D\+\_\+controller(uint8\+\_\+t reference\+\_\+value, uint8\+\_\+t process\+\_\+value, P\+I\+D $\ast$pid)}{PID_controller(uint8_t reference_value, uint8_t process_value, PID *pid)}}]{\setlength{\rightskip}{0pt plus 5cm}int16\+\_\+t P\+I\+D\+\_\+controller (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{reference\+\_\+value, }
+\item[{uint8\+\_\+t}]{process\+\_\+value, }
+\item[{{\bf P\+ID} $\ast$}]{pid}
+\end{DoxyParamCaption}
+)}\hypertarget{_p_i_d_8c_abf0f7c0a8b7a8a1ec84c00be421275b9}{}\label{_p_i_d_8c_abf0f7c0a8b7a8a1ec84c00be421275b9}
+Introducing the P\+I\+D-\/controller with each computation for P, I and D-\/terms. 
+\begin{DoxyParams}{Parameters}
+{\em reference\+\_\+value} & -\/ The reference value from the current position \\
+\hline
+{\em process\+\_\+value} & -\/ The value of the process position \\
+\hline
+{\em \hyperlink{struct_p_i_d}{P\+ID}} & $\ast$pid -\/ \hyperlink{struct_p_i_d}{P\+ID} object pointer, setting the terms og P, I and D. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+control\+\_\+variable -\/ Calculated control-\/variable. 
+\end{DoxyReturn}
+
+
+Definition at line 41 of file P\+I\+D.\+c.
+
+
+\begin{DoxyCode}
+42 \{
+43     int16\_t error, control\_variable, p\_term, d\_term;
+44     uint8\_t i\_term;
+45 
+46     error = reference\_value - \hyperlink{_p_i_d_8h_a344be9107f38cb3fbf4c1478f3dc400d}{process\_value};
+47 
+48     pid->\hyperlink{struct_p_i_d_aa78b06ddfb1b124f415a0ea84e831935}{sum\_error} += error;
+49 
+50     p\_term = pid->\hyperlink{struct_p_i_d_a394199480a053023b60037ec30b3d5fd}{K\_p} * error;
+51     i\_term = pid->\hyperlink{struct_p_i_d_a598391a8fd61e53bc87b684e0bba712f}{K\_i} * pid->\hyperlink{struct_p_i_d_aa78b06ddfb1b124f415a0ea84e831935}{sum\_error};
+52     d\_term = pid->\hyperlink{struct_p_i_d_aaa82d4d2d3b7a169ebbedfc9cf7dea71}{K\_d} * (error - pid->\hyperlink{struct_p_i_d_a242dbdb4ae8fe619dd26651e9e538a6a}{last\_error});
+53 
+54     pid->\hyperlink{struct_p_i_d_a242dbdb4ae8fe619dd26651e9e538a6a}{last\_error} = error;
+55 
+56     control\_variable = (p\_term + i\_term + d\_term);
+57 
+58     \textcolor{keywordflow}{return} ((int16\_t)control\_variable);
+59 \}
+\end{DoxyCode}
+\index{P\+I\+D.\+c@{P\+I\+D.\+c}!P\+I\+D\+\_\+init@{P\+I\+D\+\_\+init}}
+\index{P\+I\+D\+\_\+init@{P\+I\+D\+\_\+init}!P\+I\+D.\+c@{P\+I\+D.\+c}}
+\subsubsection[{\texorpdfstring{P\+I\+D\+\_\+init(\+P\+I\+D $\ast$pid)}{PID_init(PID *pid)}}]{\setlength{\rightskip}{0pt plus 5cm}void P\+I\+D\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+ID} $\ast$}]{pid}
+\end{DoxyParamCaption}
+)}\hypertarget{_p_i_d_8c_a4c931df0d53148d414068e139d766d57}{}\label{_p_i_d_8c_a4c931df0d53148d414068e139d766d57}
+Function for initializing the P\+I\+D-\/regulator. 
+
+Definition at line 12 of file P\+I\+D.\+c.
+
+
+\begin{DoxyCode}
+13 \{
+14 
+15     pid->\hyperlink{struct_p_i_d_aa78b06ddfb1b124f415a0ea84e831935}{sum\_error} = 0;
+16     pid->last\_process\_value = 0;
+17 
+18     pid->\hyperlink{struct_p_i_d_a394199480a053023b60037ec30b3d5fd}{K\_p} = 0;
+19     pid->\hyperlink{struct_p_i_d_a598391a8fd61e53bc87b684e0bba712f}{K\_i} = 0;
+20     pid->\hyperlink{struct_p_i_d_aaa82d4d2d3b7a169ebbedfc9cf7dea71}{K\_d} = 0;
+21 
+22     cli();
+23 
+24     \textcolor{comment}{//Using normal mode}
+25     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(TCCR3B, CS31);
+26 
+27     \textcolor{comment}{//Enable timer interrupt}
+28     \hyperlink{_a_d_c_8h_aee5ffa3d123086ed1df972387522e4eb}{set\_bit}(TIMSK3, TOIE3);
+29 
+30     sei();
+31 
+32     \_delay\_ms(500);
+33 \}
+\end{DoxyCode}
+
+
+\subsection{Variable Documentation}
+\index{P\+I\+D.\+c@{P\+I\+D.\+c}!P\+I\+D\+\_\+\+F\+L\+AG@{P\+I\+D\+\_\+\+F\+L\+AG}}
+\index{P\+I\+D\+\_\+\+F\+L\+AG@{P\+I\+D\+\_\+\+F\+L\+AG}!P\+I\+D.\+c@{P\+I\+D.\+c}}
+\subsubsection[{\texorpdfstring{P\+I\+D\+\_\+\+F\+L\+AG}{PID_FLAG}}]{\setlength{\rightskip}{0pt plus 5cm}int P\+I\+D\+\_\+\+F\+L\+AG = 0}\hypertarget{_p_i_d_8c_a674220ff1b1c24bc2f82c13eab237c97}{}\label{_p_i_d_8c_a674220ff1b1c24bc2f82c13eab237c97}
+
+
+Definition at line 8 of file P\+I\+D.\+c.
+

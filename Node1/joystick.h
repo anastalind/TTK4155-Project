@@ -1,8 +1,6 @@
-/** @package joystick.h
+/** @file joystick.h
  *  
- *  Header-file considering the joystick on the USB-multiboards behaviour. 
- *  Converting the voltage resolution of 0-255 on the y- and x-axis to a 
- *  percent-representation and deciding direction of joystick.
+ *  @brief Header-file considering the joystick on the USB-multiboards behaviour. 
  *  
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
@@ -52,13 +50,12 @@ int get_quadrant(joystick position);
  */
 bool is_vertical_direction(joystick position);
 
-/**
- * 
- */ 
-bool button_not_pressed(void);
+/** Function for detecting if joystiuck-button is pressed.
+ *  @return joystick_button - Returns if joystick button is pressed.
+ */
+int button_not_pressed(void);
 
 /**Function for calibrating joystick at start.
- * 
  */
 void joystick_calibrate(void);
 
@@ -73,13 +70,21 @@ joystick joystick_position(void);
  *  @return enum Direction - The direction, either UP, DOWN, LEFT or RIGHT
  */
 direction joystick_direction(void);
+
 /** Test function for reading joystick position.
  */ 
 void test_read_joystick_position(void);
 
+/** Function for telling if touch-button is pressed.
+*/
 bool is_button_pressed();
 
-void game_controller_CAN_transmit(joystick position, Sliders slider_position);
+/** Function for sending joystick position via CAN to Node 2. 
+ *  @param joystick position - Position of joystick, struct containing x and y-positions.
+ *  @param Sliders slider_position - position of slider right and left.
+ *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
+ */
+void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG);
    
 
 

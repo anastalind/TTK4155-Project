@@ -1,5 +1,5 @@
-/** @package PWM.h
- *  Header file for the PWM 
+/** @file PWM.h
+ *  @brief Header file for the PWM 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 

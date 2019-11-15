@@ -1,0 +1,255 @@
+\hypertarget{menu_8h}{}\section{Node1/menu.h File Reference}
+\label{menu_8h}\index{Node1/menu.\+h@{Node1/menu.\+h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdarg.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$util/delay.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}joystick.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}O\+L\+E\+D.\+h\char`\"{}}\\*
+Include dependency graph for menu.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structmenu}{menu}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structmenu}{menu} $\ast$ \hyperlink{menu_8h_a6b073ee6c45d1b27c809eefd20151381}{menu\+\_\+new} (char $\ast$menu\+\_\+title, \hyperlink{structmenu}{menu} $\ast$parent\+\_\+menu, \hyperlink{structmenu}{menu} $\ast$child\+\_\+menu, \hyperlink{structmenu}{menu} $\ast$left\+\_\+sibling\+\_\+menu, \hyperlink{structmenu}{menu} $\ast$right\+\_\+sibling\+\_\+menu)
+\item 
+void \hyperlink{menu_8h_aeb486502ce7d248a1ecd73ed7599b7b8}{menu\+\_\+print\+\_\+submenu} (\hyperlink{structmenu}{menu} $\ast$parent\+\_\+menu, \hyperlink{structmenu}{menu} $\ast$current\+\_\+menu)
+\item 
+\hyperlink{structmenu}{menu} $\ast$ \hyperlink{menu_8h_af05a18a8c7c141ff3df22afdad65726d}{menu\+\_\+navigate} (\hyperlink{structmenu}{menu} $\ast$child\+\_\+menu, \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098}{direction} dir)
+\item 
+\hyperlink{structmenu}{menu} $\ast$ \hyperlink{menu_8h_a0524fc833a29a1201550aed4d0d48729}{menu\+\_\+init} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{menu.\+h@{menu.\+h}!menu\+\_\+init@{menu\+\_\+init}}
+\index{menu\+\_\+init@{menu\+\_\+init}!menu.\+h@{menu.\+h}}
+\subsubsection[{\texorpdfstring{menu\+\_\+init()}{menu_init()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf menu}$\ast$ menu\+\_\+init (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{menu_8h_a0524fc833a29a1201550aed4d0d48729}{}\label{menu_8h_a0524fc833a29a1201550aed4d0d48729}
+Function for creating main menu and submenus and setting their membervariables. \begin{DoxyReturn}{Returns}
+main\+\_\+menu -\/ Menu struct corresponding to main menu. 
+\end{DoxyReturn}
+
+
+Definition at line 107 of file menu.\+c.
+
+
+\begin{DoxyCode}
+107                   \{
+108     \textcolor{comment}{/* MAIN MENU */}
+109     \textcolor{comment}{// Creating main menu, initializing its parent, child and siblings to NULL}
+110     \hyperlink{structmenu}{menu}* main\_menu = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"MAIN MENU"}, NULL, NULL, NULL, NULL);
+111 
+112     \textcolor{comment}{/* SUBMENUS */}
+113     \textcolor{comment}{// Submenu of main menu: setting left siblings and parent, right siblings and children must be set
+       after initialization}
+114     \hyperlink{structmenu}{menu}* play\_game = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"PLAY GAME"}, main\_menu, NULL, NULL, NULL);
+115     \hyperlink{structmenu}{menu}* end\_game = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"END GAME"}, main\_menu, NULL, play\_game, NULL);
+116     \hyperlink{structmenu}{menu}* game\_settings = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"GAME SETTINGS"}, main\_menu, NULL, end\_game, NULL);
+117     \hyperlink{structmenu}{menu}* highscores = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"HIGHSCORES"}, main\_menu, NULL, game\_settings, NULL);
+118 
+119     \textcolor{comment}{// Submenus of game settings}
+120     \hyperlink{structmenu}{menu}* play\_mode = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"DIFFICULTY"}, game\_settings, NULL, NULL, NULL);
+121     \hyperlink{structmenu}{menu}* players = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"PLAYER MODE"}, game\_settings, NULL, play\_mode, NULL);
+122 
+123     \textcolor{comment}{// Submenus of players}
+124     \hyperlink{structmenu}{menu}* single\_player = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"SINGLE PLAYER"}, players, NULL, NULL, NULL);
+125     \hyperlink{structmenu}{menu}* multi\_player = \hyperlink{menu_8c_a6b073ee6c45d1b27c809eefd20151381}{menu\_new}(\textcolor{stringliteral}{"MULTIPLAYER"}, players, NULL, single\_player, NULL);
+126 
+127     \textcolor{comment}{/* SETTING THE CHILD VARIABLES*/}
+128     \textcolor{comment}{// Setting child of main menu}
+129     main\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} = play\_game;
+130 
+131     \textcolor{comment}{// Setting child of game settings}
+132     game\_settings->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} = play\_mode;
+133 
+134     \textcolor{comment}{// Setting child of players}
+135     players->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} = single\_player;
+136 
+137     \textcolor{comment}{/* SETTING RIGHT SIBLINGS*/}
+138     \textcolor{comment}{// Setting right siblings}
+139     play\_game->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = end\_game;
+140     end\_game->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = game\_settings;
+141     game\_settings->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = highscores;
+142     highscores->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = NULL;
+143 
+144     play\_mode->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = players;
+145     players->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = NULL;
+146 
+147     single\_player->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = multi\_player;
+148     multi\_player->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = NULL;
+149 
+150     \textcolor{keywordflow}{return} main\_menu;
+151 \}
+\end{DoxyCode}
+\index{menu.\+h@{menu.\+h}!menu\+\_\+navigate@{menu\+\_\+navigate}}
+\index{menu\+\_\+navigate@{menu\+\_\+navigate}!menu.\+h@{menu.\+h}}
+\subsubsection[{\texorpdfstring{menu\+\_\+navigate(menu $\ast$child\+\_\+menu, direction dir)}{menu_navigate(menu *child_menu, direction dir)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf menu}$\ast$ menu\+\_\+navigate (
+\begin{DoxyParamCaption}
+\item[{{\bf menu} $\ast$}]{child\+\_\+menu, }
+\item[{{\bf direction}}]{dir}
+\end{DoxyParamCaption}
+)}\hypertarget{menu_8h_af05a18a8c7c141ff3df22afdad65726d}{}\label{menu_8h_af05a18a8c7c141ff3df22afdad65726d}
+Function for
+
+Function for navigating the menu by moving between siblings and parent/child. 
+\begin{DoxyParams}{Parameters}
+{\em menu$\ast$} & child\+\_\+menu -\/ Pointer to struct menu that corresponds to current menus\textquotesingle{} child \\
+\hline
+{\em direction} & dir -\/ direction enum corresponding to joystick movement. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current\+\_\+menu -\/ Menu struct that is chosen by joystick movement 
+\end{DoxyReturn}
+
+
+Definition at line 62 of file menu.\+c.
+
+
+\begin{DoxyCode}
+62                                                     \{
+63     \hyperlink{structmenu}{menu}* current\_menu = child\_menu;
+64 
+65     \textcolor{keywordflow}{if} (dir == \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098af46d14eb9d5d71afc9f6e747689fcb56}{NEUTRAL}) \{
+66         current\_menu = child\_menu;
+67     \}
+68 
+69     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (dir == \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098aba595d8bca8bc5e67c37c0a9d89becfa}{UP}) \{
+70         \textcolor{keywordflow}{if} (current\_menu->\hyperlink{structmenu_a38a41dc18d5c308d3a5e87ed966db330}{left\_sibling} != NULL) \{
+71             current\_menu = current\_menu->\hyperlink{structmenu_a38a41dc18d5c308d3a5e87ed966db330}{left\_sibling};
+72         \}
+73     \}
+74 
+75     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (dir == \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098a9b0b4a95b99523966e0e34ffdadac9da}{DOWN}) \{
+76         \textcolor{keywordflow}{if} (current\_menu->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} != NULL) \{
+77             current\_menu = current\_menu->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling}; 
+78         \}
+79     \}
+80 
+81     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (dir == \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098adb45120aafd37a973140edee24708065}{LEFT}) \{
+82         \textcolor{keywordflow}{if} (current\_menu->\hyperlink{structmenu_ab37f2faa5398d13b27ca50dcfd4e36e4}{parent} != NULL) \{
+83             current\_menu = current\_menu->\hyperlink{structmenu_ab37f2faa5398d13b27ca50dcfd4e36e4}{parent};
+84         \}
+85     \}
+86     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (dir == \hyperlink{joystick_8h_a99f26e6ee9fcd62f75203b5402df8098aec8379af7490bb9eaaf579cf17876f38}{RIGHT}) \{
+87         \textcolor{keywordflow}{if} (current\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} != NULL) \{
+88             current\_menu = current\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child};
+89         \}
+90     \}
+91 
+92     \textcolor{keywordflow}{else} \{
+93         \textcolor{keywordflow}{return} current\_menu;
+94     \}
+95 
+96     \textcolor{keywordflow}{if} (!(\hyperlink{joystick_8c_a462650871e579842e50c0b28f39f57ad}{button\_not\_pressed}())) \{
+97         \textcolor{keywordflow}{if} (current\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} != NULL) \{
+98             current\_menu = current\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child};
+99         \}
+100     \}
+101     \textcolor{keywordflow}{return} current\_menu;
+102 \}
+\end{DoxyCode}
+\index{menu.\+h@{menu.\+h}!menu\+\_\+new@{menu\+\_\+new}}
+\index{menu\+\_\+new@{menu\+\_\+new}!menu.\+h@{menu.\+h}}
+\subsubsection[{\texorpdfstring{menu\+\_\+new(char $\ast$menu\+\_\+title, menu $\ast$parent\+\_\+menu, menu $\ast$child\+\_\+menu, menu $\ast$left\+\_\+sibling\+\_\+menu, menu $\ast$right\+\_\+sibling\+\_\+menu)}{menu_new(char *menu_title, menu *parent_menu, menu *child_menu, menu *left_sibling_menu, menu *right_sibling_menu)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf menu}$\ast$ menu\+\_\+new (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{menu\+\_\+title, }
+\item[{{\bf menu} $\ast$}]{parent\+\_\+menu, }
+\item[{{\bf menu} $\ast$}]{child\+\_\+menu, }
+\item[{{\bf menu} $\ast$}]{left\+\_\+sibling\+\_\+menu, }
+\item[{{\bf menu} $\ast$}]{right\+\_\+sibling\+\_\+menu}
+\end{DoxyParamCaption}
+)}\hypertarget{menu_8h_a6b073ee6c45d1b27c809eefd20151381}{}\label{menu_8h_a6b073ee6c45d1b27c809eefd20151381}
+Function for creating new submenu and initialising it. 
+\begin{DoxyParams}{Parameters}
+{\em char$\ast$} & menu\+\_\+title -\/ Title of the menu being created \\
+\hline
+{\em menu$\ast$} & parent\+\_\+menu -\/ Pointer to struct menu that should be current menus\textquotesingle{} parent \\
+\hline
+{\em menu$\ast$} & child\+\_\+menu -\/ Pointer to struct menu that should be current menus\textquotesingle{} child \\
+\hline
+{\em menu$\ast$} & left\+\_\+sibling\+\_\+menu -\/ Pointer to struct menu that should be current menus\textquotesingle{} left sibling \\
+\hline
+{\em menu$\ast$} & right\+\_\+sibling\+\_\+menu -\/ Pointer to struct menu that should be current menus\textquotesingle{} right sibling \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new\+\_\+menu -\/ New menu struct with specified child, parent and siblings 
+\end{DoxyReturn}
+
+
+Definition at line 16 of file menu.\+c.
+
+
+\begin{DoxyCode}
+16                                                                                                            
+                   \{
+17     \hyperlink{structmenu}{menu}* new\_menu = malloc(\textcolor{keyword}{sizeof}(\hyperlink{structmenu}{menu}));
+18 
+19     new\_menu->\hyperlink{structmenu_af250bc734581d5eee7934057e7eb61da}{title} = menu\_title;
+20     new\_menu->\hyperlink{structmenu_ab37f2faa5398d13b27ca50dcfd4e36e4}{parent} = parent\_menu;
+21     new\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child} = child\_menu;
+22     new\_menu->\hyperlink{structmenu_a38a41dc18d5c308d3a5e87ed966db330}{left\_sibling} = left\_sibling\_menu;
+23     new\_menu->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling} = right\_sibling\_menu;
+24 
+25     \textcolor{keywordflow}{return} new\_menu;
+26 \}
+\end{DoxyCode}
+\index{menu.\+h@{menu.\+h}!menu\+\_\+print\+\_\+submenu@{menu\+\_\+print\+\_\+submenu}}
+\index{menu\+\_\+print\+\_\+submenu@{menu\+\_\+print\+\_\+submenu}!menu.\+h@{menu.\+h}}
+\subsubsection[{\texorpdfstring{menu\+\_\+print\+\_\+submenu(menu $\ast$parent\+\_\+menu, menu $\ast$current\+\_\+menu)}{menu_print_submenu(menu *parent_menu, menu *current_menu)}}]{\setlength{\rightskip}{0pt plus 5cm}void menu\+\_\+print\+\_\+submenu (
+\begin{DoxyParamCaption}
+\item[{{\bf menu} $\ast$}]{parent\+\_\+menu, }
+\item[{{\bf menu} $\ast$}]{current\+\_\+menu}
+\end{DoxyParamCaption}
+)}\hypertarget{menu_8h_aeb486502ce7d248a1ecd73ed7599b7b8}{}\label{menu_8h_aeb486502ce7d248a1ecd73ed7599b7b8}
+Function for printing a submenu
+
+Function for printing a submenu. 
+\begin{DoxyParams}{Parameters}
+{\em menu$\ast$} & parent\+\_\+menu -\/ pointer to struct that is current menus\textquotesingle{} parent \\
+\hline
+{\em menu$\ast$} & current\+\_\+menu -\/ pointer to curren menu struct \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 33 of file menu.\+c.
+
+
+\begin{DoxyCode}
+33                                                               \{
+34     \hyperlink{_o_l_e_d_8c_a82f4d4fc0b5fd4d593bbd6b2d1ecfd0a}{OLED\_reset}();
+35     \hyperlink{_o_l_e_d_8c_a44d258019b241313533f9b4ef30f73b7}{OLED\_home}();
+36 
+37     \hyperlink{_o_l_e_d_8c_a12fe4ef050b79e47f836c787398ce911}{OLED\_print}(parent\_menu->\hyperlink{structmenu_af250bc734581d5eee7934057e7eb61da}{title});
+38     \hyperlink{_o_l_e_d_8c_a14f0c8ff8bea5a892171c45b25627dc3}{OLED\_go\_to\_line}(\hyperlink{_o_l_e_d_8h_abbdcccf19cfae8e1f7e64715fa089e2b}{current\_line} + 2);
+39 
+40     \hyperlink{structmenu}{menu}* child\_menu = parent\_menu->\hyperlink{structmenu_a28abd50705e0d5e7b477c6a876627928}{child};
+41 
+42     \textcolor{keywordflow}{while} (child\_menu != NULL)\{
+43         \textcolor{keywordflow}{if} (child\_menu == current\_menu) \{
+44             \hyperlink{_o_l_e_d_8c_a487de2a3254ccc149ff3482473409c9a}{OLED\_print\_highlight}(child\_menu->\hyperlink{structmenu_af250bc734581d5eee7934057e7eb61da}{title}, 5);
+45             \hyperlink{_o_l_e_d_8c_a14f0c8ff8bea5a892171c45b25627dc3}{OLED\_go\_to\_line}(\hyperlink{_o_l_e_d_8h_abbdcccf19cfae8e1f7e64715fa089e2b}{current\_line} + 1);
+46         \}
+47         
+48         \textcolor{keywordflow}{else} \{
+49             \hyperlink{_o_l_e_d_8c_a12fe4ef050b79e47f836c787398ce911}{OLED\_print}(child\_menu->\hyperlink{structmenu_af250bc734581d5eee7934057e7eb61da}{title});
+50             \hyperlink{_o_l_e_d_8c_a14f0c8ff8bea5a892171c45b25627dc3}{OLED\_go\_to\_line}(\hyperlink{_o_l_e_d_8h_abbdcccf19cfae8e1f7e64715fa089e2b}{current\_line} + 1);
+51         \}
+52         child\_menu = child\_menu->\hyperlink{structmenu_a1197cb481c01c81485b65584b9bcc904}{right\_sibling};
+53     \}  
+54 \}
+\end{DoxyCode}
