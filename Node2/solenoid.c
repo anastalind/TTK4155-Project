@@ -12,6 +12,6 @@ void solenoid_init() {
 
 void control_solenoid() {
     clear_bit(PORTB, PB4);
-    _delay_ms(500);
+    _delay_ms(300);
     set_bit(PORTB, PB4);   
 }

@@ -46,7 +46,12 @@ void PWM_init(void) {
  *  @return double PWM_D - duty cycle.
  */
 double PWM_joystick_to_duty_cycle(message position){
-    int x_position = position.data[0];
+
+    int8_t x_position = position.data[0];
+
+    if (position.data[0] > 100) {
+        x_position = position.data[0] - 256;
+    }
 
     double PWM_resolution = 1.000; // From 1 ms to 2 ms - duty cycle for the PWM signal.
     double PWM_PW = 0.000;

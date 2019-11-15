@@ -18,17 +18,17 @@
  *  @param void
  *  @return struct Sliders position - the position of the left and right slider.
  */
-struct Sliders slider_position(void){
+Sliders slider_position(void){
     
-    struct Sliders position;
+    Sliders position;
 
     // Selecting which channel of the ADC to get output from. Hexadecimal representation of channel wanted from ADC.
     int left_slider = selected_channel_output(LEFT_SLIDER_CHANNEL);
     int right_slider = selected_channel_output(RIGHT_SLIDER_CHANNEL);
 
-    // Convert output with resolution 0-255 to percentage 0-100
-    position.Left = (left_slider*100/RESOLUTION);
-    position.Right = (right_slider*100/RESOLUTION);
+    // Output with resolution 0-255
+    position.Left = left_slider;
+    position.Right = right_slider;
 
     return position;
 }
@@ -37,7 +37,7 @@ struct Sliders slider_position(void){
  */    
 void test_slider_position(void){
         //Read Slider position: 
-        struct Sliders position = slider_position();
+        Sliders position = slider_position();
 
         printf("Left-slider: %i\n\r", position.Left);
         printf("Right-slider: %i\n\r", position.Right);

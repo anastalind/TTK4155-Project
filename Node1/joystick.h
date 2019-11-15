@@ -19,6 +19,7 @@
 
 #include "ADC.h"
 #include "CAN.h"
+#include "slider.h"
 
 
 /** Struct Joystick representing the x- an y-axis respectively
@@ -54,7 +55,7 @@ bool is_vertical_direction(joystick position);
 /**
  * 
  */ 
-bool joystick_button_not_pressed(void);
+bool button_not_pressed(void);
 
 /**Function for calibrating joystick at start.
  * 
@@ -78,7 +79,7 @@ void test_read_joystick_position(void);
 
 bool is_button_pressed();
 
-void game_controller_CAN_transmit(joystick position);
+void game_controller_CAN_transmit(joystick position, Sliders slider_position);
    
 
 

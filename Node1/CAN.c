@@ -20,7 +20,7 @@ int CAN_init(void){
     uint8_t value;    
     value = MCP_read(MCP_CANSTAT);
 
-    //printf("Value: %i\n\r", value);
+    printf("Value: %i\n\r", value);
 
     if ((value & MODE_MASK) != MODE_NORMAL) {
         printf("MCP2515 is not in NORMAL mode!\n\r");
@@ -97,11 +97,12 @@ void CAN_int_vect(void){
 /** Function for testing transmit in loop-back mode.
  */
  void CAN_transmit_loopback_test(void){
-    CAN_init();
+    //sei();
+    //CAN_init();
     message msg;
-    msg.data[0] = 0x00;
+    msg.data[0] = 0xff;
     msg.id =1;
-    msg.length = sizeof(msg.data);
+    msg.length =1;
     int stop = 1;
     while(stop<10) {
         CAN_send_message(msg);

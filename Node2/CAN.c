@@ -5,14 +5,14 @@
 
 #include "CAN.h"
 #include <util/delay.h>
-
+#define MCP_RX_BUFF_OP_MODE_BITS 0b01100000
 
 /** Function for initializing CAN communication.
  */
 int CAN_init(void){
 
     // Enabling interrupt on ATmega2560
-
+    /*
     // Falling edge
     EICRA &= ~(1 << ISC20);
     EICRA |= (1 << ISC21);
@@ -22,9 +22,12 @@ int CAN_init(void){
 
     // Clear interrupt flag on PD2
     EIFR |= (1 << INTF2);
+    */
 
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
+
+    MCP_bit_modify(MCP_RXB0CTRL, MCP_RX_BUFF_OP_MODE_BITS, 0xFF);
 
     // Set MCP to normal mode
     MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
@@ -45,7 +48,7 @@ int CAN_init(void){
     else {
         printf("MCP2515 is in NORMAL mode!\n\r");
     }
-
+    //MCP_write(MCP_CANINTF, 0x00);
     return 0;
 }
 
@@ -77,22 +80,15 @@ message CAN_data_receive(void){
     message msg;
 
     // Read message id
-    msg.id = (MCP_read(MCP_RXB0SIDH) << 3) + (MCP_read(MCP_RXB0SIDL) >> 5);
+    msg.id = (MCP_read(MCP_RXB0SIDH) << 3) | (MCP_read(MCP_RXB0SIDL) >> 5);
 
     // Read message length
-    msg.length = MCP_read(MCP_RXB0DLC);
+    msg.length = MCP_read(MCP_RXB0DLC);// & 0b00001111;
 
     // Read each bit of data 
     for (uint8_t i = 0; i < msg.length; i++){
-        if (MCP_read(MCP_RXB0D + i) > 100) {
-            msg.data[i] = MCP_read(MCP_RXB0D + i) - 256;
-        }
-
-        else {
-            msg.data[i] = MCP_read(MCP_RXB0D + i);
-        }
+        msg.data[i] = MCP_read(MCP_RXB0D + i);   
     }
-    
     // Set interrupt flag to clear to send several times
     MCP_write(MCP_CANINTF, 0x00);
 
@@ -123,17 +119,21 @@ void CAN_int_vect(void){
  void CAN_transmit_loopback_test(void){
     CAN_init();
     message msg;
-    msg.data[0] = 0x00;
+
     msg.id =1;
     msg.length = sizeof(msg.data);
     int stop = 1;
+    for(int j = 0; j < 8; j++){
+        msg.data[j] = j*2;
+    }
     while(stop<10) {
         CAN_send_message(msg);
 
         message received = CAN_data_receive();
-        
+        printf("ID: %d\n\r",received.id);
+        printf("Length : %d\n\r", received.length);
         for (int i=0; i < received.length; i++){
-            printf("%u",received.data[i]);
+            printf("%d ",received.data[i]);
         }
         stop++;    
     }
@@ -142,6 +142,6 @@ void CAN_int_vect(void){
 ISR(INT2_vect)
 {
     printf("CAN INTERRUPT\n\r");
-    message position = CAN_data_receive();
-    control_motor(position);
+    //message position = CAN_data_receive();
+    //control_motor(position);
 }

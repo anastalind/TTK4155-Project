@@ -6,11 +6,16 @@
 #include "motor.h"
 
 // Creating PID controller 
-struct PID_data *pid;
+PID *pid;
 
-int16_t p_factor;
-int16_t i_factor;
-int16_t d_factor;
+uint8_t p_factor;
+uint8_t i_factor;
+uint8_t d_factor;
+
+
+int LEFT_ENCODER_VALUE = 9000;
+int RIGHT_ENCODER_VALUE = 0;
+#define RESOLUTION 255
 
 
 /** Function for initializing motor by initializing TWI and enabling outputs and inputs from ATMega2560 (MJ1 and MJ2).
@@ -47,24 +52,25 @@ void motor_initialize(void){
     clear_bit(DDRK,6);
     clear_bit(DDRK,7);
 
-    // Initialize PID controller
-    // pid_Init(p_factor, i_factor, d_factor, pid);
 
+    // Calibrate the motor to make sure we know the position of it before starting.
+    motor_calibrate();
 }
-
 
 /** Function for resetting the motor encoder by toggling RST from MJ1.
  */
 void reset_motor_encoder(void){
     // !RST resets the counter.
-    toggle_bit(PORTH,PH6);
+    clear_bit(PORTH, PH6);
+    _delay_us(200);
+    set_bit(PORTH, PH6);
 }
 
 
 /** Function for reading the encoder counter.
  *  Reading motor encoder - Movement increases or decreases an internal 16 bits counter.
  */
-uint16_t read_motor_encoder(void){
+int16_t read_motor_encoder(void){
 
     // !OE pin of MJ1 driven low to allow the counter to appear on MJ2.
     clear_bit(PORTH,PH5);
@@ -73,7 +79,7 @@ uint16_t read_motor_encoder(void){
     clear_bit(PORTH,PH3);
 
     // Wait in 20 micro seconds
-    _delay_ms(0.02);
+    _delay_us(200);
 
     // Read MSB of ADC input
     uint8_t high_byte = PINK;
@@ -82,20 +88,19 @@ uint16_t read_motor_encoder(void){
     set_bit(PORTH,PH3);
 
     // Wait in 20 micro seconds
-    _delay_ms(0.02);
+    _delay_us(200);
 
     // Read LSB of ADC input
     uint8_t low_byte = PINK;
 
     // Reset encoder
-    reset_motor_encoder();
+    //reset_motor_encoder();
 
     // Set !OE high to disbale output of encoder
     set_bit(PORTH,PH5);
 
-    uint16_t byte = high_byte + low_byte;
+    return (int16_t) ((high_byte << 8) | low_byte);
 
-    return byte;
 }
 
 
@@ -134,21 +139,20 @@ void set_motor_direction(motor_direction direction){
 }
 
 
-/** Function for controlling the motor by joystick position.
- *  @param message position - CAN message containing joystick position of node 1.
+/** Function for controlling the motor speed by passing in desired voltage value (negative values sets direction to left, positive to right)
+ *  @param int8_t DAC_voltage - desired voltage.
  */
-void control_motor(message position) {
-    int y_position = position.data[1];
-    uint8_t DAC_voltage = abs(y_position); 
-
+void motor_speed_controller(int8_t speed) {
     //printf("Initialized DAC voltage: %u \n\r", DAC_voltage);
 
-    if (y_position < 0) {
+    uint8_t DAC_voltage = abs(speed);
+
+    if (speed < 0) {
         set_motor_direction(LEFT);
         //printf("Motor direction: left\n\r");
     }
 
-    else if (y_position > 0) {
+    else if (speed > 0) {
         set_motor_direction(RIGHT);
         //printf("Motor direction: right\n\r");   
     }
@@ -160,4 +164,67 @@ void control_motor(message position) {
 
     set_motor_speed(DAC_voltage);
 }
+
+
+/** Function for calibrating motor and reading min and max encoder values
+ * 
+ */ 
+void motor_calibrate(void) {
+
+    // Finding rightmost encoder value
+    motor_speed_controller(100);
+    _delay_ms(10000);
+    RIGHT_ENCODER_VALUE = read_motor_encoder();
+
+    // Finding leftmost encoder value
+    motor_speed_controller(-100);
+    _delay_ms(10000);
+    LEFT_ENCODER_VALUE = read_motor_encoder();
+}
+/**
+ * current_position is a value between (0, 255)
+ */ 
+uint8_t get_motor_position(void){
+    int16_t read_encoder_value = read_motor_encoder();
+
+    float ratio = (float)LEFT_ENCODER_VALUE/(float)RESOLUTION;
+
+    uint8_t current_position = (uint8_t)((read_encoder_value - RIGHT_ENCODER_VALUE)/ratio);
+
+    return current_position;
+}
+
+/** Function for 
+ *  @param 
+ */
+void slider_controller_test(message msg) {
+
+    uint8_t ref_pos = msg.data[3];
+    printf("Received slider data %u\n\n\r", ref_pos);
+    uint8_t curr_pos = get_motor_position();
+    printf("Current position %u\n\n\r", curr_pos);   
+
+    int8_t diff = (int8_t)(ref_pos - curr_pos);
+
+    printf("Difference between ref pos and curr pos %i\n\n\r", diff);   
+
+    if (diff > 0) {
+        set_motor_direction(LEFT);
+        set_motor_speed(100);
+        //printf("Motor direction: left\n\r");
+    }
+
+    else if (diff < 0) {
+        set_motor_direction(RIGHT);
+        set_motor_speed(100);
+        //printf("Motor direction: right\n\r");   
+    }
+
+    else {
+        set_motor_direction(NEUTRAL);
+        set_motor_speed(100);
+        //printf("Motor direction: neutral\n\r");
+    }
+
     
+}

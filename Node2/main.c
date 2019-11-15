@@ -20,34 +20,40 @@
 
 void main() {  
 
+    sei();
     USART_init(9600);
     PWM_init();
     CAN_init();
     
     solenoid_init();
     motor_initialize();
-    printf("\n\n");
-    sei();
 
     while (1) {
-        _delay_ms(20);
-
+        //printf("Value read from motor encoder: %i\n\r", read_motor_encoder());
         message msg = CAN_data_receive();
+
+        slider_controller_test(msg);
+        //get_motor_position();
+
         double duty_cycle = PWM_joystick_to_duty_cycle(msg);
 
-        control_motor(msg);
+       // motor_speed_controller(msg);
         PWM_set_duty_cycle(duty_cycle);
 
         if (msg.data[2] == 1) {
             printf("Received msg about button press \n\r");
             control_solenoid();
         }
+        printf("\n\n");
+
+
     }
+    
 }
 
 
-ISR(INT2_vect)
+ISR(__vector_default)
 {
-    //printf("CAN INTERRUPT\n\r");
+    //printf("Interrupt\n\r");
 
 }

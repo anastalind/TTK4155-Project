@@ -7,7 +7,8 @@
         "bit_operations.h": "c",
         "ir.h": "c",
         "stdint.h": "c",
-        "solenoid.h": "c"
+        "solenoid.h": "c",
+        "mcp2515.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.dimInactiveRegions": false

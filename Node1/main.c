@@ -19,13 +19,17 @@
 
 #include <util/delay.h>
 
+ISR(__vector_default)
+{
+    printf("Interrupt\n\r");
 
+}
 
 void main() {  
 
+    sei();
     UART_init(9600);
     CAN_init();
-    sei();
 
     //set_bit(UCSR1A, UPE1);
     set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
@@ -34,16 +38,21 @@ void main() {
     _delay_ms(1000);
     joystick_calibrate();
     joystick position = joystick_position();
+    Sliders slider = slider_position();
+
     //bool button_press = is_button_pressed();
     
     while(1){
         position = joystick_position();
+        slider = slider_position();
+        
+        //printf("Slider left%i \n\r", slider.Left);
         //button_press = is_button_pressed();
         //printf("Is button pressed?? %i\n\r", button_press);
 
         //printf("Position x: %i\n\r", position.x);
         //printf("Position y: %i\n\r", position.y);
-        joystick_CAN_transmit(position);
+        game_controller_CAN_transmit(position, slider);
         _delay_ms(100);
     }
 

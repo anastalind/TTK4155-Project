@@ -17,9 +17,9 @@
 /** Struct for message, defining id, length and data byte.
  */
 typedef struct {
-    unsigned int id;
+    uint8_t id;
     uint8_t length;
-    int8_t data[8]; 
+    uint8_t data[8]; 
 } message;
 
 

@@ -71,7 +71,7 @@ bool is_vertical_direction(joystick position) {
  *  @return 
  * 
  */
-bool joystick_button_not_pressed(void) {
+bool button_not_pressed(void) {
     bool joystick_button = (PINB & (1 << PINB2));
     return joystick_button;
 } 
@@ -187,13 +187,17 @@ bool is_button_pressed() {
 /** Function for sending joystick position via CAN to Node 2. 
  *  @param joystick position - Position of joystick, struct containing x and y-positions (0-100%). 
  */
-void game_controller_CAN_transmit(joystick position) {
+void game_controller_CAN_transmit(joystick position, Sliders slider_position) {
     message msg;
-    msg.length = 3;
+    msg.length = 5;
     msg.id = 0;
 
     msg.data[0] = position.x;
     msg.data[1] = position.y;
+    msg.data[3] = slider_position.Left;
+    msg.data[4] = slider_position.Right;
+
+    printf("Slider %i \n\r", msg.data[3]);
 
     // The flag is checking whether the button is registered or not
     if ((BUTTON_PRESSED_FLAG <= 1) && (is_button_pressed())){

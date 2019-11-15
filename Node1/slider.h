@@ -19,16 +19,16 @@
 
 /** Struct Sliders representing the left and right sliders respectively
  */
-struct Sliders {
+typedef struct {
     int Left;
     int Right; 
-};
+} Sliders ;
 
 /** Function retrieving position of right and left sliders as a percent-value 0-100
  *  @param void
  *  @return struct Sliders position - the position of the left and right slider.
  */
-struct Sliders slider_position();
+Sliders slider_position();
 
 /** Test function for reading slider position.
  */    
