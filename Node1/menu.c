@@ -52,8 +52,40 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
             OLED_go_to_line(current_line + 1);
         }
         child_menu = child_menu->right_sibling;
-    }  
+    }
+
+    // Print depending on the submenu chosen
+    switch (PLAY_GAME_FLAG) {
+        // End game
+        case 0: {
+            // Print the score on the screen for a while
+            PLAY_GAME_FLAG = 4;
+            // print ordinary screen
+            break;
+        }
+        // Play game
+        case 1: {
+            // PLAYING GAME rolling over screen
+            break;
+        }
+        // High score
+        case 2: {
+            // High score as main title
+            break;
+        }
+        // Settings
+        case 3: {
+            // New menu with settings
+            break;
+        }
+        // Neutral
+        case 4: {
+            //Back to ordinary
+            break;
+        }
+    }
 }
+
 
 
 /** Function for navigating the menu by moving between siblings and parent/child. 
@@ -143,9 +175,13 @@ menu* menu_navigate(menu* child_menu, direction dir){
             //current_menu = current_menu->child;
             PLAY_GAME_FLAG = 2;
             printf("HIGH SCORE\n\r");
+        } else if (current_menu->title == "SETTINGS"){
+            //current_menu = current_menu->child;
+            PLAY_GAME_FLAG = 3;
+            printf("SETTINGS\n\r");
         } else if (current_menu->child != NULL){
             current_menu = current_menu->child;
-        }
+        } 
     }
     return current_menu;
 }

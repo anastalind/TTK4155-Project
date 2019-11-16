@@ -157,23 +157,18 @@ void motor_speed_controller(int16_t speed) {
 /** Function for calibrating motor and reading min and max encoder values
  */ 
 void motor_calibrate(void) {
+    // Go left
 	motor_speed_controller(-100);
-    _delay_ms(10000);
-
-	int16_t cur_rot = read_motor_encoder();
-	int16_t prev_rot = cur_rot + 200;
-
-    // Not quite sure about this
-	while (prev_rot != cur_rot) {
-		prev_rot = cur_rot;
-		_delay_ms(40);
-		cur_rot = read_motor_encoder();
-	}
-	reset_motor_encoder();
-	motor_speed_controller(0);
-
-    LEFT_ENCODER_VALUE = cur_rot;
-    //printf("SET ENCODER VALUE %u \n\n\r", current_encoder_value);
+    int16_t current_rotation = read_motor_encoder();
+    int16_t previous_rotation = current_rotation+300;
+    // The previous rotation must be increased by 300
+    while (current_rotation != previous_rotation) {
+        previous_rotation = current_rotation;
+        _delay_ms(100);
+        current_rotation = read_motor_encoder();
+    }
+    // Neutral 
+    //motor_speed_controller(0);
 }
 
 /** Function for reading the position-limits of the board and returning the current position of the motor.

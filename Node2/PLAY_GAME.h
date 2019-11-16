@@ -6,6 +6,11 @@
 #ifndef PLAY_GAME_H
 #define PLAY_GAME_H
 
+typedef enum {PLAY,END,HIGH_SCORE,SETTINGS,NEUTRAL} game_states;
+
+// Global flag interrupt for detecting number of misses
+extern int GAME_OVER;
+
 /** Initialize necessary functions for playing the game.
  */
 void play_game_initialize(void);   

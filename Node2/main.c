@@ -43,40 +43,33 @@ void main() {
         //PWM_set_duty_cycle(duty_cycle);  
 
         // Pulse solenoid
+        /*
         if (msg.data[2] == 1) {
             printf("Received msg about button press \n\r");
             control_solenoid();
         }
+        */
 
         if (PID_FLAG == 1) {
-            PID_regulator();
+            //PID_regulator();
+            printf("%d\n\r",read_motor_encoder());
+            motor_speed_controller(100);
+            printf("%d\n\r",read_motor_encoder());
             PID_FLAG = 0;
         }
 
-        // Controlling motor with PID regulator
-        //PID_controller(msg, pid);
 
+        
         //_delay_ms(1500);
 
-        //motor_speed_controller(50);
+        
 
         //printf("Get motor position %u \n\r", get_motor_position());
 
 
-    /*
-        // MENU - CONTROL FLAG
-        // If play game is requested, play game
-        if (msg.data[5] == 1) {
-            printf("PLAY game is requested! \n\r");
-            //play_game();
-        } else if (msg.data[5] == 0) {
-            printf("END game is requested! \n\r");
-            //end_game();
-        } else if (msg.data[5] == 2) {
-            printf("HIGH SCORES are requested! \n\r");
-            //show_highscore();
-        }
-    */
+    
+       
+    
 
         //printf("\n\n");
 
