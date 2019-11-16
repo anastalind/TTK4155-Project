@@ -4,12 +4,24 @@
  */
 
 #include "CAN.h"
-#include <util/delay.h>
-#define MCP_RX_BUFF_OP_MODE_BITS 0b01100000
+
+message recent_msg; 
 
 /** Function for initializing CAN communication.
  */
 int CAN_init(void){
+    /*
+    // Enable interrupt for CAN on node 2
+    // Falling edge
+    clear_bit(EICRA, ISC20);
+    set_bit(EICRA, ISC21);
+
+    // Enable interrupt on PD2 (19 on Arduino shield)
+    set_bit(EIMSK, INT2);
+
+    // Clear interrupt flag on PD2
+    set_bit(EIFR, INTF2);
+    */
     
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
@@ -35,7 +47,7 @@ int CAN_init(void){
     else {
         printf("MCP2515 is in NORMAL mode!\n\r");
     }
-    //MCP_write(MCP_CANINTF, 0x00);
+
     return 0;
 }
 
@@ -100,6 +112,10 @@ void CAN_int_vect(void){
     // si fra om klar til å sende eller motta 
 }
 
+message CAN_get_msg(void) {
+    return recent_msg;
+}
+
 
 /** Function for testing transmit in loop-back mode.
  */
@@ -119,7 +135,7 @@ void CAN_int_vect(void){
         message received = CAN_data_receive();
         printf("ID: %d\n\r",received.id);
         printf("Length : %d\n\r", received.length);
-        for (int i=0; i < received.length; i++){
+        for (int i = 0; i < received.length; i++){
             printf("%d ",received.data[i]);
         }
         stop++;    
@@ -132,5 +148,6 @@ void CAN_int_vect(void){
  *  @param INT2_vect - interrupt vector for CAN. 
  */
 ISR(INT2_vect){
-    printf("CAN INTERRUPT\n\r");
+    //printf("CAN INTERRUPT \n\r");
+    //recent_msg = CAN_data_receive();
 }

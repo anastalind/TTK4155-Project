@@ -8,11 +8,15 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "MCP2515.h"
 #include "SPI.h"
 
 #include "bit_operations.h"
+
+//extern int CAN_INTERRUPT_FLAG;
 
 /** Struct for message, defining id, length and data byte.
  */

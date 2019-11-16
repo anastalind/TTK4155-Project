@@ -5,18 +5,12 @@
 
 #include "motor.h"
 
-// Creating PID controller 
-PID *pid;
-
-uint8_t p_factor;
-uint8_t i_factor;
-uint8_t d_factor;
-
-
-int LEFT_ENCODER_VALUE = 9000;
-int RIGHT_ENCODER_VALUE = 0;
-
 #define RESOLUTION 255
+
+int LEFT_ENCODER_VALUE = -200;
+int RIGHT_ENCODER_VALUE = 8337;
+
+int current_encoder_value = 0;
 
 
 /** Function for initializing motor by initializing TWI and enabling outputs and inputs from ATMega2560 (MJ1 and MJ2).
@@ -93,6 +87,9 @@ int16_t read_motor_encoder(void){
     // Read LSB of ADC input
     uint8_t low_byte = PINK;
 
+    // Reset encoder 
+    reset_motor_encoder();
+
     // Set !OE high to disbale output of encoder
     set_bit(PORTH,PH5);
 
@@ -137,25 +134,20 @@ void set_motor_direction(motor_direction direction){
 
 
 /** Function for controlling the motor speed by passing in desired voltage value (negative values sets direction to left, positive to right)
- *  @param int8_t DAC_voltage - desired voltage.
+ *  @param int16_t speed - desired speed.
  */
-void motor_speed_controller(int8_t speed) {
+void motor_speed_controller(int16_t speed) {
     //printf("Initialized DAC voltage: %u \n\r", DAC_voltage);
-    uint8_t DAC_voltage = abs(speed);
+    uint8_t DAC_voltage;
 
     if (speed < 0) {
-        set_motor_direction(LEFT);
-        //printf("Motor direction: left\n\r");
+        clear_bit(PORTH, PH1);
+        DAC_voltage = (-1) * speed;
     }
 
-    else if (speed > 0) {
-        set_motor_direction(RIGHT);
-        //printf("Motor direction: right\n\r");   
-    }
-
-    else {
-        set_motor_direction(NEUTRAL);
-        //printf("Motor direction: neutral\n\r");
+    else if (speed >= 0) {
+        set_bit(PORTH, PH1);
+        DAC_voltage = speed; 
     }
 
     set_motor_speed(DAC_voltage);
@@ -165,32 +157,52 @@ void motor_speed_controller(int8_t speed) {
 /** Function for calibrating motor and reading min and max encoder values
  */ 
 void motor_calibrate(void) {
-
-    // Finding rightmost encoder value
-    motor_speed_controller(100);
+	motor_speed_controller(-100);
     _delay_ms(10000);
-    RIGHT_ENCODER_VALUE = read_motor_encoder();
 
-    // Finding leftmost encoder value
-    motor_speed_controller(-100);
-    _delay_ms(10000);
-    LEFT_ENCODER_VALUE = read_motor_encoder();
+	int16_t cur_rot = read_motor_encoder();
+	int16_t prev_rot = cur_rot + 200;
+
+    // Not quite sure about this
+	while (prev_rot != cur_rot) {
+		prev_rot = cur_rot;
+		_delay_ms(40);
+		cur_rot = read_motor_encoder();
+	}
+	reset_motor_encoder();
+	motor_speed_controller(0);
+
+    LEFT_ENCODER_VALUE = cur_rot;
+    //printf("SET ENCODER VALUE %u \n\n\r", current_encoder_value);
 }
 
 /** Function for reading the position-limits of the board and returning the current position of the motor.
  *  @return current_position - a value between (0, 255) representing the motors position.
  */ 
 uint8_t get_motor_position(void){
-    int16_t read_encoder_value = read_motor_encoder();
 
-    float ratio = (float)LEFT_ENCODER_VALUE/(float)RESOLUTION;
+    int16_t read_encoder_value = (-1) * read_motor_encoder();
+    printf("READ ENCODER VALUE %u \n\n\r", read_encoder_value);
+    
+    if (read_encoder_value > RIGHT_ENCODER_VALUE) {
+        read_encoder_value = current_encoder_value;
+    }
 
-    uint8_t current_position = 255-(uint8_t)((read_encoder_value - RIGHT_ENCODER_VALUE)/ratio);
+    else if (read_encoder_value < LEFT_ENCODER_VALUE) {
+        read_encoder_value = current_encoder_value;
+    }
+
+    current_encoder_value = read_encoder_value;
+    //printf("SET ENCODER VALUE %u \n\n\r", current_encoder_value);
+    
+
+    uint8_t current_position = (uint8_t)(((read_encoder_value - LEFT_ENCODER_VALUE)/RIGHT_ENCODER_VALUE)*RESOLUTION);
+    //printf("PROCESS VALUE %u \n\n\r", current_position);
 
     return current_position;
 }
 
-/** Function for testing the slider-control og the motor. 
+/** Function for testing the slider-control and the motor. 
  *  @param message msg - position message.
  */
 void slider_controller_test(message msg) {
@@ -220,7 +232,7 @@ void slider_controller_test(message msg) {
 
     else {
         set_motor_direction(NEUTRAL);
-        set_motor_speed(100);
+        set_motor_speed(0);
         //printf("Motor direction: neutral\n\r");
     }
 }

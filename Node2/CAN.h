@@ -8,11 +8,16 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
 
 #include "MCP2515.h"
 #include "SPI.h"
 
 #include "bit_operations.h"
+
+#define MCP_RX_BUFF_OP_MODE_BITS 0b01100000
 
 /** Struct for message, defining id, length and data byte.
  */
@@ -22,6 +27,7 @@ typedef struct {
     uint8_t data[8]; 
 } message;
 
+extern message recent_msg;
 
 /** Function for initializing CAN.
  */
@@ -48,6 +54,13 @@ void CAN_transmit_complete(void);
 /** 
  */
 void CAN_int_vect(void);
+
+/**
+ * @brief 
+ * 
+ * @return message 
+ */
+message CAN_get_msg(void);
 
 
 #endif

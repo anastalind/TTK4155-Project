@@ -6,6 +6,8 @@
 #include "CAN.h"
 #include <util/delay.h>
 
+//int CAN_INTERRUPT_FLAG = 0;
+
 
 /** Function for initializing CAN
  */
@@ -13,10 +15,15 @@ int CAN_init(void){
     // Reset MCP2515 to configuration mode and test self
     MCP_init();
 
+    MCP_bit_modify(MCP_CANINTE, 0b11, MCP_RX_INT); //Enable all receive interrupts
+    // INT1 intflag is cleared by writing 1 to INTF1
+    set_bit(GIFR, INTF1);
+    // Enable interrupt on PD3
+    set_bit(GICR, INT1);
+
     // Set normal mode
-    MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
-
-
+	MCP_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_NORMAL);
+    
     uint8_t value;    
     value = MCP_read(MCP_CANSTAT);
 
@@ -31,7 +38,6 @@ int CAN_init(void){
     }
 
     return 0;
-    // Initialize interrupt flags?
 }
 
 /** Function for sending a message with a given id and data using MCP2515 for CAN communication.
@@ -65,12 +71,13 @@ message CAN_data_receive(void){
     // Read message length
     msg.length = MCP_read(MCP_RXB0DLC);
 
-    
     // Read each bit of data 
-    uint8_t i; 
-    for (i=0; i < msg.length; i++){
-        msg.data[i] = MCP_read(MCP_RXB0D+i);
+    for (uint8_t i = 0; i < msg.length; i++){
+        msg.data[i] = MCP_read(MCP_RXB0D + i);
     }
+
+    // Set interrupt flag to clear to send several times
+    MCP_write(MCP_CANINTF, 0x00);
 
     return msg;
 }
@@ -114,4 +121,14 @@ void CAN_int_vect(void){
         }
         stop++;    
     }
+}
+
+
+/** Interrupt vector function for CAN.
+ *  @param INT1_vect - interrupt vector for CAN. 
+ */
+
+ISR(INT1_vect){
+    CAN_INTERRUPT_FLAG = 1;
+    printf("In CAN INTERRUPT, FLAG = %i \n\r", CAN_INTERRUPT_FLAG);
 }

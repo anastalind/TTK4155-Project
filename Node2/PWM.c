@@ -49,7 +49,7 @@ double PWM_joystick_to_duty_cycle(message position){
 
     int8_t x_position = position.data[0];
 
-    // Joystick position is values between (-100 - 100), negative values gets lost in CAN tranmission as an uint8_t is transmitted
+    // Joystick position is values between (-100 - 100), negative values gets lost in CAN transmission as an uint8_t is transmitted
     if (position.data[0] > 100) {
         x_position = position.data[0] - 256;
     }

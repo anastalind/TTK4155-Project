@@ -49,6 +49,7 @@ void main() {
 
 
     while(1){
+
         // MENU
         current_menu = menu_navigate(child_menu, dir);
         menu_print_submenu(parent_menu, current_menu);
@@ -61,7 +62,6 @@ void main() {
         position = joystick_position();
         slider = slider_position();
 
-    
         //printf("Slider left%i \n\r", slider.Left);
         //button_press = is_button_pressed();
         //printf("Is button pressed?? %i\n\r", button_press);
@@ -70,6 +70,7 @@ void main() {
         //printf("Position y: %i\n\r", position.y);
 
         game_controller_CAN_transmit(position, slider, PLAY_GAME_FLAG);
+
         _delay_ms(100);
     }
     

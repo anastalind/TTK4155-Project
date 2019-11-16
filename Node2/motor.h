@@ -34,7 +34,6 @@ void reset_motor_encoder(void);
  */
 int16_t read_motor_encoder(void);
 
-
 /** Function for setting the speed of the motor by sending the desired voltage to the motor box via TWI.
  *  @param uint8_t DAC_voltage - The desired voltage for the motor (0-5V)
  */
@@ -55,13 +54,15 @@ void set_motor_direction(motor_direction direction);
 uint8_t get_motor_position(void); 
 
 /** Function for controlling the motor speed by passing in desired voltage value (negative values sets direction to left, positive to right)
- *  @param uint8_t DAC_voltage - desired voltage.
+ *  @param int16_t speed - desired speed.
  */
-void motor_speed_controller(int8_t speed);
+void motor_speed_controller(int16_t speed);
 
 /** Function for testing the slider-control og the motor. 
  *  @param message msg - position message.
  */
 void slider_controller_test(message msg);
+
+
     
 #endif
