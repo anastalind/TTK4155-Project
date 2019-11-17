@@ -194,7 +194,13 @@ void game_controller_CAN_transmit(joystick position, Sliders slider_position, in
     msg.length = 6;
     msg.id = 0;
 
-    msg.data[0] = position.x;
+    // Only use the servo when game is playing. Else, it is used for menu navigating.
+    if (PLAY_GAME_FLAG == 1) {
+        msg.data[0] = position.x;
+    } else {
+        msg.data[0] = 0;
+    }
+
     msg.data[1] = position.y;
     msg.data[3] = slider_position.Left;
     msg.data[4] = slider_position.Right;

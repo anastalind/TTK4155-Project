@@ -65,7 +65,7 @@ menu* menu_init();
 
 /** Test function 
  */
-void menu_test();
+void menu_controller(menu* parent_menu,menu*  child_menu,menu*  current_menu, direction dir);
 
 #endif
 

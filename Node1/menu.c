@@ -94,12 +94,15 @@ menu* menu_navigate(menu* child_menu, direction dir){
         }
     }
 
-    else if (dir == LEFT) {
+    // If direction is left and the game is not playing
+    else if (dir == LEFT) && (PLAY_GAME_FLAG != 1) {
         if (current_menu->parent != NULL) {
             current_menu = (current_menu->parent);
         }
     }
-    else if (dir == RIGHT) {
+
+    // If direction is right and the game is not playing
+    else if (dir == RIGHT) && (PLAY_GAME_FLAG != 1) {
         if (current_menu->child != NULL) {
             current_menu = (current_menu->child);
         }
@@ -113,14 +116,11 @@ menu* menu_navigate(menu* child_menu, direction dir){
     if (!(joystick_button_not_pressed())) {
         if (current_menu->title == "PLAY GAME"){
             current_menu = current_menu->child;
-            printf("%s\n\r",current_menu->title);
             PLAY_GAME_FLAG = 1;
-            printf("PLAY GAME\n\r");
 
         } else if (current_menu->title == "END GAME"){
             current_menu = (current_menu->child);
 
-            printf("END GAME\n\r");
         } else if (current_menu->title == "GAME OVER"){
             _delay_ms(10000);
             // Return to main menu
@@ -128,17 +128,14 @@ menu* menu_navigate(menu* child_menu, direction dir){
                 current_menu = (current_menu->parent);
             }
             PLAY_GAME_FLAG = 0;
-            printf("GAME OVER\n\r");
 
         } else if (current_menu->title == "HIGH SCORE"){
             current_menu = current_menu->child;
             PLAY_GAME_FLAG = 2;
-            printf("HIGH SCORE\n\r");
 
         } else if (current_menu->title == "SETTINGS"){
             current_menu = current_menu->child;
             PLAY_GAME_FLAG = 3;
-            printf("SETTINGS\n\r");
 
         } else if (current_menu->child != NULL){
             current_menu = current_menu->child;
@@ -225,29 +222,26 @@ menu* menu_init() {
     return main_menu;
 }
 
-/** Test function 
+/** Menu controller. Controlling the functionality and printing of OLED.
  */
-void menu_test(){
-    OLED_init();
+void menu_controller(menu* parent_menu,menu*  child_menu,menu*  current_menu, direction dir) {
+    // The current menu is changed to the one menu navigate decides
+    current_menu = menu_navigate(child_menu, dir);
 
-    menu* parent_menu = menu_init();
-    menu* child_menu = parent_menu->child;
-    menu* current_menu = NULL;
-
-    joystick_calibrate();
-    direction dir = joystick_direction();
-
-    while (1) {
-        current_menu = menu_navigate(child_menu, dir);
-        
+    if (current_menu->title != "GAME OVER") {
+        // Print submenu of current menu 
         menu_print_submenu(parent_menu, current_menu);
         _delay_ms(500);
-
         dir = joystick_direction();
+        child_menu = current_menu;
+        parent_menu = child_menu->parent;
+    } else {
+        OLED_reset();
+        
+        menu_print_game_over();
 
         child_menu = current_menu;
         parent_menu = child_menu->parent;
-
-    }
+    } 
 }
 

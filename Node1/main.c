@@ -35,47 +35,27 @@ void main() {
     set_bit(MCUCR, SRE); // Sets the SRE (Static Ram Enable) bit in the MCUCR (MCU Control Register) - enabling external write
     set_bit(SFIOR, XMM2); // Setting XMM2 (External Memory High Mask) bit in the SFIOR (Special Function IO Register) - use 4 bits for external memory address
 
+
+    // USB MULTIBOARD INIT 
     _delay_ms(1000);
     joystick_calibrate();
     joystick position = joystick_position();
     Sliders slider = slider_position();
     
-    // MENU
+    // MENU INIT
     OLED_init();
     // Parent menu is Main Menu
     menu* parent_menu = menu_init();
-
     // Child menu is Play Game, which means that this is the first current menu from menu_navigate
     menu* child_menu = parent_menu->child;
-
     // Current menu is nothing
     menu* current_menu = NULL;
+    // Direction of joystick
     direction dir = joystick_direction();
 
-
     while(1){
-        // MENU
-        // The current menu is changed to the one menu navigate decides
-        current_menu = menu_navigate(child_menu, dir);
 
-        if (current_menu->title != "GAME OVER") {
-            // Print submenu of current menu 
-            menu_print_submenu(parent_menu, current_menu);
-            _delay_ms(500);
-            dir = joystick_direction();
-            child_menu = current_menu;
-            parent_menu = child_menu->parent;
-        } else {
-            OLED_reset();
-            
-            menu_print_game_over();
-
-            child_menu = current_menu;
-            parent_menu = child_menu->parent;
-        } 
-
-
-
+        menu_controller(parent_menu,child_menu,current_menu, dir);
         position = joystick_position();
         slider = slider_position();
 
@@ -91,5 +71,4 @@ void main() {
         _delay_ms(100);
     }
     
-  
 }
