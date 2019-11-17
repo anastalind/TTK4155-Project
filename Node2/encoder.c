@@ -1,5 +1,12 @@
+/** @file encoder.c
+ *  @brief C-file for reading, resetting and initializing the motor encoder.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
+ */
 #include "encoder.h"
 
+
+/** Function for initializing the encoder. 
+ */
 void encoder_init(void) {
     // SEL
     set_bit(DDRH, PH3);
@@ -14,12 +21,17 @@ void encoder_init(void) {
     encoder_reset();
 }
 
+/** Function for resetting the encoder. 
+ */
 void encoder_reset(void) {
     clear_bit(PORTH, PH6);
     _delay_us(200);
     set_bit(PORTH, PH6);
 }
 
+/** Function for reading the encoder.
+ *  @return int16_t ((high_byte << 8) | low_byte) - The 16 bit encoder data.
+ */
 int16_t encoder_read(void) {
     // !OE low to enable output from encoder
     clear_bit(PORTH, PH5);

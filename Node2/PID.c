@@ -1,3 +1,8 @@
+/** @file PID.c
+ *  @brief C-file for the PID-controller, controlling the motor movement.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
+ */
+
 #include "PID.h"
 
 double p_factor = 1;
@@ -10,6 +15,9 @@ int PID_FLAG = 0;
 #define EDGE_SLACK 10
 #define MAX_RESOLUTION 255
 
+
+/** Function for initializing the PID-controller. 
+ */
 void PID_init(PID* pid) {
     // Set tuning constants in pid
     pid->K_p = p_factor * SCALING_FACTOR;
@@ -34,11 +42,20 @@ void PID_init(PID* pid) {
 
 }
 
+
+/** Function for resetting the PID-controller.
+ */
 void PID_reset (PID* pid) {
     pid->last_error = 0;
     pid->sum_errors = 0;
 }
 
+/** Function for calculating the error and introducing integral and derivative-effects to return the control variable.
+ * @param uint8_t reference_value - The current position of the slider.
+ * @param uint8_t process_value - The current position of the motor, read from encoder. 
+ * @param PID* pid - PID controller
+ * @return int16_t control_variable - Control variable to control the motor.
+ */
 int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PID* pid) {
 
     int16_t p_term, i_term, d_term;
@@ -85,6 +102,11 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
 
 }
 
+
+/** Function for moving motor according to the reference and process position, controlle by PID-controller.
+ * @param PID* pid - PID controller.
+ * @param message msg - Message from CAN, including the slider position.
+ */
 void PID_controller(PID* pid,message msg) {
     if (PID_FLAG == 1) {
         // Get reference and process values
