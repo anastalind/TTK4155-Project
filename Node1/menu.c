@@ -54,36 +54,6 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
         child_menu = child_menu->right_sibling;
     }
 
-    // Print depending on the submenu chosen
-    switch (PLAY_GAME_FLAG) {
-        // End game
-        case 0: {
-            // Print the score on the screen for a while
-            PLAY_GAME_FLAG = 4;
-            // print ordinary screen
-            break;
-        }
-        // Play game
-        case 1: {
-            // PLAYING GAME rolling over screen
-            break;
-        }
-        // High score
-        case 2: {
-            // High score as main title
-            break;
-        }
-        // Settings
-        case 3: {
-            // New menu with settings
-            break;
-        }
-        // Neutral
-        case 4: {
-            //Back to ordinary
-            break;
-        }
-    }
 }
 
 
@@ -135,6 +105,7 @@ menu* menu_navigate(menu* child_menu, direction dir){
             printf("PLAY GAME\n\r");
 
         } else if (current_menu->title == "END GAME"){
+            // END GAME is detected and print is shown - put in a delay here? 
             // Return to main menu
             current_menu = (current_menu->parent)->parent;
             PLAY_GAME_FLAG = 0;

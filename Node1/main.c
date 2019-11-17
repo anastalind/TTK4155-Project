@@ -42,20 +42,33 @@ void main() {
     
     // MENU
     OLED_init();
+    // Parent menu is Main Menu
     menu* parent_menu = menu_init();
+
+    // Child menu is Play Game, which means that this is the first current menu from menu_navigate
     menu* child_menu = parent_menu->child;
+
+    // Current menu is nothing
     menu* current_menu = NULL;
     direction dir = joystick_direction();
 
 
     while(1){
         // MENU
+        // The current menu is changed to the one menu navigate decides
         current_menu = menu_navigate(child_menu, dir);
-        menu_print_submenu(parent_menu, current_menu);
-        _delay_ms(500);
-        dir = joystick_direction();
-        child_menu = current_menu;
-        parent_menu = child_menu->parent;
+
+        if (current_menu->title != "END GAME") {
+            // Print submenu of current menu 
+            menu_print_submenu(parent_menu, current_menu);
+            _delay_ms(500);
+            dir = joystick_direction();
+            child_menu = current_menu;
+            parent_menu = child_menu->parent;
+        } else {
+            // Print GAME OVER 
+        } 
+
 
 
         position = joystick_position();
