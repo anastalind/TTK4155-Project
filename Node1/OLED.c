@@ -7,6 +7,7 @@
 #include "addresses.h"
 #include "fonts.h"
 
+#include <util/delay.h>
 #include <avr/pgmspace.h>
 
 static FILE OLED_stream = FDEV_SETUP_STREAM(OLED_write, NULL, _FDEV_SETUP_WRITE); 
@@ -157,3 +158,5 @@ void OLED_reset(void) {
 void OLED_home(void) {
     OLED_position(0,0);
 }
+
+

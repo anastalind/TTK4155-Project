@@ -38,6 +38,10 @@ uint16_t IR_read_filtered_photodiode(void);
  */
 int counting_goals(void);
 
+/** Function for resetting goals.
+ */
+void reset_goals(void);
+
 /** Test function for counting goals.
  */
 void test_counting_goals(void);

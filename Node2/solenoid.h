@@ -18,9 +18,13 @@
  */
 void solenoid_init();
 
+/** Function for executing a solenoid punch if button is pressed.
+ */
+void solenoid_control(message msg);
+
 /** Function for toggling the solenoid pins and executing a pulse-movement.
  */
-void control_solenoid();
+void solenoid_punch(void);
 
 
 #endif

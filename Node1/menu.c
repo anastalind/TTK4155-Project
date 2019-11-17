@@ -37,8 +37,10 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
     OLED_home();
 
     if (parent_menu->title == "PLAY GAME") {
-        OLED_print("PLAYING GAME");
+        OLED_print("  PLAYING GAME");
+   
     } else {
+        OLED_print("   ");
         OLED_print(parent_menu->title);
     }
 
@@ -48,26 +50,32 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
 
     while (child_menu != NULL){
         if (child_menu == current_menu) {
+            OLED_print_highlight("o ", 5);
             OLED_print_highlight(child_menu->title, 5);
             OLED_go_to_line(current_line + 1);
         }
         
         else {
+            OLED_print("  ");
             OLED_print(child_menu->title);
             OLED_go_to_line(current_line + 1);
         }
         child_menu = child_menu->right_sibling;
     }
-
 }
 
-/** Function for printing GAME OVER when game is ended. 
+/** Function for printing GAME OVER when game is ended. Toggling data.
  */
 void menu_print_game_over(void){
-    OLED_go_to_line(4);
-    OLED_go_to_column(25);
-    OLED_print("GAME OVER");
+    for (int i=0 ; i<10 ; i++) {
+        OLED_position(4,25);
+        OLED_print("GAME OVER");
+        _delay_ms(700);
+        OLED_clear_line(4);
+        _delay_ms(1000);
+    }
 }
+
 
 
 /** Function for navigating the menu by moving between siblings and parent/child. 
@@ -95,16 +103,10 @@ menu* menu_navigate(menu* child_menu, direction dir){
     }
 
     // If direction is left and the game is not playing
-    else if (dir == LEFT) && (PLAY_GAME_FLAG != 1) {
-        if (current_menu->parent != NULL) {
+    else if ((dir == LEFT) && (PLAY_GAME_FLAG != 1)) {
+        menu* parent = current_menu->parent;
+        if ((parent != NULL) && (parent->title != "MAIN MENU")){
             current_menu = (current_menu->parent);
-        }
-    }
-
-    // If direction is right and the game is not playing
-    else if (dir == RIGHT) && (PLAY_GAME_FLAG != 1) {
-        if (current_menu->child != NULL) {
-            current_menu = (current_menu->child);
         }
     }
 
@@ -122,7 +124,8 @@ menu* menu_navigate(menu* child_menu, direction dir){
             current_menu = (current_menu->child);
 
         } else if (current_menu->title == "GAME OVER"){
-            _delay_ms(10000);
+            menu_print_game_over();
+            _delay_ms(5000);
             // Return to main menu
             while (current_menu->title != "PLAY GAME"){
                 current_menu = (current_menu->parent);
@@ -244,4 +247,3 @@ void menu_controller(menu* parent_menu,menu*  child_menu,menu*  current_menu, di
         parent_menu = child_menu->parent;
     } 
 }
-

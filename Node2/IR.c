@@ -111,6 +111,14 @@ int counting_goals(void) {
     }
 }
 
+
+/** Function for resetting goals.
+ */
+void reset_goals(void){
+    // Resetting goals
+    goals = 0;
+}
+
 /** Test function for counting goals.
  */
 void test_counting_goals(void){

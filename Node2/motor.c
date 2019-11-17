@@ -66,8 +66,8 @@ void motor_set_range(void) {
 
     motor_move(0);
 
-    printf("MIN ENCODER VALUE %i \n\r", MIN_ENCODER_VALUE);
-    printf("MAX ENCODER VALUE %i \n\r", MAX_ENCODER_VALUE);
+    //printf("MIN ENCODER VALUE %i \n\r", MIN_ENCODER_VALUE);
+    //printf("MAX ENCODER VALUE %i \n\r", MAX_ENCODER_VALUE);
 }
 
 void motor_move(int16_t speed) {

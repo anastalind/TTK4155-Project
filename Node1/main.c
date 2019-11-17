@@ -54,8 +54,25 @@ void main() {
     direction dir = joystick_direction();
 
     while(1){
+        // MENU
+        // The current menu is changed to the one menu navigate decides
+        current_menu = menu_navigate(child_menu, dir);
 
-        menu_controller(parent_menu,child_menu,current_menu, dir);
+        if (current_menu->title != "GAME OVER") {
+            // Print submenu of current menu 
+            menu_print_submenu(parent_menu, current_menu);
+            _delay_ms(500);
+            dir = joystick_direction();
+            child_menu = current_menu;
+            parent_menu = child_menu->parent;
+        } else {
+            OLED_reset();
+            // Printing game over
+            child_menu = current_menu;
+            parent_menu = child_menu->parent;
+        } 
+
+        // USB MULTIFUNCTION BOARD
         position = joystick_position();
         slider = slider_position();
 
@@ -65,7 +82,6 @@ void main() {
 
         //printf("Position x: %i\n\r", position.x);
         //printf("Position y: %i\n\r", position.y);
-        
         game_controller_CAN_transmit(position, slider, PLAY_GAME_FLAG);
 
         _delay_ms(100);

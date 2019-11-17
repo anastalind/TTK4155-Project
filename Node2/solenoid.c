@@ -12,10 +12,20 @@ void solenoid_init() {
     set_bit(PORTB, PB4);
 }
 
+/** Function for executing a solenoid punch if button is pressed.
+ */
+void solenoid_control(message msg) {
+
+    if (msg.data[2]==1) {
+        solenoid_punch();
+    }
+ 
+}
+
 /** Function for toggling the solenoid pins and executing a pulse-movement.
  */
-void control_solenoid() {
+void solenoid_punch(void){
     clear_bit(PORTB, PB4);
     _delay_ms(300);
-    set_bit(PORTB, PB4);   
-}
+    set_bit(PORTB, PB4);
+}      
