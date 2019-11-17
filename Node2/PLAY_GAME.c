@@ -9,7 +9,6 @@
 #include "CAN.h"
 #include "PWM.h"
 #include "IR.h"
-#include "motor.h"
 #include "solenoid.h"
 #include "PLAY_GAME.h"
 
@@ -28,7 +27,6 @@ void play_game_initialize(void){
     PWM_init();
     CAN_init();
     solenoid_init();
-    motor_initialize();
 
 }    
 
@@ -40,10 +38,10 @@ void play_game(void){
 
     // While not game over 
     while (!GAME_OVER) {
+        int game_state;
+        //game_state = msg.data[5];
 
-        int game_state = msg.data[5];
-
-        switch (state) {
+        switch (game_state) {
             // End game
             case 0: {
                 // Send score
@@ -70,9 +68,6 @@ void play_game(void){
             }
         }
     }
-
-    
-
 }
 
 /** Function for ending the ping-pong game.

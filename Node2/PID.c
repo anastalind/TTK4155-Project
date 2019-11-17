@@ -1,116 +1,31 @@
-/** @file PID.c
- *  @brief C-file for creating and using a PID-controller on the motor movement.
- *  @authors: Anastasia Lindbäck and Marie Skatvedt
- */
-
 #include "PID.h"
-#define F_CPU 16000000L
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include "motor.h"
-#include "bit_operations.h"
-#include "CAN.h"
-/*
-int PID_FLAG = 0;
 
-#define RESOLUTION 255
-#define EDGE_SLACK 10
-#define MAX_CONTROL_VAR_VALUE 150
-*/
-
-/*----Controller Gains-----*/
-double K_p = 1;
-double K_i = 0.03;
-double K_d = 0.02;
-double dt = 0.033;
-
-int16_t position = 0;
-int16_t error = 0;
-int16_t prev_error = 0;
-int16_t integral = 0;
-int16_t derivative = 0;
+double p_factor = 1;
+double i_factor = 0.03;
+double d_factor = 0.02;
 
 int PID_FLAG = 0;
 
+#define ERROR_SLACK 15
 
-int16_t u = 0;
+void PID_init(PID* pid) {
 
-void PID_init()
-{
-	position = 0;
-	error = 0;
-	prev_error = 0;
-	integral = 0;
-	derivative = 0;
-	
-	cli();
-	
-	//Using normal mode
-	set_bit(TCCR3B, CS31);
+    // Set tuning constants in pid
+    pid->K_p = p_factor * SCALING_FACTOR;
+    pid->K_i = i_factor * SCALING_FACTOR;
+    pid->K_d = d_factor * SCALING_FACTOR;
 
-	//Enable timer interrupt
-	set_bit(TIMSK3, TOIE3);
-		
-	sei();
-	
-	_delay_ms(200);
-	
-}
+    // Initializing error variables to zero from start
+    pid->last_error = 0;
+    pid->sum_errors = 0;
 
+    // Initializing max error and max sum of errors as to limit error overflow and integral runaway
+    pid->max_error = MAX_P_TERM/(pid->K_p + 1);
+    pid->max_sum_errors = MAX_I_TERM/(pid->K_i + 1);
 
+    cli();
 
-void PID_regulator()
-{
-	uint8_t ref = CAN_data_receive().data[3];
-	//printf("REFERENCE VALUE %u \n\r", ref);
-
-	
-	if (ref < 10){
-		ref = 10;
-	}
-	else if (ref > 245){
-		ref = 245;
-	}
-	
-	position = get_motor_position(); 
-
-	error = ref - position;
-	integral += error;
-	
-	if(error<7 && error > -7){
-		integral = 0;
-	}
-	
-	derivative = (error-prev_error);
-	u = K_p*error + K_i*integral + K_d*derivative;
-
-	prev_error = error;
-	motor_speed_controller(u);
-
-	
-} 
-
-ISR(TIMER3_OVF_vect)
-{
-	PID_FLAG = 1;
-}
-
-/** Function for initializing the PID-regulator.
- */
-/*
-void PID_init(double p_factor, double i_factor, double d_factor, PID *pid) {
-
-	pid->sum_error = 0;
-	pid->last_error = 0;
-
-	pid->K_p = p_factor;
-	pid->K_i = i_factor;
-	pid->K_d = d_factor;
-
-	cli();
-
+    // Enabling timer 
 	// Using normal mode
 	set_bit(TCCR3B, CS31);
 
@@ -122,92 +37,96 @@ void PID_init(double p_factor, double i_factor, double d_factor, PID *pid) {
 	_delay_ms(500);
 
 }
-*/
 
-/** Function for calculating control variable by using a PID regulator.
- * 	@param reference_value - The reference value from the current position
- * 	@param process_value - The value of the process position
- *  @param PID *pid - PID object pointer, setting the terms og P, I and D. 
- *  @return control_variable - Calculated control-variable.
- */
-/*
-int16_t PID_calculate_control_variable(uint8_t reference_value, uint8_t process_value, PID *pid){
-	
-	if (reference_value < EDGE_SLACK) {
-		reference_value = EDGE_SLACK;
-	}
+int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PID* pid) {
 
-	else if (reference_value > (RESOLUTION - EDGE_SLACK)){
-		reference_value = RESOLUTION - EDGE_SLACK;
-	}
-	
+    int16_t p_term, i_term, d_term;
+    int16_t error;
+    int16_t control_variable;
 
-	// Calulcating error
-	int16_t error = reference_value - process_value;
+    error = reference_value - process_value;
 
-	// Adding error to sum of errors which is used for the integral term in the control variable
-	pid->sum_error += error;
+    printf("REFERENCE: %u \n\r", reference_value);
+    printf("PROCESS: %u \n\r", process_value);
+    printf("ERROR: %i \n\r", error);
 
-	// Calculating the different terms in the control variable
-	int16_t proportional = pid->K_p * error;
-	int16_t integral = pid->K_i * pid->sum_error;
-	int16_t derivative = pid->K_d * (error - pid->last_error);
+    if (abs(error) > ERROR_SLACK) {
+        pid->sum_errors += error;
 
-	// 
-	if (error < 7 && error > -7) {
-		integral = 0;
-	}
+    }
 
-	// Calculating control variable using equation for discrete PID
-	int16_t control_variable = proportional + integral + derivative;
+    //printf("SUM ERROR: %i \n\r", pid->sum_errors);
 
-	if (control_variable > MAX_CONTROL_VAR_VALUE) {
-		control_variable = MAX_CONTROL_VAR_VALUE;
-	}
-	else if (control_variable < -MAX_CONTROL_VAR_VALUE) {
-		control_variable = -MAX_CONTROL_VAR_VALUE;
-	}
+    // Calculate P term
+    if (error > pid->max_error) {
+        p_term = MAX_P_TERM;
+    }
 
-	// Update last error
-	pid->last_error = error;
-	//printf("\n\n");
+    else if(error < pid->max_error) {
+        p_term = -MAX_P_TERM;
+    }
+    else {
+        p_term = pid->K_p * error;
+    }
 
-	return ((int16_t)control_variable);
-}
-*/
+    // Calculcate I term 
+    int32_t temp = pid->sum_errors + error;
 
-/** Function for controlling the motor with PID regulator
- * @param message msg - CAN message from node 1 containing joystick position, button press, slider position and play game flag.
- */
-/*
-void PID_controller(message msg, PID *pid) {
+    if (temp > pid->max_sum_errors) {
+        i_term = MAX_I_TERM;
+        pid->sum_errors = pid->max_sum_errors;
+    }
+
+    else if (temp < pid->max_sum_errors) {
+        i_term = -MAX_I_TERM;
+        pid->sum_errors = -pid->max_sum_errors;
+    }
     
+    else {
+        i_term = pid->K_i * pid->sum_errors;
+        pid->sum_errors = temp;
+    }
+
+    // Calculate D term
+    d_term = pid->K_d * (error - pid->last_error);
+
+    // Calculate control variable
+    control_variable = (p_term + i_term + d_term)/SCALING_FACTOR;
+
+    if (control_variable > MAX_CONTROL_VALUE) {
+        control_variable = MAX_CONTROL_VALUE;
+    }
+
+    else if (control_variable < -MAX_CONTROL_VALUE) {
+        control_variable = -MAX_CONTROL_VALUE;
+
+    }
+
+    printf("CONTROL VARIABLE: %i \n\r", control_variable);
+
+    return control_variable;
+
+}
+
+void PID_controller(PID* pid) {
     if (PID_FLAG == 1) {
-        uint8_t reference_value = msg.data[3]; // Left slider value
-		printf("REFERENCE VALUE %u \n\r", reference_value);
+        // Get reference and process values
+        uint8_t reference_value = CAN_data_receive().data[3]; // Left slider (0 - 255)
+        //printf("REFERENCE VALUE: %u \n\r", reference_value);
 
-        uint8_t process_value = get_motor_position(); 
-		//printf("PROCESS VALUE %u \n\r", process_value);
+        uint8_t process_value = motor_position();
+        //printf("PROCESS VALUE: %u \n\r", process_value);
 
-        int16_t control_variable = PID_calculate_control_variable(reference_value, process_value, pid);
-		//printf("CONTROL VALUE %i \n\r", control_variable);
+        // Calculate the control variable
+        int16_t control_value = PID_calculate_control(reference_value, process_value, pid);
+        //printf("CONTROL VALUE: %u \n\r", control_value);
 
-        motor_speed_controller(control_variable);
+        // Apply control on system
+        //motor_move(control_value);
 
-        PID_FLAG = 0;
     }
 }
-*/
 
-
-/** Interrupt vector function.
- *  @param TIMER3_OVF_vect
- */
-/*
-ISR(TIMER3_OVF_vect) 
-{
-
-	PID_FLAG = 1;
-
+ISR(TIMER3_OVF_vect) {
+    PID_FLAG = 1;
 }
-*/
