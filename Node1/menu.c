@@ -95,42 +95,7 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
  */
 menu* menu_navigate(menu* child_menu, direction dir){
     menu* current_menu = child_menu;
-    /*
-    switch(dir) {
-        case NEUTRAL: {
-            current_menu = child_menu;
-            break;
-        }
-        case UP: {
-            if (current_menu->left_sibling != NULL) {
-                current_menu = current_menu->left_sibling;
-            }
-            break;
-        }
-        case DOWN: {
-            if (current_menu->right_sibling != NULL) {
-                current_menu = current_menu->right_sibling; 
-            }
-            break;
-        }
-        case LEFT: {
-            if (current_menu->parent != NULL) {
-                current_menu = current_menu->parent;
-            }
-            break;
-        }
-        case RIGHT: {
-            if (current_menu->child != NULL) {
-                current_menu = current_menu->child;
-            }
-            break;
-        }
-        case default: {
-            return current_menu;
-        } 
 
-    }
-    */
     if (dir == NEUTRAL) {
         current_menu = child_menu;
     }
@@ -162,23 +127,29 @@ menu* menu_navigate(menu* child_menu, direction dir){
         return current_menu;
     }
  
+    // Navigate through abstraction layers by pressing joystick button 
     if (!(joystick_button_not_pressed())) {
         if (current_menu->title == "PLAY GAME"){
-            //current_menu = current_menu->child;
+            current_menu = current_menu->child;
             PLAY_GAME_FLAG = 1;
             printf("PLAY GAME\n\r");
+
         } else if (current_menu->title == "END GAME"){
-            //current_menu = current_menu->child;
+            // Return to main menu
+            current_menu = (current_menu->parent)->parent;
             PLAY_GAME_FLAG = 0;
             printf("END GAME\n\r");
+
         } else if (current_menu->title == "HIGH SCORE"){
-            //current_menu = current_menu->child;
+            current_menu = current_menu->child;
             PLAY_GAME_FLAG = 2;
             printf("HIGH SCORE\n\r");
+
         } else if (current_menu->title == "SETTINGS"){
-            //current_menu = current_menu->child;
+            current_menu = current_menu->child;
             PLAY_GAME_FLAG = 3;
             printf("SETTINGS\n\r");
+
         } else if (current_menu->child != NULL){
             current_menu = current_menu->child;
         } 
@@ -197,10 +168,10 @@ menu* menu_init() {
     /* SUBMENUS */
     // Submenu of main menu: setting left siblings and parent, right siblings and children must be set after initialization
     menu* play_game = menu_new("PLAY GAME", main_menu, NULL, NULL, NULL);
-    menu* end_game = menu_new("END GAME", main_menu, NULL, play_game, NULL);
-    menu* game_settings = menu_new("GAME SETTINGS", main_menu, NULL, end_game, NULL);
+    menu* game_settings = menu_new("GAME SETTINGS", main_menu, NULL, play_game, NULL);
     menu* highscores = menu_new("HIGHSCORES", main_menu, NULL, game_settings, NULL);
 
+    // GAME SETTINGS
     // Submenus of game settings
     menu* play_mode = menu_new("DIFFICULTY", game_settings, NULL, NULL, NULL);
     menu* players = menu_new("PLAYER MODE", game_settings, NULL, play_mode, NULL);
@@ -209,10 +180,19 @@ menu* menu_init() {
     menu* single_player = menu_new("SINGLE PLAYER", players, NULL, NULL, NULL);
     menu* multi_player = menu_new("MULTIPLAYER", players, NULL, single_player, NULL);
 
+    // PLAY GAME
+    // Submenu of play game
+    menu* end_game = menu_new("END GAME", play_game, NULL, NULL, NULL);
+
+    // HIGH SCORE
+    menu* high_score_submenu = menu_new("HIGH SCORE SUBMENU", highscores, NULL, NULL, NULL);
 
     /* SETTING THE CHILD VARIABLES*/
-    // Setting child of main menu
+    // Setting child of main menu 
     main_menu->child = play_game;
+
+    // Setting child of play game
+    play_game->child = end_game;
 
     // Setting child of game settings
     game_settings->child = play_mode;
@@ -220,18 +200,28 @@ menu* menu_init() {
     // Setting child of players
     players->child = single_player;
 
+    // Setting child of high score
+    highscores->child = high_score_submenu;
+
     /* SETTING RIGHT SIBLINGS*/
     // Setting right siblings
-    play_game->right_sibling = end_game;
-    end_game->right_sibling = game_settings;
+    play_game->right_sibling = game_settings;
     game_settings->right_sibling = highscores;
     highscores->right_sibling = NULL;
 
+    // Settings submenu
     play_mode->right_sibling = players;
     players->right_sibling = NULL;
 
+    // Settings subsubmenu
     single_player->right_sibling = multi_player;
     multi_player->right_sibling = NULL;
+
+    // Play game submenu
+    end_game->right_sibling = NULL;
+
+    // High score submenu
+    high_score_submenu->right_sibling = NULL;
 
     return main_menu;
 }
