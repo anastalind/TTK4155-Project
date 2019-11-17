@@ -25,6 +25,7 @@ int curr_number_of_misses = 0;
 
 void main() {  
 
+
     sei();
     USART_init(9600);
     PWM_init();
@@ -33,6 +34,27 @@ void main() {
     solenoid_init();
 
     motor_init();
+
+    PID *pid;
+    PID_init(pid);
+
+    while (1) {
+        message msg = CAN_data_receive();
+
+        //solenoid_control(msg);
+
+        if (msg.data[2] == 1) {
+            clear_bit(PORTB, PB4);
+            _delay_ms(300);
+            set_bit(PORTB, PB4);
+        }
+
+        printf("SOLENOID BOOL: %u \n\r", msg.data[2]);
+
+        double duty_cycle = PWM_joystick_to_duty_cycle(msg);
+        PWM_set_duty_cycle(duty_cycle);
+        //PID_controller(pid);  
+    }
 
 /*
     // Initialize PID-controller
@@ -86,35 +108,7 @@ void main() {
 
 */
 }
-/*
-    sei();
-    USART_init(9600);
-    PWM_init();
-    CAN_init();
-    
-    solenoid_init();
 
-    motor_init();
-
-    PID *pid;
-    PID_init(pid);
-
-    while (1) {
-        message msg = CAN_data_receive();
-
-        for (int i = 0; i < msg.length; i++) {
-            printf("MSG DATA %i: %u \n\r", i, msg.data[i]);
-        }
-
-        double duty_cycle = PWM_joystick_to_duty_cycle(msg);
-        PWM_set_duty_cycle(duty_cycle);
-        PID_controller(pid);
-
-        printf("\n\n\r");
-        
-    }
-   */ 
-}
 
 
 ISR(__vector_default)

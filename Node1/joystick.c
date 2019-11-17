@@ -180,7 +180,7 @@ direction joystick_direction(void){
 
 /** Function for telling if touch-button is pressed.
 */
-bool is_button_pressed() {
+bool touch_button_pressed() {
     return ((PINB & (1 << PINB0)) || (PINB & (1 << PINB1)));
 }
 
@@ -202,14 +202,15 @@ void game_controller_CAN_transmit(joystick position, Sliders slider_position, in
     }
 
     msg.data[1] = position.y;
+    msg.data[2] = touch_button_pressed();
     msg.data[3] = slider_position.Left;
     msg.data[4] = slider_position.Right;
     msg.data[5] = PLAY_GAME_FLAG;
 
     //printf("Slider %i \n\r", msg.data[3]);
-
+    /*
     // The flag is checking whether the button is registered or not
-    if ((BUTTON_PRESSED_FLAG <= 1) && (is_button_pressed())){
+    if ((BUTTON_PRESSED_FLAG <= 1) && (touch_button_pressed())){
         BUTTON_PRESSED_FLAG += 1;
     }
     switch (BUTTON_PRESSED_FLAG){
@@ -227,7 +228,7 @@ void game_controller_CAN_transmit(joystick position, Sliders slider_position, in
 
         // If the button is registered continously, the flag is cleared when the ball is no longer detected.
         default:
-            if (!is_button_pressed()) {
+            if (!touch_button_pressed()) {
                 BUTTON_PRESSED_FLAG = 0;
                 msg.data[2] = 0;
             } else {
@@ -235,6 +236,7 @@ void game_controller_CAN_transmit(joystick position, Sliders slider_position, in
             }
             break;
     }
+    */
 
     CAN_send_message(msg);  
 }

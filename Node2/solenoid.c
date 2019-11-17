@@ -16,7 +16,7 @@ void solenoid_init() {
  */
 void solenoid_control(message msg) {
 
-    if (msg.data[2]==1) {
+    if (msg.data[2] == 1) {
         solenoid_punch();
     }
  

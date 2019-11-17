@@ -85,7 +85,7 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
 
 }
 
-void PID_controller(PID* pid,message msg) {
+void PID_controller(PID* pid, message msg) {
     if (PID_FLAG == 1) {
         // Get reference and process values
         uint8_t reference_value = msg.data[3]; // Left slider (0 - 255)

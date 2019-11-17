@@ -77,7 +77,7 @@ void test_read_joystick_position(void);
 
 /** Function for telling if touch-button is pressed.
 */
-bool is_button_pressed();
+bool touch_button_pressed();
 
 /** Function for sending joystick position via CAN to Node 2. 
  *  @param joystick position - Position of joystick, struct containing x and y-positions.
