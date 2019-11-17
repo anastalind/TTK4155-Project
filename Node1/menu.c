@@ -36,7 +36,12 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
     OLED_reset();
     OLED_home();
 
-    OLED_print(parent_menu->title);
+    if (parent_menu->title == "PLAY GAME") {
+        OLED_print("PLAYING GAME");
+    } else {
+        OLED_print(parent_menu->title);
+    }
+
     OLED_go_to_line(current_line + 2);
 
     menu* child_menu = parent_menu->child;
@@ -56,6 +61,13 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
 
 }
 
+/** Function for printing GAME OVER when game is ended. 
+ */
+void menu_print_game_over(void){
+    OLED_go_to_line(4);
+    OLED_go_to_column(25);
+    OLED_print("GAME OVER");
+}
 
 
 /** Function for navigating the menu by moving between siblings and parent/child. 
@@ -72,24 +84,24 @@ menu* menu_navigate(menu* child_menu, direction dir){
 
     else if (dir == UP) {
         if (current_menu->left_sibling != NULL) {
-            current_menu = current_menu->left_sibling;
+            current_menu = (current_menu->left_sibling);
         }
     }
 
     else if (dir == DOWN) {
         if (current_menu->right_sibling != NULL) {
-            current_menu = current_menu->right_sibling; 
+            current_menu = (current_menu->right_sibling); 
         }
     }
 
     else if (dir == LEFT) {
         if (current_menu->parent != NULL) {
-            current_menu = current_menu->parent;
+            current_menu = (current_menu->parent);
         }
     }
     else if (dir == RIGHT) {
         if (current_menu->child != NULL) {
-            current_menu = current_menu->child;
+            current_menu = (current_menu->child);
         }
     }
 
@@ -101,15 +113,22 @@ menu* menu_navigate(menu* child_menu, direction dir){
     if (!(joystick_button_not_pressed())) {
         if (current_menu->title == "PLAY GAME"){
             current_menu = current_menu->child;
+            printf("%s\n\r",current_menu->title);
             PLAY_GAME_FLAG = 1;
             printf("PLAY GAME\n\r");
 
         } else if (current_menu->title == "END GAME"){
-            // END GAME is detected and print is shown - put in a delay here? 
-            // Return to main menu
-            current_menu = (current_menu->parent)->parent;
-            PLAY_GAME_FLAG = 0;
+            current_menu = (current_menu->child);
+
             printf("END GAME\n\r");
+        } else if (current_menu->title == "GAME OVER"){
+            _delay_ms(10000);
+            // Return to main menu
+            while (current_menu->title != "PLAY GAME"){
+                current_menu = (current_menu->parent);
+            }
+            PLAY_GAME_FLAG = 0;
+            printf("GAME OVER\n\r");
 
         } else if (current_menu->title == "HIGH SCORE"){
             current_menu = current_menu->child;
@@ -155,8 +174,11 @@ menu* menu_init() {
     // Submenu of play game
     menu* end_game = menu_new("END GAME", play_game, NULL, NULL, NULL);
 
+    // Subsubmenu of play game
+    menu* game_over = menu_new("GAME OVER", end_game, NULL, NULL, NULL);
+
     // HIGH SCORE
-    menu* high_score_submenu = menu_new("HIGH SCORE SUBMENU", highscores, NULL, NULL, NULL);
+    menu* high_score_submenu = menu_new(" ", highscores, NULL, NULL, NULL);
 
     /* SETTING THE CHILD VARIABLES*/
     // Setting child of main menu 
@@ -164,6 +186,9 @@ menu* menu_init() {
 
     // Setting child of play game
     play_game->child = end_game;
+
+    // Setting child of end game
+    end_game->child = game_over;
 
     // Setting child of game settings
     game_settings->child = play_mode;
@@ -190,6 +215,9 @@ menu* menu_init() {
 
     // Play game submenu
     end_game->right_sibling = NULL;
+
+    // Play game subsubmenu
+    game_over->right_sibling = NULL;
 
     // High score submenu
     high_score_submenu->right_sibling = NULL;

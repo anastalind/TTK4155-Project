@@ -58,7 +58,7 @@ void main() {
         // The current menu is changed to the one menu navigate decides
         current_menu = menu_navigate(child_menu, dir);
 
-        if (current_menu->title != "END GAME") {
+        if (current_menu->title != "GAME OVER") {
             // Print submenu of current menu 
             menu_print_submenu(parent_menu, current_menu);
             _delay_ms(500);
@@ -66,7 +66,12 @@ void main() {
             child_menu = current_menu;
             parent_menu = child_menu->parent;
         } else {
-            // Print GAME OVER 
+            OLED_reset();
+            
+            menu_print_game_over();
+
+            child_menu = current_menu;
+            parent_menu = child_menu->parent;
         } 
 
 

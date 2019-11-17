@@ -129,6 +129,6 @@ void CAN_int_vect(void){
  */
 
 ISR(INT1_vect){
-    CAN_INTERRUPT_FLAG = 1;
-    printf("In CAN INTERRUPT, FLAG = %i \n\r", CAN_INTERRUPT_FLAG);
+    //CAN_INTERRUPT_FLAG = 1;
+    //printf("In CAN INTERRUPT, FLAG = %i \n\r", CAN_INTERRUPT_FLAG);
 }

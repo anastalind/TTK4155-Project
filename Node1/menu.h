@@ -30,6 +30,10 @@ typedef struct {
 } menu;
 
 
+/** Function for printing GAME OVER when game is ended. 
+ */
+void menu_print_game_over(void);
+
 /**Function for creating new submenu and initialising it.
  * @param char* menu_title - Title of the menu being created
  * @param menu* parent_menu - Pointer to struct menu that should be current menus' parent
