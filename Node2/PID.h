@@ -27,6 +27,8 @@ typedef struct {
 
 void PID_init(PID* pid);
 
+void PID_reset (PID* pid);
+
 int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PID* pid);
 
 void PID_controller(PID* pid,message msg);

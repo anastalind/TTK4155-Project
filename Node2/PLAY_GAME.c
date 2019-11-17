@@ -18,8 +18,8 @@
 #include <avr/interrupt.h>
 
 
-int GAME_OVER = 0;
-int curr_number_of_misses = 0;
+//int GAME_OVER = 0;
+//int curr_number_of_misses = 0;
 
 
 /** Initialize necessary functions for playing the game.
@@ -89,6 +89,7 @@ void game_controller(void){
 
 /** Function for playing the ping-pong game. State = Playing.
  */
+/*
 void play_game(void){
 
 
@@ -116,6 +117,7 @@ void play_game(void){
     solenoid_control(msg);
 
 }
+*/
 
 
 

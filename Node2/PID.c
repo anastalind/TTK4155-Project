@@ -11,15 +11,13 @@ int PID_FLAG = 0;
 #define MAX_RESOLUTION 255
 
 void PID_init(PID* pid) {
-
     // Set tuning constants in pid
     pid->K_p = p_factor * SCALING_FACTOR;
     pid->K_i = i_factor * SCALING_FACTOR;
     pid->K_d = d_factor * SCALING_FACTOR;
 
     // Initializing error variables to zero from start
-    pid->last_error = 0;
-    pid->sum_errors = 0;
+    PID_reset(pid);
 
     cli();
 
@@ -34,6 +32,11 @@ void PID_init(PID* pid) {
 
 	_delay_ms(500);
 
+}
+
+void PID_reset (PID* pid) {
+    pid->last_error = 0;
+    pid->sum_errors = 0;
 }
 
 int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PID* pid) {

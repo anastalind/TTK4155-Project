@@ -22,7 +22,7 @@ void play_game_initialize(void);
 
 /** Function for playing the ping-pong game. State = Playing.
  */
-void play_game(void);
+//void play_game(void);
 
 /** Function for ending the ping-pong game. State = Game over. Neutral behaviour.
  */

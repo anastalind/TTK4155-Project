@@ -66,26 +66,30 @@ void motor_set_range(void) {
 
     motor_move(0);
 
-    //printf("MIN ENCODER VALUE %i \n\r", MIN_ENCODER_VALUE);
-    //printf("MAX ENCODER VALUE %i \n\r", MAX_ENCODER_VALUE);
+    printf("MIN ENCODER VALUE %i \n\r", MIN_ENCODER_VALUE);
+    printf("MAX ENCODER VALUE %i \n\r", MAX_ENCODER_VALUE);
 }
 
 void motor_move(int16_t speed) {
-    uint8_t address = 0b01010000;
-    uint8_t command = 0b00;
+
     uint8_t voltage = 0b0;
 
     if (speed < 0) {
-        // Sets direction to left
-        clear_bit(PORTH, PH1);
+        motor_set_direction(LEFT);
         voltage = (-1) * speed;
     }
 
     else if (speed >= 0){
-        // Sets direction to right
-        set_bit(PORTH, PH1);
+        motor_set_direction(RIGHT);
         voltage = speed;
     }
+
+    motor_set_voltage(voltage);
+}
+
+void motor_set_voltage(uint8_t voltage) {
+    uint8_t address = 0b01010000;
+    uint8_t command = 0b00;
 
     uint8_t message[3];
     message[0] = address;
@@ -93,7 +97,23 @@ void motor_move(int16_t speed) {
     message[2] = voltage;
 
     TWI_Start_Transceiver_With_Data(message, 3);
+}
 
+void motor_set_direction (direction dir) {
+    switch (dir) {
+        case LEFT:
+            // Sets direction to left
+            clear_bit(PORTH, PH1);
+            break;
+            
+        case RIGHT:
+            // Sets direction to right
+            set_bit(PORTH, PH1);
+            break;
+        
+        default:
+            break;
+    }
 }
 
 uint8_t motor_position(void) {
