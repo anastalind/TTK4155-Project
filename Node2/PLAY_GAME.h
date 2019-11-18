@@ -6,7 +6,7 @@
 #ifndef PLAY_GAME_H
 #define PLAY_GAME_H
 
-#define MAX_MISSES 3
+//#define MAX_MISSES 3
 
 // Global flag interrupt for detecting number of misses
 extern int GAME_OVER;

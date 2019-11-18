@@ -142,6 +142,7 @@ void motor_set_direction (direction dir) {
  *  @return uint8_t position - The position of the encoder in the range of 0-255.
  */
 uint8_t motor_position(void) {
+
     uint16_t encoder_value = (-1) * encoder_read();
 
     encoder_value -= MIN_ENCODER_VALUE;
@@ -149,5 +150,4 @@ uint8_t motor_position(void) {
     uint8_t position = ((double)encoder_value/(double)MAX_ENCODER_VALUE) * MAX_RESOLUTION;
 
     return position;
-
 }

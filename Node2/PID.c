@@ -5,24 +5,16 @@
 
 #include "PID.h"
 
-double p_factor = 1;
-double i_factor = 0.03;
-double d_factor = 0.02;
-
 int PID_FLAG = 0;
 
 #define ERROR_SLACK 15
-#define EDGE_SLACK 10
+#define EDGE_SLACK 30
 #define MAX_RESOLUTION 255
 
 
 /** Function for initializing the PID-controller. 
  */
 void PID_init(PID* pid) {
-    // Set tuning constants in pid
-    pid->K_p = p_factor * SCALING_FACTOR;
-    pid->K_i = i_factor * SCALING_FACTOR;
-    pid->K_d = d_factor * SCALING_FACTOR;
 
     // Initializing error variables to zero from start
     PID_reset(pid);
@@ -39,7 +31,7 @@ void PID_init(PID* pid) {
 	sei();
 
 	_delay_ms(500);
-
+    
 }
 
 
@@ -48,6 +40,8 @@ void PID_init(PID* pid) {
 void PID_reset (PID* pid) {
     pid->last_error = 0;
     pid->sum_errors = 0;
+
+    PID_set_parameters(pid, EASY);
 }
 
 /** Function for calculating the error and introducing integral and derivative-effects to return the control variable.
@@ -106,8 +100,7 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
  * @param PID* pid - PID controller.
  * @param message msg - Message from CAN, including the slider position.
  */
-void PID_controller(PID* pid,message msg) {
->>>>>>> origin/master
+void PID_controller(PID* pid, message msg) {
     if (PID_FLAG == 1) {
         // Get reference and process values
         uint8_t reference_value = msg.data[3]; // Left slider (0 - 255)
@@ -123,8 +116,43 @@ void PID_controller(PID* pid,message msg) {
         // Apply control on system
         motor_move(control_value);
 
+        PID_FLAG = 0;
+
     }
 }
+
+/** Function for setting the tuning parameters of the PID.
+ * @param PID* pid - PID controller.
+ * @param difficulty mode - enum difficulty
+ */
+void PID_set_parameters(PID* pid, difficulty mode) {
+    switch(mode) {
+        case EASY:
+            pid->K_p = 1 * SCALING_FACTOR;
+            pid->K_i = 0.03 * SCALING_FACTOR;
+            pid->K_d = 0.02 * SCALING_FACTOR;
+            break;
+
+        case MEDIUM:
+            pid->K_p = 2.5 * SCALING_FACTOR;
+            pid->K_i = 0.5 * SCALING_FACTOR; 
+            pid->K_d = 0.1 * SCALING_FACTOR;
+            break;
+
+        case HARD:
+            pid->K_p = 2.5 * SCALING_FACTOR;
+            pid->K_i = 2 * SCALING_FACTOR; 
+            pid->K_d = 0.1 * SCALING_FACTOR;
+            break;
+
+        default:
+            pid->K_p = 1 * SCALING_FACTOR;
+            pid->K_i = 0.03 * SCALING_FACTOR;
+            pid->K_d = 0.02 * SCALING_FACTOR;
+            break;
+    }
+}
+
 
 ISR(TIMER3_OVF_vect) {
     PID_FLAG = 1;

@@ -7,7 +7,7 @@
 #include <util/delay.h>
 
 //int CAN_INTERRUPT_FLAG = 0;
-
+message CAN_msg;
 
 /** Function for initializing CAN
  */
@@ -16,6 +16,7 @@ int CAN_init(void){
     MCP_init();
 
     MCP_bit_modify(MCP_CANINTE, 0b11, MCP_RX_INT); //Enable all receive interrupts
+
     // INT1 intflag is cleared by writing 1 to INTF1
     set_bit(GIFR, INTF1);
     // Enable interrupt on PD3
@@ -50,7 +51,7 @@ void CAN_send_message(message msg){
     MCP_write(MCP_TXB0SIDL, (msg.id << 5));
 
     // Write data length to DLC transmit register
-    MCP_write(MCP_TXB0DLC,msg.length);
+    MCP_write(MCP_TXB0DLC, msg.length);
 
     // 
     uint8_t i; 
@@ -82,23 +83,6 @@ message CAN_data_receive(void){
     return msg;
 }
 
-/** 
- */
-void CAN_error(void){
-
-}
-
-/** 
- */
-void CAN_transmit_complete(void){
-
-}
-
-/** 
- */
-void CAN_int_vect(void){
-    // si fra om klar til å sende eller motta 
-}
 
 
 /** Function for testing transmit in loop-back mode.
@@ -123,12 +107,15 @@ void CAN_int_vect(void){
     }
 }
 
+message CAN_recent_message(void) {
+    return CAN_msg;
+}
+
 
 /** Interrupt vector function for CAN.
  *  @param INT1_vect - interrupt vector for CAN. 
  */
-
 ISR(INT1_vect){
-    //CAN_INTERRUPT_FLAG = 1;
-    //printf("In CAN INTERRUPT, FLAG = %i \n\r", CAN_INTERRUPT_FLAG);
+    CAN_msg = CAN_data_receive();
+    printf("RECEIVED MSG: %u \n\r", CAN_msg.data[1]);
 }

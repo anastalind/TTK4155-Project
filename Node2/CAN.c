@@ -94,28 +94,6 @@ message CAN_data_receive(void){
     return msg;
 }
 
-/** 
- */
-void CAN_error(void){
-
-}
-
-/** 
- */
-void CAN_transmit_complete(void){
-
-}
-
-/** 
- */
-void CAN_int_vect(void){
-    // si fra om klar til å sende eller motta 
-}
-
-message CAN_get_msg(void) {
-    return recent_msg;
-}
-
 
 /** Function for testing transmit in loop-back mode.
  */
@@ -140,6 +118,21 @@ message CAN_get_msg(void) {
         }
         stop++;    
     }
+}
+
+/** Function for sending joystick position, buttons, slider positions and play-game flag via CAN to Node 2. 
+ *  @param joystick position - Position of joystick, struct containing x and y-positions.
+ *  @param Sliders slider_position - position of slider right and left.
+ *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
+ */
+void CAN_transmit_game_info(uint8_t GAME_OVER_FLAG) {
+    message msg;
+    msg.length = 2;
+    msg.id = 1;
+
+    msg.data[1] = GAME_OVER_FLAG;
+
+    CAN_send_message(msg);  
 }
 
 

@@ -19,6 +19,9 @@
 // Global flag for playing the game
 extern int PLAY_GAME_FLAG;
 
+// Global flag for setting difficulty of the game
+extern int DIFFICULTY_FLAG;
+
 
 typedef struct {
     char* title;

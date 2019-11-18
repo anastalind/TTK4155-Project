@@ -84,7 +84,7 @@ bool touch_button_pressed();
  *  @param Sliders slider_position - position of slider right and left.
  *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
  */
-void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG);
+void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG, int DIFFICULTY_FLAG);
    
 
 

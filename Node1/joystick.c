@@ -12,7 +12,7 @@
 #define Y_AXIS_CHANNEL 4
 
 // Slack variable for neutral position of joystick
-#define SLACK 2
+#define SLACK 5
 
 // Resolution of joustick
 #define RESOLUTION_START 0
@@ -22,7 +22,6 @@
 int resolution_left = 128;
 int resolution_right = 128;
 
-int BUTTON_PRESSED_FLAG = 0;
 
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
@@ -118,7 +117,8 @@ joystick joystick_position(void) {
     else {
         position.y = (((selected_channel_output(Y_AXIS_CHANNEL)-resolution_left)*100)/resolution_right);
     }
-    
+
+
     return position;
 }
 
@@ -189,55 +189,21 @@ bool touch_button_pressed() {
  *  @param Sliders slider_position - position of slider right and left.
  *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
  */
-void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG) {
+void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG, int DIFFICULTY_FLAG) {
     message msg;
-    msg.length = 6;
+    msg.length = 7;
     msg.id = 0;
 
-    // Only use the servo when game is playing. Else, it is used for menu navigating.
-    if (PLAY_GAME_FLAG == 1) {
-        msg.data[0] = position.x;
-    } else {
-        msg.data[0] = 0;
-    }
-
+    msg.data[0] = position.x;
     msg.data[1] = position.y;
     msg.data[2] = touch_button_pressed();
     msg.data[3] = slider_position.Left;
     msg.data[4] = slider_position.Right;
     msg.data[5] = PLAY_GAME_FLAG;
+    msg.data[6] = DIFFICULTY_FLAG;
 
-    //printf("Slider %i \n\r", msg.data[3]);
-    /*
-    // The flag is checking whether the button is registered or not
-    if ((BUTTON_PRESSED_FLAG <= 1) && (touch_button_pressed())){
-        BUTTON_PRESSED_FLAG += 1;
-    }
-    switch (BUTTON_PRESSED_FLAG){
-        // If button press not detected
-        case 0:
-            msg.data[2] = 0;
-            break;
-        // If button pressed detected
-        case 1:
-            //Send button pressed
-            msg.data[2] = 1;
-            break; 
-            //printf("Send button pressed.\n\r");
-
-
-        // If the button is registered continously, the flag is cleared when the ball is no longer detected.
-        default:
-            if (!touch_button_pressed()) {
-                BUTTON_PRESSED_FLAG = 0;
-                msg.data[2] = 0;
-            } else {
-                msg.data[2] = 0;
-            }
-            break;
-    }
-    */
-
+    //printf("POSITION X: %u \n\r", msg.data[0]);
+    //printf("PLAY GAME FLAG: %u \n\r", msg.data[5]);
     CAN_send_message(msg);  
 }
 
@@ -249,9 +215,9 @@ void test_read_joystick_position(void){
 
     joystick joy_position = joystick_position();
 
-    printf("X-value: %i\n\r", joy_position.x);
-    printf("Y-value: %i\n\r", joy_position.y);
-    printf("X-value: %i\n\r", selected_channel_output(5));
-    printf("Y-value: %i\n\r", selected_channel_output(4));
+    //printf("X-value: %i\n\r", joy_position.x);
+    //printf("Y-value: %i\n\r", joy_position.y);
+    //printf("X-value: %i\n\r", selected_channel_output(5));
+    //printf("Y-value: %i\n\r", selected_channel_output(4));
 }
 

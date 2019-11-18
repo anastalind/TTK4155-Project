@@ -20,6 +20,8 @@
 
 extern int PID_FLAG;
 
+typedef enum {EASY, MEDIUM, HARD} difficulty;
+
 typedef struct {
     // Tuning variables, multiplied by SCALING_FACTOR
     int16_t K_p;
@@ -50,6 +52,12 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
  * @param PID* pid - PID controller.
  * @param message msg - Message from CAN, including the slider position.
  */
-void PID_controller(PID* pid,message msg);
+void PID_controller(PID* pid, message msg);
+
+/** Function for setting the tuning parameters of the PID.
+ * @param PID* pid - PID controller.
+ * @param difficulty mode - enum difficulty
+ */
+void PID_set_parameters(PID* pid, difficulty mode);
 
 #endif

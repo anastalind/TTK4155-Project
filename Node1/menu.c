@@ -7,6 +7,7 @@
 
 
 int PLAY_GAME_FLAG = 0;
+int DIFFICULTY_FLAG = 0;
 
 /**Function for creating new submenu and initialising it.
  * @param char* menu_title - Title of the menu being created
@@ -119,7 +120,7 @@ menu* menu_navigate(menu* child_menu, direction dir){
         if (current_menu->title == "PLAY GAME"){
             current_menu = current_menu->child;
             PLAY_GAME_FLAG = 1;
-
+            
         } else if (current_menu->title == "END GAME"){
             current_menu = (current_menu->child);
 
@@ -131,16 +132,29 @@ menu* menu_navigate(menu* child_menu, direction dir){
                 current_menu = (current_menu->parent);
             }
             PLAY_GAME_FLAG = 0;
+            DIFFICULTY_FLAG = 0;
 
-        } else if (current_menu->title == "HIGH SCORE"){
-            current_menu = current_menu->child;
-            PLAY_GAME_FLAG = 2;
+        } else if (current_menu->title == "EASY"){
+            // Return to main menu
+            while (current_menu->title != "GAME SETTINGS"){
+                current_menu = (current_menu->parent);
+            }
+            DIFFICULTY_FLAG = 0;
 
-        } else if (current_menu->title == "SETTINGS"){
-            current_menu = current_menu->child;
-            PLAY_GAME_FLAG = 3;
-
+        } else if (current_menu->title == "MEDIUM"){
+            // Return to main menu
+            while (current_menu->title != "GAME SETTINGS"){
+                current_menu = (current_menu->parent);
+            }
+            DIFFICULTY_FLAG = 1;
+        } else if (current_menu->title == "HARD"){
+            // Return to main menu
+            while (current_menu->title != "GAME SETTINGS"){
+                current_menu = (current_menu->parent);
+            }
+            DIFFICULTY_FLAG = 2;
         } else if (current_menu->child != NULL){
+            
             current_menu = current_menu->child;
         } 
     }
@@ -170,6 +184,11 @@ menu* menu_init() {
     menu* single_player = menu_new("SINGLE PLAYER", players, NULL, NULL, NULL);
     menu* multi_player = menu_new("MULTIPLAYER", players, NULL, single_player, NULL);
 
+    // Submenu for difficulty
+    menu* easy = menu_new("EASY", play_mode, NULL, NULL, NULL);
+    menu* medium = menu_new("MEDIUM", play_mode, NULL, easy, NULL);
+    menu* hard = menu_new("HARD", play_mode, NULL, medium, NULL);
+
     // PLAY GAME
     // Submenu of play game
     menu* end_game = menu_new("END GAME", play_game, NULL, NULL, NULL);
@@ -196,6 +215,9 @@ menu* menu_init() {
     // Setting child of players
     players->child = single_player;
 
+    // Setting child of play_mode
+    play_mode->child = easy;
+
     // Setting child of high score
     highscores->child = high_score_submenu;
 
@@ -212,6 +234,10 @@ menu* menu_init() {
     // Settings subsubmenu
     single_player->right_sibling = multi_player;
     multi_player->right_sibling = NULL;
+
+    easy->right_sibling = medium;
+    medium->right_sibling = hard;
+    hard->right_sibling = NULL;
 
     // Play game submenu
     end_game->right_sibling = NULL;

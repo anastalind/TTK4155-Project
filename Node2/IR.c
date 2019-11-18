@@ -36,12 +36,13 @@ void IR_init(void) {
  
     // Set ADC0 bit to configure as input pin
     set_bit(DDRF, ADC0);
-
+    /*
     // Enable interrupt
     set_bit(ADCSRA, ADIE);
 
     // Clear interrupt flag
     clear_bit(ADCSRA, ADIF);
+    */
 
     // Resetting goals
     goals = 0;
@@ -54,7 +55,6 @@ void IR_init(void) {
 uint16_t IR_read_photodiode(void) {
     // Start conversion by writing one to ADSC bit
     set_bit(ADCSRA, ADSC);
-
     // After the conversion is complete - ADIF is high - the conversion result can be foung in ADCL ADCH
     loop_until_bit_is_set(ADCSRA, ADIF);
 
@@ -86,7 +86,7 @@ int counting_goals(void) {
     if ((BALL_DETECTED_FLAG <= 2) && ((IR_read_filtered_photodiode() < GOAL_LIMIT))){
         BALL_DETECTED_FLAG += 1;
     }
-
+    
     switch (BALL_DETECTED_FLAG){
         // If ball not yet detected, return goals
         case 0:
@@ -94,7 +94,7 @@ int counting_goals(void) {
         // If ball detected once, increment goals by 1
         case 1:
             goals +=1;
-            printf("GOAL! Score: %d \n\r",goals);
+            //printf("MISS! Number: %d \n\r",goals);
             return goals;
         // If ball is already detected and goal is incremented, return same goal count
         case 2:

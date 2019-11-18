@@ -16,7 +16,6 @@
 
 #include "bit_operations.h"
 
-//extern int CAN_INTERRUPT_FLAG;
 
 /** Struct for message, defining id, length and data byte.
  */
@@ -41,16 +40,9 @@ void CAN_send_message(message msg);
  */
 message CAN_data_receive(void);
 
-/** 
+/**
+ * 
  */
-void CAN_error(void);
-
-/** 
- */
-void CAN_transmit_complete(void);
-
-/** 
- */
-void CAN_int_vect(void);
+message CAN_recent_message(void);
 
 #endif
