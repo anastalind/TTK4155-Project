@@ -75,6 +75,7 @@ void menu_print_game_over(void){
         OLED_clear_line(4);
         _delay_ms(1000);
     }
+
 }
 
 

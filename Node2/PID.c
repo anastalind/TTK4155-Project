@@ -134,9 +134,9 @@ void PID_set_parameters(PID* pid, difficulty mode) {
             break;
 
         case MEDIUM:
-            pid->K_p = 2.5 * SCALING_FACTOR;
-            pid->K_i = 0.5 * SCALING_FACTOR; 
-            pid->K_d = 0.1 * SCALING_FACTOR;
+            pid->K_p = 1 * SCALING_FACTOR;
+            pid->K_i = 0.08 * SCALING_FACTOR; 
+            pid->K_d = 0.09 * SCALING_FACTOR;
             break;
 
         case HARD:

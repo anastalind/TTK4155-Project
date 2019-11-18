@@ -20,7 +20,7 @@
 
 extern int PID_FLAG;
 
-typedef enum {EASY, MEDIUM, HARD} difficulty;
+typedef enum {EASY = 0, MEDIUM, HARD} difficulty;
 
 typedef struct {
     // Tuning variables, multiplied by SCALING_FACTOR

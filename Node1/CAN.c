@@ -53,7 +53,6 @@ void CAN_send_message(message msg){
     // Write data length to DLC transmit register
     MCP_write(MCP_TXB0DLC, msg.length);
 
-    // 
     uint8_t i; 
     for (i = 0; i < msg.length; i++){
         MCP_write((MCP_TXB0D + i), msg.data[i]);
@@ -117,5 +116,5 @@ message CAN_recent_message(void) {
  */
 ISR(INT1_vect){
     CAN_msg = CAN_data_receive();
-    printf("RECEIVED MSG: %u \n\r", CAN_msg.data[1]);
+    //printf("RECEIVED MSG: %u \n\r", CAN_msg.data[1]);
 }

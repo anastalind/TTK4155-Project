@@ -130,6 +130,7 @@ void CAN_transmit_game_info(uint8_t GAME_OVER_FLAG) {
     msg.length = 2;
     msg.id = 1;
 
+    //msg.data[0] = score;
     msg.data[1] = GAME_OVER_FLAG;
 
     CAN_send_message(msg);  

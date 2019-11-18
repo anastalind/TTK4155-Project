@@ -42,7 +42,7 @@ void main() {
 
     //printf("PID PARAMETERS: %i %i %i \n\r", pid->K_p, pid->K_i, pid->K_d);
 
-    int curr_number_of_misses = 0;
+    uint8_t curr_number_of_misses = 0;
 
     message msg = CAN_data_receive();
     uint8_t game_state = msg.data[5];
@@ -52,7 +52,10 @@ void main() {
 
         message msg = CAN_data_receive();
 
+        PID_set_parameters(pid, msg.data[6]);
+
         position = motor_position();
+
 
         for (int i = 0; i < msg.length; i++) {
             //printf("MSG.DATA %d: %u \n\r", i, msg.data[i]);
@@ -67,7 +70,7 @@ void main() {
                 game_state = 0;
                 CAN_transmit_game_info(1);
                 reset_goals();
-                _delay_ms(5000);
+                _delay_ms(200);
                 CAN_transmit_game_info(0);
 
             }
@@ -104,63 +107,6 @@ void main() {
 
 
 
-    
-/*
-
-    while (1) {
-        message msg = CAN_data_receive();
-        position = motor_position();
-        
-        for (int i = 0; i < msg.length; i++) {
-            printf("MSG.DATA %i: %u \n\r",i,  msg.data[i]);
-        }
-        
-       printf("MSG LENGTH %u \n\r", msg.length);
-
-
-        if (game_state == 1) {
-
-            GAME_OVER_FLAG = 0; 
-
-            // Check if ball miss
-            curr_number_of_misses = counting_goals();
-            //printf("CURRENT NUM OF MISSES: %i \n\r", curr_number_of_misses);
-
-            // Have you reached game over
-            if (curr_number_of_misses >= MAX_MISSES) {
-                GAME_OVER_FLAG = 1;
-                game_state = 0;
-            }
-
-            else {
-                // Control servo based on joystick signal (x-axis)
-                double duty_cycle = PWM_joystick_to_duty_cycle(msg);
-                PWM_set_duty_cycle(duty_cycle);
-                //printf("DUTY CYCLE: %lf \n\r", duty_cycle);
-
-                // Control the motor based on the left slider movement.
-                PID_controller(pid, msg);
-
-                // Punch solenoid when left button pressed.
-                solenoid_control(msg);
-                game_state = msg.data[5];
-            }
-
-        }
-
-        else if (game_state == 0) {
-            reset_goals();
-            PID_reset(pid);
-            game_state = msg.data[5];
-        }
-
-        else {
-            //printf("Got nothing \n\r");
-            game_state = msg.data[5];
-        } 
-    }
-}
-*/
 /* EXERCISE 8 - PID, SERVO and SOLENOID */
 /*
     while (1) {

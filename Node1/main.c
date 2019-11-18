@@ -79,11 +79,15 @@ void main() {
             // Print game over
             OLED_reset();
             menu_print_game_over();
+            _delay_ms(100);
             // Return to main menu
             while (current_menu->title != "PLAY GAME"){
                 current_menu = (current_menu->parent);
             }
-            printf("CURRENT MENU: %s", current_menu->title);
+            child_menu = current_menu;
+            parent_menu = child_menu->parent;
+
+            printf("CURRENT MENU 2 : %s \n\r", current_menu->title);
             PLAY_GAME_FLAG = 0;
             DIFFICULTY_FLAG = 0;
         }
@@ -91,7 +95,7 @@ void main() {
         // USB MULTIFUNCTION BOARD
         position = joystick_position();
         slider = slider_position();
-
+       
         game_controller_CAN_transmit(position, slider, PLAY_GAME_FLAG, DIFFICULTY_FLAG);
 
         _delay_ms(100);

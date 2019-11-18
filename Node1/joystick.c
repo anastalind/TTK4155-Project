@@ -69,6 +69,7 @@ bool is_vertical_direction(joystick position) {
  */
 int joystick_button_not_pressed(void) {
     int joystick_button = (PINB & (1 << PINB2));
+    _delay_ms(100);
     return joystick_button;
 } 
 
