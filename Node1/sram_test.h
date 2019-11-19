@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-/** Function for testing writing and reading to and from UART.
- *  Printing error-message if errors occur.
+/** Function for testing writing and reading to and from SRAM.
  */
 void SRAM_test(void);

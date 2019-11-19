@@ -16,22 +16,19 @@
 #define PIN_MOSI PB2
 #define PIN_MISO PB3
 
-/**Function for initializing communication over SPI. 
- * 
- */ 
+/**Function for initializing communication over SPI.
+ */
 void SPI_init(void);
 
-/**Function for configurating SPI as slave and reading the data register.
- * 
- */ 
-char SPI_read(void);
+/**Function for transmitting and receiving data over SPI.
+ * @param char data - Data to send.
+ * @return uint8_t SPDR - The contents of the SPDR.
+ */
+uint8_t SPI_read_write(uint8_t data);
 
-/**Function for configurating SPI as master and transmitting data.
- * 
- */ 
-uint8_t SPI_read_write(uint8_t data); 
-
+/**Function for testing SPI driver.
+ * @param char data - Data to send
+ */
 void SPI_test(char data);
 
 #endif
-

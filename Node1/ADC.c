@@ -1,8 +1,5 @@
 /** @file ADC.c
- * 
- *  @brief C-file for the Analog to Digital Converter.
- *  Switches the channels by writing wanted channels to ADC external memory and returning the channels output.
- * 
+ *  @brief C-file for the Analog to Digital Converter. Switches the channels by writing wanted channels to ADC external memory and returning the channels output.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -13,7 +10,7 @@
  *  @return address[0] - Voltage output of selected ADC-channel
  */
 uint8_t selected_channel_output(int channel){
-    // Write to the channel wanted on the ADC 
+    // Write to the channel wanted on the ADC
     volatile char *address = adc_addr;
     address[0] = channel;
 
@@ -23,5 +20,3 @@ uint8_t selected_channel_output(int channel){
     // Returning 8 bit digital signal from ADC, converted from channel specified in input
     return address[0];
 }
-
-

@@ -24,19 +24,14 @@ extern int BALL_DETECTED_FLAG;
 void IR_init(void);
 
 /** Function for reading the signal from IR photodiode, detecting a goal.
- *  @return ADC - Analog turned digital signal from the photodiode.
+ *  @return uint16_t ADC - Analog turned digital signal from the photodiode.
  */
 uint16_t IR_read_photodiode(void);
 
-/** Reading the digital filtered signal from the photodiode. 
+/** Reading the digital filtered signal from the photodiode.
  *  @return (sum/NUM_MEASUREMENTS) - The average value/filtered value of the photodiode signal.
- */ 
-uint16_t IR_read_filtered_photodiode(void);
-
-
-/** Function for counting number of goals performed.
  */
-int counting_goals(void);
+uint16_t IR_read_filtered_photodiode(void);
 
 /** Function for resetting goals.
  */

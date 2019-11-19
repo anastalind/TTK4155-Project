@@ -1,5 +1,5 @@
 /** @file UART.h
- *  @brief Header-file for the UART driver - to initialize, recieve and transfer data. 
+ *  @brief Header-file for the UART driver - to initialize, recieve and transfer data.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 #ifndef UART_H
@@ -10,7 +10,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 
-#define FOSC 4915200 // Set the clock speed
+#define FOSC 4915200 
 
 /** Function for initializing UART.
  *  @param unsigned int ubrr - UBRR register, User Baud Rate Register
@@ -23,12 +23,8 @@ void UART_init (unsigned int ubrr);
 unsigned char UART_recv (void);
 
 /** Function for transferring data from UART.
- *  @param unsigned char letter - Letter to be transferred 
+ *  @param unsigned char letter - Letter to be transferred.
  */
 void UART_trans (unsigned char letter);
-
-/** Function for testing UART.
- */
-//void UART_test(void);
 
 #endif

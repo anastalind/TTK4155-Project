@@ -24,31 +24,31 @@
 typedef struct {
     uint8_t id;
     uint8_t length;
-    uint8_t data[8]; 
+    uint8_t data[8];
 } message;
 
-extern message recent_msg;
-
-/** Function for initializing CAN.
+/** Function for initializing CAN communication.
  */
 int CAN_init(void);
 
 /** Function for sending a message with a given id and data using MCP2515 for CAN communication.
- *  @param message msg - message is struct including id, data and length of message
+ *  @param message msg - The message to be sent.
  */
 void CAN_send_message(message msg);
 
 /** Function for receiving a message with a given id and data using MCP2515 for CAN communication.
- *  @return uint8_t message- The message received
+ *  @return message message - The message received.
  */
 message CAN_data_receive(void);
 
-/** Function for sending joystick position, buttons, slider positions and play-game flag via CAN to Node 2. 
- *  @param joystick position - Position of joystick, struct containing x and y-positions.
- *  @param Sliders slider_position - position of slider right and left.
- *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
+/** Function for sending GAME OVER via CAN to Node 1.
+ *  @param uint8_t GAME_OVER_FLAG - Flag indicating that game is over.
  */
 void CAN_transmit_game_info(uint8_t GAME_OVER_FLAG);
+
+/** Function for testing transmit in loop-back mode.
+ */
+ void CAN_transmit_loopback_test(void);
 
 
 #endif

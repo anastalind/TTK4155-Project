@@ -1,12 +1,12 @@
 /** @file MCP2515.c
- *  @brief c-file for driver of MCP2515, makes it possible to read and write using SPI, as well as modifying bits, reading MCP status and requesting to send. 
+ *  @brief c-file for driver of MCP2515, makes it possible to read and write using SPI, as well as modifying bits, reading MCP status and requesting to send.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
 #include "MCP2515.h"
 
 /** Function for initializing MCP and checking if it is in configuration mode.
- * @return uint8_t 
+ *  @return uint8_t
  */
 uint8_t MCP_init(void){
     //Initialize SPI
@@ -25,36 +25,35 @@ uint8_t MCP_init(void){
         printf("MCP2515 is not in configuration mode after reset!\n\r");
         return 1;
     }
-    return 0;  
+    return 0;
 }
 
-
-/** Function for reading data stored at spesific address from MCP2515.
- * @param uint8_t address - Select address you want data from
- * @return uint8_t character result - The data stored at address selected
+/** Function for reading data stored at specific address from MCP2515.
+ * @param uint8_t address - Select address you want data from.
+ * @return uint8_t character result - The data stored at address selected.
  */
 uint8_t MCP_read(uint8_t address){
     uint8_t result;
 
     // Select CAN-controller with chip select
     clear_bit(PORTB, CAN_CS);
-    
+
     // Send read instruction
     SPI_read_write(MCP_READ);
-    
+
     // Send address to shift data stored at address to SO pin
     SPI_read_write(address);
 
     // Read result
-    result = SPI_read_write(0x00); 
+    result = SPI_read_write(0x00);
 
-    // Deselect CAN-controller with chip seop_until_bit_is_set(SPSR, SPIF);lect
+    // Deselect CAN-controller with chip select
     set_bit(PORTB, CAN_CS);
 
     return result;
 }
 
-/** Function for writing data address of the MCP2515
+/** Function for writing data address of the MCP2515.
  * @param char data
  * @param uint8_t address
  */
@@ -76,6 +75,7 @@ void MCP_write(uint8_t address, char data){
 }
 
 /** Function for initiating message transmission for one or more of the transmit buffers.
+ * @param uint8_t bit - Bit (0-3) which chooses which transmit buffers are enabled to send.
  */
 void MCP_request_to_send(uint8_t bit){
     // Select CAN-controller with chip select
@@ -83,13 +83,13 @@ void MCP_request_to_send(uint8_t bit){
 
     // Send RTS command byte. The last 3 bits of it indicate which transmit buffers are enabled to send.
     switch (bit) {
-        case 0: 
+        case 0:
             SPI_read_write(MCP_RTS_TX0);
-        case 1: 
+        case 1:
             SPI_read_write(MCP_RTS_TX1);
-        case 2: 
+        case 2:
             SPI_read_write(MCP_RTS_TX2);
-        default: 
+        default:
             SPI_read_write(MCP_RTS_ALL);
     }
 
@@ -97,9 +97,8 @@ void MCP_request_to_send(uint8_t bit){
     set_bit(PORTB, CAN_CS);
 }
 
-/** Function for allowing single instruction access to some of the often used status bits
- * for message reception and transmission. 
- * @return uint8_t status - Status for the MCP
+/** Function for allowing single instruction access to some of the often used status bits for message reception and transmission.
+ * @return uint8_t status - Status for the MCP.
  */
 uint8_t MCP_read_status(void){
     uint8_t status;
@@ -114,15 +113,15 @@ uint8_t MCP_read_status(void){
     status = SPI_read_write(0x00);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB, CAN_CS);   
+    set_bit(PORTB, CAN_CS);
 
     return status;
 }
 
-/** Function for setting or clearing individual bits in specific status and control registers. 
- * @param uint8_t address - The address of the register you want to modify
- * @param uint8_t mask - Mask determines which bit in register will be allowed to change
- * @param uint8_t data - Data byte determines what value the modified bits in the register will be changed to. 
+/** Function for setting or clearing individual bits in specific status and control registers.
+ * @param uint8_t address - The address of the register you want to modify.
+ * @param uint8_t mask - Mask determines which bit in register will be allowed to change.
+ * @param uint8_t data - Data byte determines what value the modified bits in the register will be changed to.
  */
 void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
     // Select CAN-controller with chip select
@@ -141,7 +140,7 @@ void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data){
     SPI_read_write(data);
 
     // Deselect CAN-controller with chip select
-    set_bit(PORTB, CAN_CS); 
+    set_bit(PORTB, CAN_CS);
 }
 
 /** Function for resetting the internal registers of MCP2515, and setting configuration mode.

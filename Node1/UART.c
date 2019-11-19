@@ -1,7 +1,8 @@
 /** @file UART.c
- *  @brief c-file for the UART driver - to initialize, recieve and transfer data. 
+ *  @brief c-file for the UART driver - to initialize, recieve and transfer data.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
+
 #include "UART.h"
 
 
@@ -31,28 +32,10 @@ unsigned char UART_recv (void) {
 }
 
 /** Function for transferring data from UART.
- *  @param unsigned char letter - Letter to be transferred 
+ *  @param unsigned char letter - Letter to be transferred.
  */
 void UART_trans (unsigned char letter) {
     while (!(UCSR0A & (1 << UDRE0))){};
 
     UDR0 = letter;
 }
-
-/** Function for testing UART.
- */
-/*
-void UART_test(void) {
-    UART_init(9600);
-
-    while (1) {
-        UART_trans('a');
-
-        char letter = UART_recv();
-        letter -= 32;
-        printf("Character received: %c \n\r", letter);
-
-        _delay_ms(100);
-    }
-}
-*/

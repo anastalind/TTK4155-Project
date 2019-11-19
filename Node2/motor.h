@@ -22,11 +22,11 @@ typedef enum {LEFT, RIGHT} direction;
  */
 void motor_init(void);
 
-/** Function for calibrating the motors position before starting game. 
+/** Function for calibrating the motors position before starting game.
  */
 void motor_calibrate(void);
 
-/** Function for finding max right and left position and resetting the encoder.
+/** Function for finding max right and left position and resetting the encoder range.
  */
 void motor_set_range(void);
 
@@ -35,7 +35,7 @@ void motor_set_range(void);
  */
 void motor_move(int16_t speed);
 
-/** Function for transferring the voltage of which the speed is defined. 
+/** Function for transferring the voltage of which the speed is defined.
  * @param uint8_t voltage - Level of voltage to move the motor.
  */
 void motor_set_voltage(uint8_t voltage);

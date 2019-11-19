@@ -5,17 +5,19 @@
 
 #include "menu.h"
 
-
+// Flag (0-1) set to 1 when a new game is indicated, and 0 when a game is ended.
 int PLAY_GAME_FLAG = 0;
+
+// Flag (0-2) indicating difficulty of game.
 int DIFFICULTY_FLAG = 0;
 
-/**Function for creating new submenu and initialising it.
- * @param char* menu_title - Title of the menu being created
- * @param menu* parent_menu - Pointer to struct menu that should be current menus' parent
- * @param menu* child_menu - Pointer to struct menu that should be current menus' child
- * @param menu* left_sibling_menu - Pointer to struct menu that should be current menus' left sibling
- * @param menu* right_sibling_menu - Pointer to struct menu that should be current menus' right sibling
- * @return new_menu - New menu struct with specified child, parent and siblings
+/** Function for creating new submenu and initialising it.
+ *  @param char* menu_title - Title of the menu being created
+ *  @param menu* parent_menu - Pointer to struct menu that should be current menus' parent
+ *  @param menu* child_menu - Pointer to struct menu that should be current menus' child
+ *  @param menu* left_sibling_menu - Pointer to struct menu that should be current menus' left sibling
+ *  @param menu* right_sibling_menu - Pointer to struct menu that should be current menus' right sibling
+ *  @return new_menu - New menu struct with specified child, parent and siblings
  */
 menu* menu_new(char* menu_title, menu* parent_menu, menu* child_menu, menu* left_sibling_menu, menu* right_sibling_menu){
     menu* new_menu = malloc(sizeof(menu));
@@ -30,8 +32,8 @@ menu* menu_new(char* menu_title, menu* parent_menu, menu* child_menu, menu* left
 }
 
 /** Function for printing a submenu.
- *  @param menu* parent_menu - pointer to struct that is current menus' parent
- *  @param menu* current_menu - pointer to curren menu struct
+ *  @param menu* parent_menu - pointer to struct that is current menus' parent.
+ *  @param menu* current_menu - pointer to curren menu struct.
  */
 void menu_print_submenu(menu* parent_menu, menu* current_menu){
     OLED_reset();
@@ -39,7 +41,7 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
 
     if (parent_menu->title == "PLAY GAME") {
         OLED_print("  PLAYING GAME");
-   
+
     } else {
         OLED_print("   ");
         OLED_print(parent_menu->title);
@@ -55,7 +57,7 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
             OLED_print_highlight(child_menu->title, 5);
             OLED_go_to_line(current_line + 1);
         }
-        
+
         else {
             OLED_print("  ");
             OLED_print(child_menu->title);
@@ -68,22 +70,21 @@ void menu_print_submenu(menu* parent_menu, menu* current_menu){
 /** Function for printing GAME OVER when game is ended. Toggling data.
  */
 void menu_print_game_over(void){
-    for (int i=0 ; i<10 ; i++) {
-        OLED_position(4,25);
+    for (int i = 0; i < 10; i++) {
+        OLED_position(4, 25);
         OLED_print("GAME OVER");
         _delay_ms(700);
         OLED_clear_line(4);
         _delay_ms(1000);
     }
-
 }
 
 
 
-/** Function for navigating the menu by moving between siblings and parent/child. 
+/** Function for navigating the menu by moving between siblings and parent/child and setting flags when indicated by joystick button press.
  *  @param menu* child_menu - Pointer to struct menu that corresponds to current menus' child
  *  @param direction dir - direction enum corresponding to joystick movement.
- *  @return current_menu - Menu struct that is chosen by joystick movement 
+ *  @return current_menu - Menu struct that is chosen by joystick movement
  */
 menu* menu_navigate(menu* child_menu, direction dir){
     menu* current_menu = child_menu;
@@ -100,7 +101,7 @@ menu* menu_navigate(menu* child_menu, direction dir){
 
     else if (dir == DOWN) {
         if (current_menu->right_sibling != NULL) {
-            current_menu = (current_menu->right_sibling); 
+            current_menu = (current_menu->right_sibling);
         }
     }
 
@@ -115,13 +116,13 @@ menu* menu_navigate(menu* child_menu, direction dir){
     else {
         return current_menu;
     }
- 
-    // Navigate through abstraction layers by pressing joystick button 
+
+    // Navigate through abstraction layers by pressing joystick button
     if (!(joystick_button_not_pressed())) {
         if (current_menu->title == "PLAY GAME"){
             current_menu = current_menu->child;
             PLAY_GAME_FLAG = 1;
-            
+
         } else if (current_menu->title == "END GAME"){
             current_menu = (current_menu->child);
 
@@ -155,15 +156,15 @@ menu* menu_navigate(menu* child_menu, direction dir){
             }
             DIFFICULTY_FLAG = 2;
         } else if (current_menu->child != NULL){
-            
+
             current_menu = current_menu->child;
-        } 
+        }
     }
     return current_menu;
 }
 
-/** Function for creating main menu and submenus and setting their membervariables.
- *  @return main_menu - Menu struct corresponding to main menu. 
+/** Function for creating main menu and submenus and setting their member variables.
+ *  @return main_menu - Menu struct corresponding to main menu.
  */
 menu* menu_init() {
     /* MAIN MENU */
@@ -201,7 +202,7 @@ menu* menu_init() {
     menu* high_score_submenu = menu_new(" ", highscores, NULL, NULL, NULL);
 
     /* SETTING THE CHILD VARIABLES*/
-    // Setting child of main menu 
+    // Setting child of main menu
     main_menu->child = play_game;
 
     // Setting child of play game
@@ -223,7 +224,7 @@ menu* menu_init() {
     highscores->child = high_score_submenu;
 
     /* SETTING RIGHT SIBLINGS*/
-    // Setting right siblings
+    // Main menu right siblings
     play_game->right_sibling = game_settings;
     game_settings->right_sibling = highscores;
     highscores->right_sibling = NULL;
@@ -250,27 +251,4 @@ menu* menu_init() {
     high_score_submenu->right_sibling = NULL;
 
     return main_menu;
-}
-
-/** Menu controller. Controlling the functionality and printing of OLED.
- */
-void menu_controller(menu* parent_menu,menu*  child_menu,menu*  current_menu, direction dir) {
-    // The current menu is changed to the one menu navigate decides
-    current_menu = menu_navigate(child_menu, dir);
-
-    if (current_menu->title != "GAME OVER") {
-        // Print submenu of current menu 
-        menu_print_submenu(parent_menu, current_menu);
-        _delay_ms(500);
-        dir = joystick_direction();
-        child_menu = current_menu;
-        parent_menu = child_menu->parent;
-    } else {
-        OLED_reset();
-        
-        menu_print_game_over();
-
-        child_menu = current_menu;
-        parent_menu = child_menu->parent;
-    } 
 }

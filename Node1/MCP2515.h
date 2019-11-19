@@ -74,7 +74,7 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TXB1CTRL	0x40
 #define MCP_TXB2CTRL	0x50
 #define MCP_RXB0CTRL	0x60
-#define MCP_RXB0DLC	    0x65 
+#define MCP_RXB0DLC	    0x65
 #define MCP_RXB0D	    0x66
 #define MCP_RXB0SIDH	0x61
 #define MCP_RXB0SIDL	0x62
@@ -175,41 +175,37 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define CAN_CS PB4
 
 
-
-
-
 /** Function for initializing MCP and checking if it is in configuration mode.
- * @return uint8_t 
+ *  @return uint8_t
  */
 uint8_t MCP_init(void);
 
-
-/** Function for reading data stored at spesific address from MCP2515.
- * @param uint8_t address - Select address you want data from
- * @return uint8_t character result - The data stored at address selected
+/** Function for reading data stored at specific address from MCP2515.
+ * @param uint8_t address - Select address you want data from.
+ * @return uint8_t character result - The data stored at address selected.
  */
 uint8_t MCP_read(uint8_t address);
 
-/** Function for writing data address of the MCP2515
+/** Function for writing data address of the MCP2515.
  * @param char data
  * @param uint8_t address
  */
 void MCP_write(uint8_t address, char data);
 
 /** Function for initiating message transmission for one or more of the transmit buffers.
+ * @param uint8_t bit - Bit (0-3) which chooses which transmit buffers are enabled to send.
  */
 void MCP_request_to_send(uint8_t bit);
 
-/** Function for allowing single instruction access to some of the often used status bits
- * for message reception and transmission. 
- * @return uint8_t status - Status for the MCP
+/** Function for allowing single instruction access to some of the often used status bits for message reception and transmission.
+ * @return uint8_t status - Status for the MCP.
  */
 uint8_t MCP_read_status(void);
 
-/** Function for setting or clearing individual bits in specific status and control registers. 
- * @param uint8_t address - The address of the register you want to modify
- * @param uint8_t mask - Mask determines which bit in register will be allowed to change
- * @param uint8_t data - Data byte determines what value the modified bits in the register will be changed to. 
+/** Function for setting or clearing individual bits in specific status and control registers.
+ * @param uint8_t address - The address of the register you want to modify.
+ * @param uint8_t mask - Mask determines which bit in register will be allowed to change.
+ * @param uint8_t data - Data byte determines what value the modified bits in the register will be changed to.
  */
 void MCP_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
 

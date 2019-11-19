@@ -1,31 +1,57 @@
 /** @file joystick.c
- * 
- *  @brief C-file for the joystick on the USB-multiboards behaviour.
- * 
+ *  @brief C-file for the joystick on the USB multiboard's behaviour.
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
 #include "joystick.h"
 
-//ADC_channel with hexadecimal representation of channel wanted from ADC
+// ADC_channel with hexadecimal representation of channel wanted from ADC
 #define X_AXIS_CHANNEL 5
 #define Y_AXIS_CHANNEL 4
 
 // Slack variable for neutral position of joystick
 #define SLACK 5
 
-// Resolution of joustick
+// Resolution of joystick
 #define RESOLUTION_START 0
 #define RESOLUTION_END 255
 
-// Origo of joystick area is approximately at (135,135) with a resolution scale 0-255 (some rightmost displacement, that is)
+// Origo of joystick area is approximately at (128, 128) with a resolution scale 0-255, can be calibrated using calibrate function
 int resolution_left = 128;
 int resolution_right = 128;
 
 
+/** Function for detecting if joystick button is pressed.
+ *  @return int joystick_button - Returns 0 if joystick button is pressed, 1 otherwise.
+ */
+int joystick_button_not_pressed(void) {
+    int joystick_button = (PINB & (1 << PINB2));
+    _delay_ms(100);
+    return joystick_button;
+}
+
+/** Function for detecting if touch button is pressed.
+ * @return bool - Returns 1 if touch button is pressed, 0 otherwise.
+ */
+bool touch_button_pressed() {
+    return ((PINB & (1 << PINB0)) || (PINB & (1 << PINB1)));
+}
+
+/** Function for calibrating the joystick neutral position (neutral = origo).
+ */
+void joystick_calibrate(void) {
+    joystick position;
+
+    position.x = selected_channel_output(X_AXIS_CHANNEL);
+    position.y = selected_channel_output(Y_AXIS_CHANNEL);
+
+    resolution_left = position.x;
+    resolution_right = RESOLUTION_END - position.x;
+}
+
 /** Function for returning the quadrant the joystick is position in by reading x-and y-position.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
- *  @return int 1-4 - Quadrant the joystick is in
+ *  @return int 1-4 - Quadrant the joystick is in.
  */
 int get_quadrant(joystick position) {
     if (position.x < SLACK && position.x > -SLACK && position.y < SLACK && position.y > -SLACK) {
@@ -50,7 +76,7 @@ int get_quadrant(joystick position) {
 
 /** Function checks whether the direction is up or down, as opposed to right or left.
  *  @param struct Joystick position - Struct that yields the x- and y-values respectively.
- *  @return true or false - up or down (true), right or left(false)
+ *  @return bool true or false - up or down (true), right or left (false).
  */
 bool is_vertical_direction(joystick position) {
     int abs_x = abs(position.x);
@@ -64,56 +90,31 @@ bool is_vertical_direction(joystick position) {
     }
 }
 
-/** Function for detecting if joystiuck-button is pressed.
- *  @return joystick_button - Returns if joystick button is pressed.
- */
-int joystick_button_not_pressed(void) {
-    int joystick_button = (PINB & (1 << PINB2));
-    _delay_ms(100);
-    return joystick_button;
-} 
-
-
-/** Function for calibrating the joystick neutral position (neutral = origo)
- */
-void joystick_calibrate(void) {
-    joystick position; 
-    position.x = selected_channel_output(X_AXIS_CHANNEL);
-    position.y = selected_channel_output(Y_AXIS_CHANNEL);
-
-    resolution_left = position.x;
-    resolution_right = RESOLUTION_END - position.x;
-} 
-
 /** Function converts digital signal from joysticks x- and y-values with voltage resolution 0-255 to percent-representation -100-100.
- *  @param void
  *  @return joystick position - Struct containing x-and-y-positions of joysticks represented as percentage of displacement -100-100.
  */
 joystick joystick_position(void) {
-
     joystick position;
 
     // Converting from 0-255 resolution to -100-100 resolution in x-axis
-    // Adding slack around origo on x-axis, so that neutral position will yield position (0,0)
     if ((selected_channel_output(X_AXIS_CHANNEL) >= (resolution_left)) && (selected_channel_output(X_AXIS_CHANNEL) <= (resolution_left))) {
         position.x = 0;
     }
     else if (selected_channel_output(X_AXIS_CHANNEL) < resolution_left) {
         position.x = -(((resolution_left-selected_channel_output(X_AXIS_CHANNEL))*100)/resolution_left);
-    } 
+    }
     else {
         position.x = (((selected_channel_output(X_AXIS_CHANNEL)-resolution_left)*100)/resolution_right);
     }
 
     // Converting from 0-255 resolution to -100-100 resolution in y-axis
-    // Adding slack around origo on y-axis, so that neutral position will yield position (0,0)
     if ((selected_channel_output(Y_AXIS_CHANNEL) >= (resolution_left)) && (selected_channel_output(Y_AXIS_CHANNEL) <= (resolution_left))) {
         position.y = 0;
     }
-    
+
     else if (selected_channel_output(Y_AXIS_CHANNEL) < resolution_left) {
         position.y = -(((resolution_left-selected_channel_output(Y_AXIS_CHANNEL))*100)/resolution_left);
-    } 
+    }
 
     else {
         position.y = (((selected_channel_output(Y_AXIS_CHANNEL)-resolution_left)*100)/resolution_right);
@@ -123,11 +124,10 @@ joystick joystick_position(void) {
     return position;
 }
 
-/** Function takes the direction and quadrant into consideration to decide in which direction the joystick is pointing (the most) towards. 
- *  @param void
- *  @return enum Direction - The direction, either UP, DOWN, LEFT or RIGHT
+/** Function takes the direction and quadrant into consideration to decide in which direction the joystick is pointing (the most) towards.
+ *  @return enum direction - direction, either UP, DOWN, LEFT, RIGHT, NEUTRAL or UNKNOWN.
  */
-direction joystick_direction(void){
+direction joystick_direction(void) {
 
     joystick position = joystick_position();
 
@@ -163,7 +163,7 @@ direction joystick_direction(void){
                 return LEFT;
             }
 
-        case 4: 
+        case 4:
             if (upDown){
                 return DOWN;
             }
@@ -178,47 +178,14 @@ direction joystick_direction(void){
 
 }
 
-
-/** Function for telling if touch-button is pressed.
-*/
-bool touch_button_pressed() {
-    return ((PINB & (1 << PINB0)) || (PINB & (1 << PINB1)));
-}
-
-/** Function for sending joystick position, buttons, slider positions and play-game flag via CAN to Node 2. 
- *  @param joystick position - Position of joystick, struct containing x and y-positions.
- *  @param Sliders slider_position - position of slider right and left.
- *  @param PLAY_GAME_FLAG - Flag set when play game is selected in the main menu.
- */
-void game_controller_CAN_transmit(joystick position, Sliders slider_position, int PLAY_GAME_FLAG, int DIFFICULTY_FLAG) {
-    message msg;
-    msg.length = 7;
-    msg.id = 0;
-
-    msg.data[0] = position.x;
-    msg.data[1] = position.y;
-    msg.data[2] = touch_button_pressed();
-    msg.data[3] = slider_position.Left;
-    msg.data[4] = slider_position.Right;
-    msg.data[5] = PLAY_GAME_FLAG;
-    msg.data[6] = DIFFICULTY_FLAG;
-
-    //printf("POSITION X: %u \n\r", msg.data[0]);
-    //printf("PLAY GAME FLAG: %u \n\r", msg.data[5]);
-    CAN_send_message(msg);  
-}
-
 /** Test function for reading joystick position.
  */
-void test_read_joystick_position(void){
-    //Read joystick-position: 
+void test_read_joystick_position(void) {
     _delay_ms(500);
 
     joystick joy_position = joystick_position();
 
-    //printf("X-value: %i\n\r", joy_position.x);
-    //printf("Y-value: %i\n\r", joy_position.y);
-    //printf("X-value: %i\n\r", selected_channel_output(5));
-    //printf("Y-value: %i\n\r", selected_channel_output(4));
-}
+    printf("X-value: %i\n\r", joy_position.x);
+    printf("Y-value: %i\n\r", joy_position.y);
 
+}

@@ -5,7 +5,7 @@
 
 #include "SPI.h"
 
-/**Function for initializing communication over SPI. 
+/**Function for initializing communication over SPI.
  */
 void SPI_init(void) {
 
@@ -16,9 +16,9 @@ void SPI_init(void) {
     set_bit(DDR_SPI, PIN_SCK);
 
     // Set slave select
-    set_bit(DDR_SPI, PIN_SS); 
+    set_bit(DDR_SPI, PIN_SS);
 
-    set_bit(DDR_SPI, PB0); 
+    set_bit(DDR_SPI, PB0);
 
     // Enable Master
     set_bit(SPCR, MSTR);
@@ -28,16 +28,13 @@ void SPI_init(void) {
 
     // Enable SPI
     set_bit(SPCR, SPE);
-    
-    
 }
 
-
-/**Function for configurating SPI as master and transmitting data.
- * @param char data - Data to send
+/**Function for transmitting and receiving data over SPI.
+ * @param char data - Data to send.
+ * @return uint8_t SPDR - The contents of the SPDR.
  */
 uint8_t SPI_read_write(uint8_t data) {
-    /* Transmission of data */
     // Start transmission
     SPDR = data;
 
@@ -46,7 +43,6 @@ uint8_t SPI_read_write(uint8_t data) {
 
     return SPDR;
 }
-
 
 /**Function for testing SPI driver.
  * @param char data - Data to send

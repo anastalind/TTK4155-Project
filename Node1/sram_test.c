@@ -1,12 +1,11 @@
 /** @file sram_test.c
  *  @brief c-file for testing reading and writing of data.
+ *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
+
 #include "sram_test.h"
-#include <stdlib.h>
 
-
-/** Function for testing writing and reading to and from UART.
- *  Printing error-message if errors occur.
+/** Function for testing writing and reading to and from SRAM.
  */
 void SRAM_test(void){
     volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM

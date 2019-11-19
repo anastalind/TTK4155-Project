@@ -12,7 +12,8 @@ int PID_FLAG = 0;
 #define MAX_RESOLUTION 255
 
 
-/** Function for initializing the PID-controller. 
+/** Function for initializing the PID-controller.
+ * @param PID* pid - PID controller
  */
 void PID_init(PID* pid) {
 
@@ -21,7 +22,7 @@ void PID_init(PID* pid) {
 
     cli();
 
-    // Enabling timer 
+    // Enabling timer
 	// Using normal mode
 	set_bit(TCCR3B, CS31);
 
@@ -31,13 +32,13 @@ void PID_init(PID* pid) {
 	sei();
 
 	_delay_ms(500);
-    
+
 }
 
-
 /** Function for resetting the PID-controller.
+ * @param PID* pid - PID controller
  */
-void PID_reset (PID* pid) {
+void PID_reset(PID* pid) {
     pid->last_error = 0;
     pid->sum_errors = 0;
 
@@ -46,7 +47,7 @@ void PID_reset (PID* pid) {
 
 /** Function for calculating the error and introducing integral and derivative-effects to return the control variable.
  * @param uint8_t reference_value - The current position of the slider.
- * @param uint8_t process_value - The current position of the motor, read from encoder. 
+ * @param uint8_t process_value - The current position of the motor, read from encoder.
  * @param PID* pid - PID controller
  * @return int16_t control_variable - Control variable to control the motor.
  */
@@ -68,7 +69,7 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
     // Calculate P term
     p_term = pid->K_p * error;
 
-    // Calculcate I term 
+    // Calculcate I term
     if (abs(error) > ERROR_SLACK) {
         pid->sum_errors += error;
         i_term = pid->K_i * pid->sum_errors;
@@ -76,7 +77,7 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
     else {
         i_term = 0;
     }
-    
+
     // Calculate D term
     d_term = pid->K_d * (error - pid->last_error);
 
@@ -96,7 +97,7 @@ int16_t PID_calculate_control(uint8_t reference_value, uint8_t process_value, PI
 
 }
 
-/** Function for moving motor according to the reference and process position, controlle by PID-controller.
+/** Function for moving motor according to the reference and process position, controlled by PID-controller.
  * @param PID* pid - PID controller.
  * @param message msg - Message from CAN, including the slider position.
  */
@@ -135,13 +136,13 @@ void PID_set_parameters(PID* pid, difficulty mode) {
 
         case MEDIUM:
             pid->K_p = 1 * SCALING_FACTOR;
-            pid->K_i = 0.08 * SCALING_FACTOR; 
+            pid->K_i = 0.08 * SCALING_FACTOR;
             pid->K_d = 0.09 * SCALING_FACTOR;
             break;
 
         case HARD:
             pid->K_p = 2.5 * SCALING_FACTOR;
-            pid->K_i = 2 * SCALING_FACTOR; 
+            pid->K_i = 2 * SCALING_FACTOR;
             pid->K_d = 0.1 * SCALING_FACTOR;
             break;
 
@@ -153,7 +154,8 @@ void PID_set_parameters(PID* pid, difficulty mode) {
     }
 }
 
-
+/** Interrupt service routine which is executed at period set by TIMER3, setting the flag for updating control variable for PID.
+ */
 ISR(TIMER3_OVF_vect) {
     PID_FLAG = 1;
 }

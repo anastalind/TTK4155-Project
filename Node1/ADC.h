@@ -1,7 +1,5 @@
 /** @file ADC.h
- * 
  *  @brief Header-file for the Analog to Digital Converter. Returning analog voltage output of joystick, slider and buttons from digital signals from USB-multiboard.
- * 
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -27,7 +25,6 @@
  *  @return address[0] - Voltage output of selected ADC-channel
  */
 uint8_t selected_channel_output(int channel);
-
 
 
 #endif

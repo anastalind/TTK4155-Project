@@ -14,12 +14,11 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-/** Function for initializing the encoder. 
+/** Function for initializing the encoder.
  */
 void encoder_init(void);
 
-
-/** Function for resetting the encoder. 
+/** Function for resetting the encoder.
  */
 void encoder_reset(void);
 

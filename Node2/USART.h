@@ -1,5 +1,5 @@
 /** @file USART.h
- *  @brief Header-file for the USART driver - to initialize, recieve and transfer data. 
+ *  @brief Header-file for the USART driver - to initialize, recieve and transfer data.
  *  @author: Anastasia Lindbäck and Marie Skatvedt
  */
 #ifndef USART_H
@@ -12,11 +12,10 @@
 
 #include "bit_operations.h"
 
-
-#define FOSC 16000000 // Set the clock speed
+#define FOSC 16000000
 
 /** Function for initializing USART.
- *  @param unsigned int bd - bd register, User Baud Rate Register
+ *  @param unsigned int ubrr - UBRR register, User Baud Rate Register
  */
 void USART_init (unsigned int bd);
 
@@ -26,12 +25,8 @@ void USART_init (unsigned int bd);
 unsigned char USART_recv (void);
 
 /** Function for transferring data from USART.
- *  @param unsigned char letter - Letter to be transferred 
+ *  @param unsigned char letter - Letter to be transferred
  */
 void USART_trans (unsigned char letter);
-
-/** Function for testing USART.
- */
-//void USART_test(void);
 
 #endif

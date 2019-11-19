@@ -1,5 +1,5 @@
 /** @file PWM.h
- *  @brief Header file for the PWM 
+ *  @brief Header file for the PWM
  *  @authors: Anastasia Lindbäck and Marie Skatvedt
  */
 
@@ -14,7 +14,7 @@
 
 #define PWM_T 20
 
-// Set pulse TOP and BOTTOM
+
 // Prescaler divider, chosen when setting clock frequency
 #define N 8
 
@@ -28,9 +28,6 @@
 // Clock frequency
 #define F_CLK 16000000
 
-// Setting TOP using equation given in datasheet
-//uint32_t TOP = (F_CLK/(N * F_PWM)) - 1;
-
 /** Function for initializing PWM on the ATmega2560.
  */
 void PWM_init(void);
@@ -41,13 +38,12 @@ void PWM_init(void);
  */
 double PWM_joystick_to_duty_cycle(message position);
 
-
 /** Function for setting output compare register in the ATmega2560 to wanted duty cycle.
  *  @param double duty_cycle - the duty cycle to be set.
  */
 void PWM_set_duty_cycle(double duty_cycle);
 
-/** Test function for testing that the joystick movement actually moves the servo.
+/** Function for testing that the joystick movement actually moves the servo.
  */
 void test_joystick_to_servo(void);
 

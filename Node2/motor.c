@@ -43,7 +43,7 @@ void motor_init(void) {
 
 }
 
-/** Function for calibrating the motors position before starting game. 
+/** Function for calibrating the motors position before starting game.
  */
 void motor_calibrate(void) {
     // Moves motor to the left
@@ -65,7 +65,7 @@ void motor_calibrate(void) {
 }
 
 
-/** Function for finding max right and left position and resetting the encoder.
+/** Function for finding max right and left position and resetting the encoder range.
  */
 void motor_set_range(void) {
     motor_move(-100);
@@ -103,7 +103,7 @@ void motor_move(int16_t speed) {
     motor_set_voltage(voltage);
 }
 
-/** Function for transferring the voltage of which the speed is defined. 
+/** Function for transferring the voltage of which the speed is defined.
  * @param uint8_t voltage - Level of voltage to move the motor.
  */
 void motor_set_voltage(uint8_t voltage) {
@@ -127,12 +127,12 @@ void motor_set_direction (direction dir) {
             // Sets direction to left
             clear_bit(PORTH, PH1);
             break;
-            
+
         case RIGHT:
             // Sets direction to right
             set_bit(PORTH, PH1);
             break;
-        
+
         default:
             break;
     }

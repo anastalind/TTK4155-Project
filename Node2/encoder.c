@@ -4,8 +4,7 @@
  */
 #include "encoder.h"
 
-
-/** Function for initializing the encoder. 
+/** Function for initializing the encoder.
  */
 void encoder_init(void) {
     // SEL
@@ -21,7 +20,7 @@ void encoder_init(void) {
     encoder_reset();
 }
 
-/** Function for resetting the encoder. 
+/** Function for resetting the encoder.
  */
 void encoder_reset(void) {
     clear_bit(PORTH, PH6);

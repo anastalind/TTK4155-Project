@@ -7,7 +7,10 @@
 
 #include <util/delay.h>
 
+// Global int for keeping track of goals
 int goals;
+
+// Flag for detecting ball
 int BALL_DETECTED_FLAG = 0;
 
 /** Initialize Arduino shield for IR-communication.
@@ -33,72 +36,69 @@ void IR_init(void) {
     clear_bit(ADMUX, MUX4);
     clear_bit(ADCSRB, MUX5);
 
- 
+
     // Set ADC0 bit to configure as input pin
     set_bit(DDRF, ADC0);
-    /*
-    // Enable interrupt
-    set_bit(ADCSRA, ADIE);
-
-    // Clear interrupt flag
-    clear_bit(ADCSRA, ADIF);
-    */
 
     // Resetting goals
-    goals = 0;
+    reset_goals();
 
 }
 
 /** Function for reading the signal from IR photodiode, detecting a goal.
- *  @return ADC - Analog turned digital signal from the photodiode.
+ *  @return uint16_t ADC - Analog turned digital signal from the photodiode.
  */
 uint16_t IR_read_photodiode(void) {
     // Start conversion by writing one to ADSC bit
     set_bit(ADCSRA, ADSC);
+
     // After the conversion is complete - ADIF is high - the conversion result can be foung in ADCL ADCH
     loop_until_bit_is_set(ADCSRA, ADIF);
 
     return ADC;
 }
 
-/** Reading the digital filtered signal from the photodiode. 
- *  NUM_MEASUREMENTS = 4
+/** Reading the digital filtered signal from the photodiode.
  *  @return (sum/NUM_MEASUREMENTS) - The average value/filtered value of the photodiode signal.
- */ 
+ */
 uint16_t IR_read_filtered_photodiode(void) {
     // Initialize the sum = 0 each time photodiode is read
     uint16_t sum = 0;
 
-    // Sum 4 photodiode measurements
+    // Sum photodiode measurements
     for (int i = 0; i < NUM_MEASUREMENTS; i++) {
         sum += IR_read_photodiode();
     }
+
     // Return the average/filtered value
     return (sum/NUM_MEASUREMENTS);
 }
 
-
 /** Function for counting number of goals performed.
- *  @return goals - number of goals counted this round
+ *  @return int goals - Number of goals counted this round.
  */
 int counting_goals(void) {
     // The flag is checking whether the ball is registered or not
     if ((BALL_DETECTED_FLAG <= 2) && ((IR_read_filtered_photodiode() < GOAL_LIMIT))){
         BALL_DETECTED_FLAG += 1;
     }
-    
+
     switch (BALL_DETECTED_FLAG){
+
         // If ball not yet detected, return goals
         case 0:
             return goals;
+
         // If ball detected once, increment goals by 1
         case 1:
             goals +=1;
             //printf("MISS! Number: %d \n\r",goals);
             return goals;
+
         // If ball is already detected and goal is incremented, return same goal count
         case 2:
             return goals;
+
         // If the ball is registered continously in the goal-area, the flag is cleared when the ball is no longer detected.
         default:
             if ((IR_read_filtered_photodiode() > GOAL_LIMIT)) {
@@ -122,26 +122,16 @@ void reset_goals(void){
 /** Test function for counting goals.
  */
 void test_counting_goals(void){
-    // So that printf can be used
     USART_init(9600);
     IR_init();
 
     while(1) {
         // Read filtered signal from photodiode
-        //uint16_t IR_measurement = IR_read_filtered_photodiode();
-        counting_goals();
-        //printf("IR_measurement: %u \n\r", IR_measurement);
-        _delay_ms(1);
+        uint16_t IR_measurement = IR_read_filtered_photodiode();
+        printf("IR_measurement: %u \n\r", IR_measurement);
 
+        counting_goals();
+
+        _delay_ms(1);
     }
 }
-
-
-/** 
- * 
- 
-ISR(ADC_vect){
-
-}
-
-*/
